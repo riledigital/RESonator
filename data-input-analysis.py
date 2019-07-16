@@ -1,12 +1,13 @@
 import pandas as pd
+import xml.etree.ElementTree as ET
 
 lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
 eval_path = "data_original/quiz-Eval-full (1).csv"
 
 lms_data = pd.read_csv(lms_path)
-evaldata = pd.read_csv(eval_path)
+eval_data = pd.read_csv(eval_path)
 list(lms_data)
-var = evaldata.describe
+var = eval_data.describe
 
 # filter only Florida data
 selector = 'Florida: MGT 462 '
@@ -39,18 +40,28 @@ lms_fl_subset.to_csv(
 
 # build registration
 # df: dataframe from LMS representing a student
-def buildRegistrationXML(df):
-    df.apply(
-        lambda row: # this lambda function is used to build 1 single XML node...
-        print(
-            row['First Name'], row['Last Name']
-        ),
-        axis=1)
-    # for row in df.iteruples(index=)
-    # currentRow =  #get current row and pass into a function?
-    # functions in python don't have to return
+roster = ET.Element('registration')  # initialize XML node
 
 
-buildRegistrationXML(lms_fl_subset.head(1))
+# this helper function creates 1 row.
+def row_to_xml(row):
+    new_student = ET.Element('student')
+    new_student.set('international', row['International Status '])
+    new_student.set('studentfirstname', row['First Name'])
+    new_student.set('studentlastname', row['Last Name'])
+    new_student.set('studentcity', row['City'])
+    new_student.set('studentzipcode', row['Postal Code'])
+    new_student.set('studentphone', row['Primary Phone'])
+    new_student.set('discipline', row['Discipline '])
+    roster.append(new_student)
+    print("Appended record: " + str(row['First Name']))
 
+
+def build_registration_xml(df):
+    df.apply(row_to_xml, axis=1)
+
+
+build_registration_xml(lms_fl_subset)
+tree = ET.ElementTree(roster)
+tree.write('data_out/test.xml')
 exit()
