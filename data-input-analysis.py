@@ -105,12 +105,54 @@ df_rename = df_ready
 #  https://www.quora.com/How-can-I-replace-characters-in-a-multiple-column-name-in-pandas
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
+
 # Pretest Avg,Posttest Avg,Course Name ,StudentID,QuizCreated,DataExported,id1,id2,id3,id4,id5,id6,id7,id8,id9,id10,id11,id12,id13,id14,id15,id16,id17,id18,id19,id20,id21,id22,id23,id24,id25,id26,id27
 
 # TODO: ???? Rename question fields to "idX" where X is number of question??...
-
 # TODO: Write helper function that takes in a row and creates an individual node
 # TODO: Write function that takes in df, outputs an XML Element Tree
+
+# make_eval_tree -> Element
+# df: DataFrame representing evaluations
+def make_eval_tree(df):
+    df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
+    return evaldata
+
+
+# TODO: move this variable declaration elsewhere...
+evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
+
+
+# make_key_value
+# series: A Series representing a column
+# TODO: Helper function for creating a k-v pair ?
+def make_key_value(series):
+    # TODO: set attribs for each column in current question
+    q_name = series.name  # TODO: get question name
+    q_value = series.item  # TODO: question response value?...
+    out.set(q_name, q_value)
+    return {'key': 'value'}  # perhaps return a dict or array?...
+
+
+# make_tree_from_question
+# question: a Series representing a question...
+def make_tree_from_question(question):
+    out = ET.Element('question')
+    question.apply(
+        # TODO: write getter function
+        make_key_value,
+        axis=0  # only refer to columns
+    )
+    evaldata.append(out)
+
+
+return evaldata  ## technically it shouldn't matter...
+
+test_tree = make_eval_tree(df_rename)  # this test code uses the renamed eval data
+
+test_tree_two = ET.ElementTree(test_tree)
+test_tree_two.write('data_out/test-tree.xml')
+
 # TODO: figure out how to fetch ID name for question
 # TODO: Figure out how to fetch ID value  for question
 
