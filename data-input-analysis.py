@@ -40,7 +40,6 @@ lms_fl_subset.to_csv(
 # build registration
 # df: dataframe from LMS representing a student
 def buildRegistrationXML(df):
-    # TODO apply a function across all rows
     df.apply(
         lambda row: # this lambda function is used to build 1 single XML node...
         print(
