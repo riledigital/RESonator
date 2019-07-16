@@ -2,6 +2,7 @@
 # ! pip install dicttoxml
 # https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9
 import pandas as pd
+import re
 from dicttoxml import dicttoxml
 
 myFile = "data_in/BostonZipgradeCsv.csv"
@@ -61,6 +62,9 @@ tagEvaluations = ET.SubElement(structureClass, "evaluations")
 ## for each entry, run the following to sub in values
 ## and map data to an attribute
 # https://cmdlinetips.com/2018/12/how-to-loop-through-pandas-rows-or-how-to-iterate-over-pandas-rows/
+
+## TODO break this into a function
+# loop through each
 for index, row in data.iterrows():
     str_sid = str(row['StudentID'])
     ET.SubElement(tagRegistration, "student",
@@ -72,14 +76,15 @@ for index, row in data.iterrows():
 
     # make a key/value pair for each item
     cols = list(row)
-    for field in cols:
-        fieldName = str(field)
+    ## TODO break this into a function
+    for field in cols: ## cannot access the index
+        fieldName = str(list(row)[index])
         fieldValue = str(row[fieldName])
         # fieldValueReplaced = str.replace('$', fieldValue)
         print(fieldName)
         if fieldName != fieldName:
             # questionItem.set(fieldName, fieldValue)
-            print("test")
+            print(fieldName, fieldValue)
 
     # Make student records for evaluation section
 tree = ET.ElementTree(root)
