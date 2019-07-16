@@ -8,8 +8,8 @@ import xml.etree.cElementTree as ET
 # End imports
 myFile = "data_in/BostonZipgradeCsv.csv"
 data = pd.read_csv(myFile)
-data.head
-list(data) # show column names
+# data.head
+# list(data) # show column names
 
 str1 = "mystring"
 

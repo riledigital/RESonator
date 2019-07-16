@@ -31,5 +31,27 @@ lms_fl_subset = lms_fl.filter(
         ## note that there are trailing whitespace
     ]
 )
+# Export a CSV of filtered LMS
+lms_fl_subset.to_csv(
+    'data_out/lms_fl_subsetted.csv'
+)
 
-# Clean up LMS
+
+# build registration
+# df: dataframe from LMS representing a student
+def buildRegistrationXML(df):
+    # TODO apply a function across all rows
+    df.apply(
+        lambda row: # this lambda function is used to build 1 single XML node...
+        print(
+            row['First Name'], row['Last Name']
+        ),
+        axis=1)
+    # for row in df.iteruples(index=)
+    # currentRow =  #get current row and pass into a function?
+    # functions in python don't have to return
+
+
+buildRegistrationXML(lms_fl_subset.head(1))
+
+exit()
