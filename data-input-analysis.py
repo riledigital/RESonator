@@ -2,12 +2,9 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 
 lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
-eval_path = "data_original/quiz-Eval-full (1).csv"
 
 lms_data = pd.read_csv(lms_path)
-eval_data = pd.read_csv(eval_path)
 list(lms_data)
-var = eval_data.describe
 
 # filter only Florida data
 selector = 'Florida: MGT 462 '
@@ -41,6 +38,7 @@ lms_fl_subset.to_csv(
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node
 
+
 # row_to_xml
 # row: Series representing user data
 # this helper function creates a new XML node
@@ -58,22 +56,62 @@ def row_to_xml(row):
     registration.append(new_student)
     print("Appended record: " + str(row['First Name']))
 
+
 # This function outputs nothing
 # build_registration_xml
 # df: data frame representing user data from LMS system
 def build_registration_xml(df):
     df.apply(row_to_xml, axis=1)
 
+
 build_registration_xml(lms_fl_subset)
 tree = ET.ElementTree(registration)
 tree.write('data_out/test.xml')
-exit()
 
+# Next...
+# Import ZipGrade data...
+eval_path = "data_original/quiz-Eval-full (1).csv"
+eval_df = pd.read_csv(eval_path)
+current = eval_df.head(5)
 
-# TODO: Cleanup data from Zipgrade
-# TODO: Subset only needed questions
-# TODO: Rename question fields to "idX" where X is number of question
+# DONE: Subset only needed questions
+# Get questions
+# StuX
+## eval_df_working = eval_df['StudentID']  # This can subset columns by labels if you know the names
+df_identifiers = eval_df.filter(  # Filter only the columns we want
+    axis='columns',
+    items=['StudentID'],
+)
+df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
+    axis='columns',
+    regex='Stu[0-9]+')
+
+df_cleaned = df_identifiers.join(  # join one to another
+    df_only_questions
+)
+
+df_ready = df_cleaned.assign(  # Create empty fields for written questions...
+    id24='',
+    id25='',
+    id26='',
+    id27=''
+)
+
+#  TODO: Create duplicate columns where question number can be identified?...
+#  ex: question_index : int where 0-27
+
+#  Rename column names to replace Stu with id
+df_rename = df_ready
+#  https://www.quora.com/How-can-I-replace-characters-in-a-multiple-column-name-in-pandas
+df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
+
+# Pretest Avg,Posttest Avg,Course Name ,StudentID,QuizCreated,DataExported,id1,id2,id3,id4,id5,id6,id7,id8,id9,id10,id11,id12,id13,id14,id15,id16,id17,id18,id19,id20,id21,id22,id23,id24,id25,id26,id27
+
+# TODO: ???? Rename question fields to "idX" where X is number of question??...
+
 # TODO: Write helper function that takes in a row and creates an individual node
 # TODO: Write function that takes in df, outputs an XML Element Tree
 # TODO: figure out how to fetch ID name for question
 # TODO: Figure out how to fetch ID value  for question
+
+# exit()
