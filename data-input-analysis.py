@@ -32,18 +32,20 @@ lms_fl_subset = lms_fl.filter(
         ## note that there are trailing whitespace
     ]
 )
+
 # Export a CSV of filtered LMS
 lms_fl_subset.to_csv(
     'data_out/lms_fl_subsetted.csv'
 )
 
+# Build the node for registration which will be appended later...
+registration = ET.Element('registration')  # initialize XML node
 
-# build registration
-# df: dataframe from LMS representing a student
-roster = ET.Element('registration')  # initialize XML node
-
-
-# this helper function creates 1 row.
+# row_to_xml
+# row: Series representing user data
+# this helper function creates a new XML node
+# for students, using the selected fields.
+# returns: returns null.
 def row_to_xml(row):
     new_student = ET.Element('student')
     new_student.set('international', row['International Status '])
@@ -53,15 +55,25 @@ def row_to_xml(row):
     new_student.set('studentzipcode', row['Postal Code'])
     new_student.set('studentphone', row['Primary Phone'])
     new_student.set('discipline', row['Discipline '])
-    roster.append(new_student)
+    registration.append(new_student)
     print("Appended record: " + str(row['First Name']))
 
-
+# This function outputs nothing
+# build_registration_xml
+# df: data frame representing user data from LMS system
 def build_registration_xml(df):
     df.apply(row_to_xml, axis=1)
 
-
 build_registration_xml(lms_fl_subset)
-tree = ET.ElementTree(roster)
+tree = ET.ElementTree(registration)
 tree.write('data_out/test.xml')
 exit()
+
+
+# TODO: Cleanup data from Zipgrade
+# TODO: Subset only needed questions
+# TODO: Rename question fields to "idX" where X is number of question
+# TODO: Write helper function that takes in a row and creates an individual node
+# TODO: Write function that takes in df, outputs an XML Element Tree
+# TODO: figure out how to fetch ID name for question
+# TODO: Figure out how to fetch ID value  for question
