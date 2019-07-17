@@ -27,6 +27,6 @@ This Python script reads in a data file and outputs it to a XML file
 # Scratch
 [Apply pandas functions](https://realpython.com/fast-flexible-pandas/#pandas-apply)
 
-
 https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9
+
 https://stackoverflow.com/questions/18574108/how-do-convert-a-pandas-dataframe-to-xml

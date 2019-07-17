@@ -73,87 +73,74 @@ tree.write('data_out/test.xml')
 eval_path = "data_original/quiz-Eval-full (1).csv"
 eval_df = pd.read_csv(eval_path)
 current = eval_df.head(5)
+evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
 
-# DONE: Subset only needed questions
-# Get questions
-# StuX
-## eval_df_working = eval_df['StudentID']  # This can subset columns by labels if you know the names
 df_identifiers = eval_df.filter(  # Filter only the columns we want
     axis='columns',
-    items=['StudentID'],
-)
+    items=['StudentID'])
 df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     axis='columns',
     regex='Stu[0-9]+')
 
-df_cleaned = df_identifiers.join(  # join one to another
-    df_only_questions
-)
-
+df_cleaned = df_identifiers.join(df_only_questions)  # Join the filtered df's
 df_ready = df_cleaned.assign(  # Create empty fields for written questions...
     id24='',
     id25='',
     id26='',
-    id27=''
-)
+    id27='')
 
 #  TODO: Create duplicate columns where question number can be identified?...
-#  ex: question_index : int where 0-27
 
 #  Rename column names to replace Stu with id
 df_rename = df_ready
-#  https://www.quora.com/How-can-I-replace-characters-in-a-multiple-column-name-in-pandas
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
 
-# Pretest Avg,Posttest Avg,Course Name ,StudentID,QuizCreated,DataExported,id1,id2,id3,id4,id5,id6,id7,id8,id9,id10,id11,id12,id13,id14,id15,id16,id17,id18,id19,id20,id21,id22,id23,id24,id25,id26,id27
-
-# TODO: ???? Rename question fields to "idX" where X is number of question??...
 # TODO: Write helper function that takes in a row and creates an individual node
 # TODO: Write function that takes in df, outputs an XML Element Tree
 
+
 # make_eval_tree -> Element
+# takes in a df with rows corresponding to students.
+# each column is a single question. this func returns
+# a tree containing a complete XML tree where
+# <evaldata> corresponds to a student and nests <question> nodes
 # df: DataFrame representing evaluations
 def make_eval_tree(df):
+    eval_out = ET.Element('evaldata')
+    # make_key_value -> Element
+    # USED IN make_tree_from_question
+    # this helper function returns an XML element <question>
+    # with corresponding id=value attributes
+    # ser: A Series representing a column
+    def make_key_value(key, val):
+        xml_tag_out = ET.Element('question')
+        q_name = ser.name  # TODO: get question name from a Series (?)
+        q_value = ser.item  # TODO: question response value?...
+        xml_tag_out.set(q_name, q_value)
+        eval_out.append(xml_tag_out)  ## append it to the global eval_out
+        return xml_tag_out
+        # return {'key': 'value'}  # perhaps return a dict or array?...
+
+    # make_tree_from_question
+    # q: a Series representing a single question
+    def make_tree_from_question(qs):
+        out = ET.Element('question')
+        # TODO: For every field in qs, make an XML tag with corresponding attribs...
+        # for i, v in s.iteritems():
+        #     print('index: ', i, 'value: ', v)
+        # qs.apply(make_key_value)  # Series
+        out.append(out)
+        return out  ## technically it shouldn't matter what is returned?
+
     df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
-    return evaldata
-
-
-# TODO: move this variable declaration elsewhere...
-evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
-
-
-# make_key_value
-# series: A Series representing a column
-# TODO: Helper function for creating a k-v pair ?
-def make_key_value(series):
-    # TODO: set attribs for each column in current question
-    q_name = series.name  # TODO: get question name
-    q_value = series.item  # TODO: question response value?...
-    out.set(q_name, q_value)
-    return {'key': 'value'}  # perhaps return a dict or array?...
-
-
-# make_tree_from_question
-# question: a Series representing a question...
-def make_tree_from_question(question):
-    out = ET.Element('question')
-    question.apply(
-        # TODO: write getter function
-        make_key_value,
-        axis=0  # only refer to columns
-    )
-    evaldata.append(out)
-
-
-return evaldata  ## technically it shouldn't matter...
+    return eval_out
 
 test_tree = make_eval_tree(df_rename)  # this test code uses the renamed eval data
-
 test_tree_two = ET.ElementTree(test_tree)
 test_tree_two.write('data_out/test-tree.xml')
 
 # TODO: figure out how to fetch ID name for question
-# TODO: Figure out how to fetch ID value  for question
+# TODO: Figure out how to fetch ID value for question
 
 # exit()

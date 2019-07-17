@@ -13,7 +13,7 @@ data = pd.read_csv(myFile)
 
 str1 = "mystring"
 
-## First...
+# First...
 # We generate the general structure of the XML fi
 root = ET.Element("Manifest")
 doc = ET.SubElement(root, "submission")
@@ -58,8 +58,8 @@ tagEvaluations = ET.SubElement(structureClass, "evaluations")
 
 # Make student records for registration section
 
-## for each entry, run the following to sub in values
-## and map data to an attribute
+# for each entry, run the following to sub in values
+# and map data to an attribute
 # https://cmdlinetips.com/2018/12/how-to-loop-through-pandas-rows-or-how-to-iterate-over-pandas-rows/
 
 ## TODO break this into a function
@@ -75,7 +75,7 @@ for index, row in data.iterrows():
 
     # make a key/value pair for each item
     cols = list(row)
-    ## TODO break this into a function
+    # TODO break this into a function
     for field in cols:  ## cannot access the index
         fieldName = str(list(row)[index])
         fieldValue = str(row[fieldName])
@@ -84,7 +84,6 @@ for index, row in data.iterrows():
         if fieldName != fieldName:
             # questionItem.set(fieldName, fieldValue)
             print(fieldName, fieldValue)
-
     # Make student records for evaluation section
 tree = ET.ElementTree(root)
 tree.write("data_out/dataout.xml", encoding="utf-8", xml_declaration=True)
