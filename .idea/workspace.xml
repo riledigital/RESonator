@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b56beb57-af0a-4ba6-8f5b-347aec56c98a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data-input-analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/data-input-analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-to-fema-xml.py" beforeDir="false" afterPath="$PROJECT_DIR$/data-to-fema-xml.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,10 +34,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
+        <entry file="file://$PROJECT_DIR$/data-to-fema-xml.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="192" column="24" lean-forward="true" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
+            <state relative-caret-position="278">
+              <caret line="129" column="33" lean-forward="true" selection-start-line="129" selection-start-column="33" selection-end-line="129" selection-end-column="33" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -46,19 +46,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_original/2019-07-16-11-01-11_u0apmv5n7p.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="17" column="385" selection-start-line="17" selection-start-column="385" selection-end-line="17" selection-end-column="402" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11064">
-              <caret line="461" column="52" selection-start-line="461" selection-end-line="462" />
+            <state relative-caret-position="271">
+              <caret line="88" column="45" selection-start-line="88" selection-end-line="89" />
             </state>
           </provider>
         </entry>
@@ -66,7 +57,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1728">
+            <state relative-caret-position="118">
               <caret line="75" column="41" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
             </state>
           </provider>
@@ -103,6 +94,7 @@
       <find>write</find>
       <find>class</find>
       <find>trai</find>
+      <find>main</find>
       <find>CSV</find>
     </findStrings>
   </component>
@@ -134,14 +126,15 @@
         <option value="$PROJECT_DIR$/data_out/finalxml.xml" />
         <option value="$PROJECT_DIR$/data_out/NCDP-MGT-ETC07-17-20193.xml" />
         <option value="$PROJECT_DIR$/data-input-analysis.py" />
+        <option value="$PROJECT_DIR$/gui-demo.py" />
+        <option value="$PROJECT_DIR$/data-to-fema-xml.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="375" />
-    <option name="y" value="-1050" />
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -222,7 +215,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.data-input-analysis (1)">
+  <component name="RunManager" selected="Python.gui-demo">
     <configuration name="Python3-Conda" type="PythonConfigurationType" factoryName="Python">
       <module name="PythonProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -241,25 +234,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="true" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="data-input-analysis (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="PythonProject" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data-input-analysis.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
       <method v="2" />
@@ -286,16 +260,33 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="gui-demo" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PythonProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/miniconda3/envs/geospatial/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="gui-demo" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="true" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.data-input-analysis" />
       <item itemvalue="Python.Python3-Conda" />
-      <item itemvalue="Python.data-input-analysis (1)" />
+      <item itemvalue="Python.gui-demo" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.data-input-analysis (1)" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -316,7 +307,7 @@
       <workItem from="1563305436547" duration="5766000" />
       <workItem from="1563373996007" duration="3654000" />
       <workItem from="1563378773738" duration="10524000" />
-      <workItem from="1563395256203" duration="333000" />
+      <workItem from="1563395256203" duration="2408000" />
     </task>
     <task id="LOCAL-00001" summary="added regex library, attempted to re-address indexing issue">
       <created>1563284216186</created>
@@ -451,11 +442,25 @@
       <option name="project" value="LOCAL" />
       <updated>1563395162203</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="successfully formatted output file">
+      <created>1563395653345</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1563395653345</updated>
+    </task>
+    <task id="LOCAL-00021" summary="renamed file from demo stuff">
+      <created>1563396352163</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1563396352163</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38938000" />
+    <option name="totallyTimeSpent" value="41013000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -467,15 +472,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="375" y="-1027" width="1680" height="1027" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13614164" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.1595136" />
       <window_info id="Structure" order="1" sideWeight="0.5133779" side_tool="true" weight="0.13492064" />
       <window_info id="Favorites" order="2" sideWeight="0.51246107" side_tool="true" weight="0.1996337" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.3080214" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.366879" />
       <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" weight="0.32834226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -485,7 +490,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3272727" />
-      <window_info anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3604278" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3604278" />
       <window_info anchor="bottom" x="503" y="49" width="937" height="849" id="SciView" order="13" sideWeight="0.49920255" weight="0.37860963" />
       <window_info anchor="right" x="8" y="45" width="827" height="327" id="Documentation" order="0" sideWeight="0.50079745" side_tool="true" weight="0.36202687" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
@@ -603,7 +608,9 @@
     <MESSAGE value="scaffolded out bare version of entire xml tree" />
     <MESSAGE value="added formatting for output file" />
     <MESSAGE value="f" />
-    <option name="LAST_COMMIT_MESSAGE" value="f" />
+    <MESSAGE value="successfully formatted output file" />
+    <MESSAGE value="renamed file from demo stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed file from demo stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -618,6 +625,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis.coverage" NAME="data-input-analysis Coverage Results" MODIFIED="1563304516964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject$gui_demo.coverage" NAME="gui-demo Coverage Results" MODIFIED="1563395872096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/PythonProject$Python3_Conda.coverage" NAME="Python3-Conda Coverage Results" MODIFIED="1563289803284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis__1_.coverage" NAME="data-input-analysis (1) Coverage Results" MODIFIED="1563395086779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
@@ -768,6 +776,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml" />
     <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml" />
+    <entry file="file://$PROJECT_DIR$/data_out/NCDP-MGT-ETC07-17-20193.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui-demo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data_original/2019-07-16-11-01-11_u0apmv5n7p.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -777,29 +799,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11064">
-          <caret line="461" column="52" selection-start-line="461" selection-end-line="462" />
+        <state relative-caret-position="271">
+          <caret line="88" column="45" selection-start-line="88" selection-end-line="89" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1728">
+        <state relative-caret-position="118">
           <caret line="75" column="41" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_out/NCDP-MGT-ETC07-17-20193.xml">
+    <entry file="file://$PROJECT_DIR$/data-to-fema-xml.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="192" column="24" lean-forward="true" selection-start-line="192" selection-start-column="24" selection-end-line="192" selection-end-column="24" />
+        <state relative-caret-position="278">
+          <caret line="129" column="33" lean-forward="true" selection-start-line="129" selection-start-column="33" selection-end-line="129" selection-end-column="33" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

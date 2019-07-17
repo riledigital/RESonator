@@ -4,7 +4,6 @@ import re
 import datetime
 
 dir_out = 'data_out'
-
 lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
 lms_data = pd.read_csv(lms_path)
 list(lms_data)
@@ -96,7 +95,6 @@ df_ready = df_cleaned.assign(  # Create empty fields for written questions...
 df_rename = df_ready
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
-
 # make_eval_tree -> Element
 # takes in a df with rows corresponding to students.
 # each column is a single question. this func returns
@@ -106,9 +104,9 @@ df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 def make_eval_tree(df):
     all_evals = ET.Element('evaluations')
 
-    # make_tree_from_question
+    # make_tree_from_question -> Element
     # q: a Series representing a single question
-    def make_tree_from_question(qs):
+    def make_element_from_question(qs):
         generated_eval = ET.Element('evaldata')
         for i, v in qs.iteritems():
             xml_tag_out = ET.Element('question')
@@ -121,9 +119,9 @@ def make_eval_tree(df):
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
             # print('index: ', i, 'value: ', v)
         all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
-        return 'ok'  ## technically it shouldn't matter what is returned?
+        return 'ok'  ## technically it shouldn't matter what is returned since we just just apply to iterate over
 
-    df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
+    df.apply(make_element_from_question, axis=1)  # Apply function to all rows
     print('done building evals')
     return all_evals
 
