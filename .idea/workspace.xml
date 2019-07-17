@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b56beb57-af0a-4ba6-8f5b-347aec56c98a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/riledigital.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data-input-analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/data-input-analysis.py" afterDir="false" />
     </list>
@@ -45,8 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="142" column="20" lean-forward="true" selection-start-line="142" selection-start-column="20" selection-end-line="142" selection-end-column="20" />
+            <state relative-caret-position="231">
+              <caret line="168" column="29" selection-start-line="168" selection-start-column="29" selection-end-line="168" selection-end-column="29" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -55,10 +56,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_out/test-tree2.xml">
+        <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4579">
-              <caret line="661" column="14" selection-start-line="661" selection-start-column="14" selection-end-line="661" selection-end-column="14" />
+            <state relative-caret-position="72">
+              <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -66,29 +67,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="463" column="30" lean-forward="true" selection-start-line="463" selection-start-column="30" selection-end-line="463" selection-end-column="30" />
+            <state relative-caret-position="11304">
+              <caret line="471" column="54" lean-forward="true" selection-start-line="471" selection-start-column="54" selection-end-line="471" selection-end-column="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
+        <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="250" selection-start-line="250" selection-end-line="250" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="624">
-                <caret line="26" selection-start-line="26" selection-end-line="26" />
-              </first_editor>
-              <second_editor />
+            <state relative-caret-position="69">
+              <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -119,6 +108,11 @@
       <find>root.append</find>
       <find>regex</find>
       <find>rename</find>
+      <find>isnan</find>
+      <find>training</find>
+      <find>write</find>
+      <find>class</find>
+      <find>trai</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,6 +138,9 @@
         <option value="$PROJECT_DIR$/CSV-Conversion.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/data_out/test-tree2.xml" />
+        <option value="$PROJECT_DIR$/data_out/evals-only.xml" />
+        <option value="$PROJECT_DIR$/data_out/current.xml" />
+        <option value="$PROJECT_DIR$/data_out/finalxml.xml" />
         <option value="$PROJECT_DIR$/data-input-analysis.py" />
       </list>
     </option>
@@ -326,7 +323,7 @@
       <workItem from="1563287944261" duration="12368000" />
       <workItem from="1563305436547" duration="5766000" />
       <workItem from="1563373996007" duration="3654000" />
-      <workItem from="1563378773738" duration="5430000" />
+      <workItem from="1563378773738" duration="9325000" />
     </task>
     <task id="LOCAL-00001" summary="added regex library, attempted to re-address indexing issue">
       <created>1563284216186</created>
@@ -433,11 +430,18 @@
       <option name="project" value="LOCAL" />
       <updated>1563382656166</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fixed some of the formatting associated with question responses">
+      <created>1563387131959</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1563387131960</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33511000" />
+    <option name="totallyTimeSpent" value="37406000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -452,13 +456,13 @@
     <frame x="375" y="-1027" width="1680" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13492064" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13492064" />
       <window_info id="Structure" order="1" sideWeight="0.5133779" side_tool="true" visible="true" weight="0.13492064" />
       <window_info id="Favorites" order="2" sideWeight="0.51246107" side_tool="true" weight="0.1996337" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.3080214" />
-      <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" visible="true" weight="0.32834226" />
+      <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" weight="0.32834226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32941177" />
@@ -581,7 +585,8 @@
     <MESSAGE value="allowed function to export an xml but need to check nesting of tags" />
     <MESSAGE value="successfully created most of question tags" />
     <MESSAGE value="performing reformat on output question tags" />
-    <option name="LAST_COMMIT_MESSAGE" value="performing reformat on output question tags" />
+    <MESSAGE value="fixed some of the formatting associated with question responses" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed some of the formatting associated with question responses" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -697,13 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="81" column="59" selection-start-line="81" selection-start-column="59" selection-end-line="81" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -735,13 +733,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="250" selection-start-line="250" selection-end-line="250" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -756,24 +747,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
+    <entry file="file://$PROJECT_DIR$/data_out/test-tree2.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="463" column="30" lean-forward="true" selection-start-line="463" selection-start-column="30" selection-end-line="463" selection-end-column="30" />
+        <state>
+          <caret column="19476" selection-start-column="19476" selection-end-column="19476" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_out/test-tree2.xml">
+    <entry file="file://$PROJECT_DIR$/data_out/current.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4579">
-          <caret line="661" column="14" selection-start-line="661" selection-start-column="14" selection-end-line="661" selection-end-column="14" />
+        <state>
+          <caret column="32890" selection-start-column="32890" selection-end-column="32890" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_out/evals-only.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="36" lean-forward="true" selection-start-column="36" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="250" selection-start-line="250" selection-end-line="250" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11304">
+          <caret line="471" column="54" lean-forward="true" selection-start-line="471" selection-start-column="54" selection-end-line="471" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="142" column="20" lean-forward="true" selection-start-line="142" selection-start-column="20" selection-end-line="142" selection-end-column="20" />
+        <state relative-caret-position="231">
+          <caret line="168" column="29" selection-start-line="168" selection-start-column="29" selection-end-line="168" selection-end-column="29" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

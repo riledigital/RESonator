@@ -1,9 +1,11 @@
 import pandas as pd
 import xml.etree.ElementTree as ET
 import re
+import numpy
+
+dir_out = 'data_out'
 
 lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
-
 lms_data = pd.read_csv(lms_path)
 list(lms_data)
 
@@ -66,8 +68,8 @@ def build_registration_xml(df):
 
 
 build_registration_xml(lms_fl_subset)
-tree = ET.ElementTree(registration)
-tree.write('data_out/test.xml')
+registration_tree = ET.ElementTree(registration)
+registration_tree.write('data_out/test.xml')
 
 # Next...
 # Import ZipGrade data...
@@ -106,31 +108,16 @@ df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 def make_eval_tree(df):
     all_evals = ET.Element('evaluations')
 
-    # make_key_value -> Element
-    # USED IN make_tree_from_question
-    # this helper function returns an XML element <question>
-    # with corresponding id=value attributes
-    # ser: A Series representing a column
-    # def make_key_value(key, val):
-    #     xml_tag_out = ET.Element('question')
-    #     q_name = ser.name  # TODO: get question name from a Series (?)
-    #     q_value = ser.item  # TODO: question response value?...
-    #     xml_tag_out.set(q_name, q_value)
-    #     eval_out.append(xml_tag_out)  ## append it to the global eval_out
-    #     return xml_tag_out
-    # return {'key': 'value'}  # perhaps return a dict or array?...
-
     # make_tree_from_question
     # q: a Series representing a single question
     def make_tree_from_question(qs):
         generated_eval = ET.Element('evaldata')
-        for i, v in qs.iteritems():  # TODO: For every field in qs, make an XML tag with corresponding attribs...
+        for i, v in qs.iteritems():
             xml_tag_out = ET.Element('question')
             # formatting
             # <question id="15" answer="5"/>
             id = re.sub(r'id', '', i)
             val = str(v)
-            print(val)
             xml_tag_out.set('id', str(id))
             xml_tag_out.set('answer', val)  # important: must cast to strings before setting attributes...
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
@@ -143,14 +130,57 @@ def make_eval_tree(df):
     return all_evals
 
 
-root = make_eval_tree(df_rename)
-out_xml = ET.ElementTree(root)
-out_xml.write('data_out/test-tree2.xml')
+eval_root = make_eval_tree(df_rename)
+evaluations_xml = ET.ElementTree(eval_root)
+evaluations_xml.write('data_out/evals-only.xml')
 
-# exit()
 
-## Make final elements
-# export_root = ET.Element('submission')
-# export_root.append(ET.Element('trainingprovider'))
-# export_root= ET.Element('class')
-# ultra_tree = ET.ElementTree()
+# Make other nodes to finish the xml output file
+def make_comment():
+    el = ET.Element('comment')
+    el.set('id', 'placeholder')
+    el.set('answer', 'placeholder')
+    return el
+
+
+element_instructorpoc = ET.Element(
+    'instructorpoc',
+    attrib={'instlastname': 'PLACEHOLDER',
+            'instfirstname': 'PLACEHOLDER',
+            'instphone': 'PLACEHOLDER'})
+
+el_class = ET.Element('class',
+                      attrib={
+                          'catalognum': 'PLACEHOLDER',
+                          'classtype': '',
+                          'classcity': '',
+                          'classzipcode': '',
+                          'classcountry': '',
+                          'startdate': '',
+                          'enddate': '',
+                          'starttime': '',
+                          'endtime': '',
+                          'numstudent': '',
+                          'trainingmethod': '',
+                          'contacthours': '',
+                          'numstudent': ''
+                      })
+el_class.append(element_instructorpoc)
+el_class.append(registration)
+el_class.append(eval_root)
+
+el_testaverage = ET.Element(
+    'testaverage',
+    attrib={'pretest': 'PLACEHOLDER',
+            'posttest': 'PLACEHOLDER'})
+
+el_trainingprovider = ET.Element('trainingprovider')
+el_trainingprovider.append(el_class)
+el_trainingprovider.append(el_testaverage)
+
+el_submission = ET.Element('submission')
+el_submission.append(el_trainingprovider)
+
+export_tree_final = ET.ElementTree(el_submission)
+export_tree_final.write('data_out/finalxml.xml',
+                        encoding="utf-8", xml_declaration=True)
