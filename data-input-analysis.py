@@ -34,9 +34,7 @@ lms_fl_subset = lms_fl.filter(
 )
 
 # Export a CSV of filtered LMS
-lms_fl_subset.to_csv(
-    'data_out/lms_fl_subsetted.csv'
-)
+# lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
 
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node
@@ -192,13 +190,12 @@ el_submission.append(el_trainingprovider)
 def output_filename_scheme():
     # format for the xml file name is
     # TP_CourseNumber_Date_SequenceNumber.xml
-    str_coursenum = 'MGT-ETC'
+    str_coursenum = 'MGTETC'
     date_today = datetime.datetime.today()
-    str_datetime = date_today.strftime('%m-%d-%Y')
-    return 'NCDP-' + str_coursenum + str_datetime + '3'
+    str_datetime = date_today.strftime('%m%d%Y')
+    return 'NCDP-' + str_coursenum + '-' + str_datetime + '-' + '1'
 
 
 export_tree_final = ET.ElementTree(el_submission)
 export_tree_final.write('data_out/' + output_filename_scheme() + '.xml',
                         encoding="utf-8", xml_declaration=True)
-exit()
