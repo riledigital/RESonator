@@ -95,7 +95,6 @@ df_ready = df_cleaned.assign(  # Create empty fields for written questions...
 df_rename = df_ready
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
-
 # TODO: Write helper function that takes in a row and creates an individual node
 # TODO: Write function that takes in df, outputs an XML Element Tree
 
@@ -104,41 +103,44 @@ df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 # takes in a df with rows corresponding to students.
 # each column is a single question. this func returns
 # a tree containing a complete XML tree where
-# <evaldata> corresponds to a student and nests <question> nodes
+# each <evaldata> corresponds to a student and nests <question> nodes
 # df: DataFrame representing evaluations
 def make_eval_tree(df):
-    eval_out = ET.Element('evaldata')
     # make_key_value -> Element
     # USED IN make_tree_from_question
     # this helper function returns an XML element <question>
     # with corresponding id=value attributes
     # ser: A Series representing a column
-    def make_key_value(key, val):
-        xml_tag_out = ET.Element('question')
-        q_name = ser.name  # TODO: get question name from a Series (?)
-        q_value = ser.item  # TODO: question response value?...
-        xml_tag_out.set(q_name, q_value)
-        eval_out.append(xml_tag_out)  ## append it to the global eval_out
-        return xml_tag_out
-        # return {'key': 'value'}  # perhaps return a dict or array?...
+    # def make_key_value(key, val):
+    #     xml_tag_out = ET.Element('question')
+    #     q_name = ser.name  # TODO: get question name from a Series (?)
+    #     q_value = ser.item  # TODO: question response value?...
+    #     xml_tag_out.set(q_name, q_value)
+    #     eval_out.append(xml_tag_out)  ## append it to the global eval_out
+    #     return xml_tag_out
+    # return {'key': 'value'}  # perhaps return a dict or array?...
 
     # make_tree_from_question
     # q: a Series representing a single question
     def make_tree_from_question(qs):
-        out = ET.Element('question')
         # TODO: For every field in qs, make an XML tag with corresponding attribs...
-        # for i, v in s.iteritems():
-        #     print('index: ', i, 'value: ', v)
-        # qs.apply(make_key_value)  # Series
-        out.append(out)
-        return out  ## technically it shouldn't matter what is returned?
+        for i, v in qs.iteritems():
+            xml_tag_out = ET.Element('question')
+            xml_tag_out.set(str(i), str(v))  #important: must cast to strings before setting attributes...
+            eval_out.append(xml_tag_out)  ## append it to the global eval_out
+            #print('index: ', i, 'value: ', v)
+        return eval_out  ## technically it shouldn't matter what is returned?
 
+    eval_out = ET.Element('evaldata')
     df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
+    root.append(eval_out)  # don't forget to append the new evaldata to every thing
     return eval_out
 
-test_tree = make_eval_tree(df_rename)  # this test code uses the renamed eval data
-test_tree_two = ET.ElementTree(test_tree)
-test_tree_two.write('data_out/test-tree.xml')
+
+root = ET.Element('evaluations')
+root.append(make_eval_tree(df_rename))
+out_xml = ET.ElementTree(root)
+out_xml.write('data_out/test-tree2.xml')
 
 # TODO: figure out how to fetch ID name for question
 # TODO: Figure out how to fetch ID value for question
