@@ -1,5 +1,6 @@
 import pandas as pd
 import xml.etree.ElementTree as ET
+import re
 
 lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
 
@@ -126,17 +127,19 @@ def make_eval_tree(df):
         for i, v in qs.iteritems():  # TODO: For every field in qs, make an XML tag with corresponding attribs...
             xml_tag_out = ET.Element('question')
             # formatting
-            #                         <question id="15" answer="5" />
-            xml_tag_out.set('id', str(i))  # TODO: Regex the "id" part out
-            ## https://docs.python.org/3/library/re.html
-            xml_tag_out.set('answer', str(v))  # important: must cast to strings before setting attributes...
+            # <question id="15" answer="5"/>
+            id = re.sub(r'id', '', i)
+            val = str(v)
+            print(val)
+            xml_tag_out.set('id', str(id))
+            xml_tag_out.set('answer', val)  # important: must cast to strings before setting attributes...
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
             # print('index: ', i, 'value: ', v)
         all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
         return 'ok'  ## technically it shouldn't matter what is returned?
 
     df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
-    print('done')
+    print('done building evals')
     return all_evals
 
 
