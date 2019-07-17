@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b56beb57-af0a-4ba6-8f5b-347aec56c98a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/riledigital.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data-input-analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/data-input-analysis.py" afterDir="false" />
     </list>
@@ -33,21 +32,12 @@
     <favorites_list name="PythonProject" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="19" selection-start-column="19" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="168" column="29" selection-start-line="168" selection-start-column="29" selection-end-line="168" selection-end-column="29" />
+            <state relative-caret-position="279">
+              <caret line="200" column="32" lean-forward="true" selection-start-line="200" selection-start-column="32" selection-end-line="200" selection-end-column="32" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -56,10 +46,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml">
+        <entry file="file://$PROJECT_DIR$/data_original/2019-07-16-11-01-11_u0apmv5n7p.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+            <state relative-caret-position="24">
+              <caret line="17" column="385" lean-forward="true" selection-start-line="17" selection-start-column="385" selection-end-line="17" selection-end-column="402" />
             </state>
           </provider>
         </entry>
@@ -67,8 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11304">
-              <caret line="471" column="54" lean-forward="true" selection-start-line="471" selection-start-column="54" selection-end-line="471" selection-end-column="54" />
+            <state relative-caret-position="-5186">
+              <caret line="461" column="52" selection-start-line="461" selection-end-line="462" />
             </state>
           </provider>
         </entry>
@@ -76,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
+            <state relative-caret-position="427">
+              <caret line="75" column="41" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -145,11 +135,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="375" />
-    <option name="y" value="-1027" />
+    <option name="y" value="-1050" />
     <option name="width" value="1680" />
-    <option name="height" value="1027" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -323,7 +313,7 @@
       <workItem from="1563287944261" duration="12368000" />
       <workItem from="1563305436547" duration="5766000" />
       <workItem from="1563373996007" duration="3654000" />
-      <workItem from="1563378773738" duration="9325000" />
+      <workItem from="1563378773738" duration="10421000" />
     </task>
     <task id="LOCAL-00001" summary="added regex library, attempted to re-address indexing issue">
       <created>1563284216186</created>
@@ -437,11 +427,18 @@
       <option name="project" value="LOCAL" />
       <updated>1563387131960</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="scaffolded out bare version of entire xml tree">
+      <created>1563394058423</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1563394058423</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37406000" />
+    <option name="totallyTimeSpent" value="38502000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -453,16 +450,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="375" y="-1027" width="1680" height="1027" extended-state="0" />
+    <frame x="375" y="-1027" width="1680" height="1027" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13492064" />
-      <window_info id="Structure" order="1" sideWeight="0.5133779" side_tool="true" visible="true" weight="0.13492064" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13492064" />
+      <window_info id="Structure" order="1" sideWeight="0.5133779" side_tool="true" weight="0.13492064" />
       <window_info id="Favorites" order="2" sideWeight="0.51246107" side_tool="true" weight="0.1996337" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.3080214" />
-      <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" weight="0.32834226" />
+      <window_info active="true" anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" visible="true" weight="0.32834226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32941177" />
@@ -480,13 +477,13 @@
       <window_info anchor="right" id="Database" order="4" weight="0.32967034" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48753893" visible="true" weight="0.13064714" />
-      <window_info id="Structure" order="1" sideWeight="0.51246107" side_tool="true" weight="0.1996337" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48662207" visible="true" weight="0.13492064" />
+      <window_info id="Structure" order="1" sideWeight="0.5133779" side_tool="true" visible="true" weight="0.13492064" />
       <window_info id="Favorites" order="2" sideWeight="0.51246107" side_tool="true" weight="0.1996337" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" weight="0.3080214" />
-      <window_info anchor="bottom" x="0" y="23" width="1440" height="844" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" visible="true" weight="0.32834226" />
+      <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" weight="0.32834226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32941177" />
@@ -495,9 +492,9 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3272727" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.33582887" />
-      <window_info anchor="bottom" x="503" y="49" width="937" height="849" id="SciView" order="13" show_stripe_button="false" sideWeight="0.49920255" type="FLOATING" weight="0.37860963" />
-      <window_info anchor="right" x="8" y="45" width="827" height="327" id="Documentation" order="0" sideWeight="0.50079745" side_tool="true" visible="true" weight="0.36202687" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3604278" />
+      <window_info anchor="bottom" x="503" y="49" width="937" height="849" id="SciView" order="13" sideWeight="0.49920255" weight="0.37860963" />
+      <window_info anchor="right" x="8" y="45" width="827" height="327" id="Documentation" order="0" sideWeight="0.50079745" side_tool="true" weight="0.36202687" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
@@ -586,7 +583,8 @@
     <MESSAGE value="successfully created most of question tags" />
     <MESSAGE value="performing reformat on output question tags" />
     <MESSAGE value="fixed some of the formatting associated with question responses" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed some of the formatting associated with question responses" />
+    <MESSAGE value="scaffolded out bare version of entire xml tree" />
+    <option name="LAST_COMMIT_MESSAGE" value="scaffolded out bare version of entire xml tree" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -602,7 +600,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis.coverage" NAME="data-input-analysis Coverage Results" MODIFIED="1563304516964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject$Python3_Conda.coverage" NAME="Python3-Conda Coverage Results" MODIFIED="1563289803284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis__1_.coverage" NAME="data-input-analysis (1) Coverage Results" MODIFIED="1563387098954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis__1_.coverage" NAME="data-input-analysis (1) Coverage Results" MODIFIED="1563395086779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../CSV_to_XML-test.ipynb" />
@@ -702,13 +700,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="19" selection-start-column="19" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
@@ -737,13 +728,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="309" selection-start-line="309" selection-end-line="309" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_original/2019-07-16-11-01-11_u0apmv5n7p.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1470">
-          <caret line="17" column="385" lean-forward="true" selection-start-line="17" selection-start-column="385" selection-end-line="17" selection-end-column="402" />
         </state>
       </provider>
     </entry>
@@ -777,29 +761,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CSV-Conversion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="427">
+          <caret line="75" column="41" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ExampleXMLs/CRD_AWR-144_09142018_943953.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11304">
-          <caret line="471" column="54" lean-forward="true" selection-start-line="471" selection-start-column="54" selection-end-line="471" selection-end-column="54" />
+        <state relative-caret-position="-5186">
+          <caret line="461" column="52" selection-start-line="461" selection-end-line="462" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_out/finalxml.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="599">
+          <caret line="498" column="50" lean-forward="true" selection-start-line="498" selection-start-column="50" selection-end-line="498" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_original/2019-07-16-11-01-11_u0apmv5n7p.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="17" column="385" lean-forward="true" selection-start-line="17" selection-start-column="385" selection-end-line="17" selection-end-column="402" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="19" selection-start-column="19" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="168" column="29" selection-start-line="168" selection-start-column="29" selection-end-line="168" selection-end-column="29" />
+        <state relative-caret-position="279">
+          <caret line="200" column="32" lean-forward="true" selection-start-line="200" selection-start-column="32" selection-end-line="200" selection-end-column="32" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

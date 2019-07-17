@@ -1,7 +1,7 @@
 import pandas as pd
 import xml.etree.ElementTree as ET
 import re
-import numpy
+import datetime
 
 dir_out = 'data_out'
 
@@ -174,13 +174,31 @@ el_testaverage = ET.Element(
     attrib={'pretest': 'PLACEHOLDER',
             'posttest': 'PLACEHOLDER'})
 
-el_trainingprovider = ET.Element('trainingprovider')
+el_trainingprovider = ET.Element('trainingprovider',
+                                 attrib={
+                                     'tpid': '',
+                                     'tpphone': '',
+                                     'tpemail': ''
+                                 })
 el_trainingprovider.append(el_class)
 el_trainingprovider.append(el_testaverage)
 
 el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
 
+
+# Set up the file name scheme...
+# output_filename_scheme() -> String
+def output_filename_scheme():
+    # format for the xml file name is
+    # TP_CourseNumber_Date_SequenceNumber.xml
+    str_coursenum = 'MGT-ETC'
+    date_today = datetime.datetime.today()
+    str_datetime = date_today.strftime('%m-%d-%Y')
+    return 'NCDP-' + str_coursenum + str_datetime + '3'
+
+
 export_tree_final = ET.ElementTree(el_submission)
-export_tree_final.write('data_out/finalxml.xml',
+export_tree_final.write('data_out/' + output_filename_scheme() + '.xml',
                         encoding="utf-8", xml_declaration=True)
+exit()
