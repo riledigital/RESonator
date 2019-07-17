@@ -95,6 +95,7 @@ df_ready = df_cleaned.assign(  # Create empty fields for written questions...
 df_rename = df_ready
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
+
 # TODO: Write helper function that takes in a row and creates an individual node
 # TODO: Write function that takes in df, outputs an XML Element Tree
 
@@ -123,17 +124,17 @@ def make_eval_tree(df):
     # make_tree_from_question
     # q: a Series representing a single question
     def make_tree_from_question(qs):
-        # TODO: For every field in qs, make an XML tag with corresponding attribs...
-        for i, v in qs.iteritems():
+        for i, v in qs.iteritems():  # TODO: For every field in qs, make an XML tag with corresponding attribs...
             xml_tag_out = ET.Element('question')
-            xml_tag_out.set(str(i), str(v))  #important: must cast to strings before setting attributes...
+            xml_tag_out.set(str(i), str(v))  # important: must cast to strings before setting attributes...
             eval_out.append(xml_tag_out)  ## append it to the global eval_out
-            #print('index: ', i, 'value: ', v)
+            # print('index: ', i, 'value: ', v)
+        root.append(eval_out)  # don't forget to append the new evaldata to every thing
         return eval_out  ## technically it shouldn't matter what is returned?
 
     eval_out = ET.Element('evaldata')
     df.apply(make_tree_from_question, axis=1)  # Apply function to all rows
-    root.append(eval_out)  # don't forget to append the new evaldata to every thing
+    print('done')
     return eval_out
 
 
@@ -142,7 +143,10 @@ root.append(make_eval_tree(df_rename))
 out_xml = ET.ElementTree(root)
 out_xml.write('data_out/test-tree2.xml')
 
-# TODO: figure out how to fetch ID name for question
-# TODO: Figure out how to fetch ID value for question
-
 # exit()
+
+## Make final elements
+# export_root = ET.Element('submission')
+# export_root.append(ET.Element('trainingprovider'))
+# export_root= ET.Element('class')
+# ultra_tree = ET.ElementTree()

@@ -4,12 +4,8 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b56beb57-af0a-4ba6-8f5b-347aec56c98a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/PythonProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
+    <list default="true" id="b56beb57-af0a-4ba6-8f5b-347aec56c98a" name="Default Changelist" comment="successfully created most of question tags">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSV-Conversion.py" beforeDir="false" afterPath="$PROJECT_DIR$/CSV-Conversion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data-input-analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/data-input-analysis.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,7 +37,7 @@
         <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="12" selection-start-column="12" selection-end-column="12" />
+              <caret column="19" selection-start-column="19" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -49,11 +45,52 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="132" column="8" selection-start-line="132" selection-start-column="8" selection-end-line="132" selection-end-column="8" />
+            <state relative-caret-position="261">
+              <caret line="146" lean-forward="true" selection-start-line="146" selection-end-line="146" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data_out/test-tree2.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-141">
+              <caret line="1" column="11" lean-forward="true" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+              <folding>
+                <element signature="n#evaldata#0;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#1;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#2;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#3;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#4;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#5;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#6;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#7;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#8;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#9;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#10;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#11;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#12;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#13;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#14;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#15;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#16;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#17;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#18;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#19;n#evaluations#0;n#!!top" />
+                <element signature="n#evaldata#20;n#evaluations#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="250" selection-start-line="250" selection-end-line="250" />
             </state>
           </provider>
         </entry>
@@ -92,6 +129,8 @@
       <find>outTree</find>
       <find>apply</find>
       <find>make_Eval_tree</find>
+      <find>ser</find>
+      <find>root.append</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -116,6 +155,7 @@
         <option value="$PROJECT_DIR$/data_out/test-tree.xml" />
         <option value="$PROJECT_DIR$/CSV-Conversion.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/data_out/test-tree2.xml" />
         <option value="$PROJECT_DIR$/data-input-analysis.py" />
       </list>
     </option>
@@ -298,7 +338,7 @@
       <workItem from="1563287944261" duration="12368000" />
       <workItem from="1563305436547" duration="5766000" />
       <workItem from="1563373996007" duration="3654000" />
-      <workItem from="1563378773738" duration="959000" />
+      <workItem from="1563378773738" duration="3182000" />
     </task>
     <task id="LOCAL-00001" summary="added regex library, attempted to re-address indexing issue">
       <created>1563284216186</created>
@@ -377,13 +417,27 @@
       <option name="project" value="LOCAL" />
       <updated>1563312025710</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="moved all functions inside xml function">
+      <created>1563379816550</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1563379816550</updated>
+    </task>
+    <task id="LOCAL-00013" summary="allowed function to export an xml but need to check nesting of tags">
+      <created>1563381411615</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1563381411615</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29040000" />
+    <option name="totallyTimeSpent" value="31263000" />
   </component>
-  <component name="TodoView">
+  <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -405,13 +459,13 @@
       <window_info anchor="bottom" x="0" y="23" width="1440" height="877" id="Debug" order="3" sideWeight="0.498779" type="FLOATING" visible="true" weight="0.32834226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32941177" />
+      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49928468" weight="0.24385026" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.501221" side_tool="true" weight="0.4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3272727" />
-      <window_info anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3604278" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3604278" />
       <window_info anchor="bottom" x="503" y="49" width="937" height="849" id="SciView" order="13" sideWeight="0.49920255" weight="0.37860963" />
       <window_info anchor="right" x="8" y="45" width="827" height="327" id="Documentation" order="0" sideWeight="0.50079745" side_tool="true" weight="0.36202687" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
@@ -521,17 +575,13 @@
     <MESSAGE value="creating function todo's for building the registration information" />
     <MESSAGE value="added empty fields for qualitative stuff" />
     <MESSAGE value="scaffolding functions for generating the evaluation data..." />
-    <option name="LAST_COMMIT_MESSAGE" value="scaffolding functions for generating the evaluation data..." />
+    <MESSAGE value="moved all functions inside xml function" />
+    <MESSAGE value="allowed function to export an xml but need to check nesting of tags" />
+    <MESSAGE value="successfully created most of question tags" />
+    <option name="LAST_COMMIT_MESSAGE" value="successfully created most of question tags" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/data-input-analysis.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -540,16 +590,11 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="ser" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis.coverage" NAME="data-input-analysis Coverage Results" MODIFIED="1563304516964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PythonProject$Python3_Conda.coverage" NAME="Python3-Conda Coverage Results" MODIFIED="1563289803284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis__1_.coverage" NAME="data-input-analysis (1) Coverage Results" MODIFIED="1563379588875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject$data_input_analysis__1_.coverage" NAME="data-input-analysis (1) Coverage Results" MODIFIED="1563381263868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../CSV_to_XML-test.ipynb" />
@@ -670,17 +715,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="311" selection-start-line="311" selection-end-line="311" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data_out/test-tree.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
+          <caret column="19" selection-start-column="19" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -694,13 +732,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="150" selection-start-line="150" selection-end-line="150" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/frame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -708,10 +739,61 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/xml/etree/ElementTree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="1090" column="41" selection-start-line="1090" selection-start-column="41" selection-end-line="1090" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/site-packages/pandas/core/apply.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="250" selection-start-line="250" selection-end-line="250" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/envs/geospatial/lib/python3.7/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_out/test-tree2.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-141">
+          <caret line="1" column="11" lean-forward="true" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+          <folding>
+            <element signature="n#evaldata#0;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#1;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#2;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#3;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#4;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#5;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#6;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#7;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#8;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#9;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#10;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#11;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#12;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#13;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#14;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#15;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#16;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#17;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#18;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#19;n#evaluations#0;n#!!top" />
+            <element signature="n#evaldata#20;n#evaluations#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data-input-analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="132" column="8" selection-start-line="132" selection-start-column="8" selection-end-line="132" selection-end-column="8" />
+        <state relative-caret-position="261">
+          <caret line="146" lean-forward="true" selection-start-line="146" selection-end-line="146" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
