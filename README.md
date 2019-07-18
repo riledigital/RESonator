@@ -2,12 +2,21 @@
 
 RESonator is a tool for preparing course data for input to the FEMA RES system. 
 
-RESOnator takes in three CSV files:
+RESonator takes in three CSV files:
 - Data representing student registration from the LMS system
 - Data representing student evaluations
 - A hand-prepared file representing metadata on the course, instructor, and test averages.
 
 # Developer Information 
+
+## Major issues
+
+### DOCTYPE cannot be inserted through ElementTree
+
+Seems like the DOCTYPE must be inserted by hand after the XML declaration?
+
+` <!DOCTYPE Manifest SYSTEM "submission.dtd"> `
+
 
 Notes: This script uses Python 3.7, [see lang references ](https://docs.python.org/3/)
 This Python script reads in a data file and outputs it to a XML file

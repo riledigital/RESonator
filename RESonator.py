@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import re
 import datetime
 from sys import exit
+import xml.dom as DOM
 
 import tkinter as tk
 from tkinter import filedialog
@@ -18,7 +19,7 @@ dir_in = 'data_in2'
 dir_out = 'data_out'
 lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
 lms_data = pd.read_csv(lms_path)
-lms_data = lms_data.rename(columns=lambda x: x.strip()) # Remove trailing and leading whitespace
+lms_data = lms_data.rename(columns=lambda x: x.strip())  # Remove trailing and leading whitespace
 list(lms_data)
 
 # filter only Florida data
@@ -102,8 +103,6 @@ df_only_likerts = df_only_questions.drop(labels=['Stu24', 'Stu25', 'Stu26', 'Stu
     .astype(int)
 # Join the filtered df's, convert all to integers
 
-# # TODO: Make sure that Stu23+ does NOT get cast into an integer...
-# TODO: Must read in the fields before since they dont actually exist yet.
 df_only_comments = df_only_questions.filter(
     axis='columns',
     regex='Stu[2][4-9]').fillna('')
@@ -191,15 +190,13 @@ def get_meta(field):
 # is_passed_class -> Boolean
 # in: DF/series representing a class
 # check if person passed the class
-# TODO: Check if this function even works
+# TODO: Calculate the number of students who passed
 def is_passed_class(inp):
     if inp.loc['Lesson Success'] == 'passed':
         return True
     else:
         return False
 
-
-# TODO: Count number of ppl who passed class
 
 # Make other nodes to finish the xml output file
 def make_comment():
@@ -248,8 +245,7 @@ el_trainingprovider = ET.Element('trainingprovider',
                                  attrib={
                                      'tpid': get_meta('trainingprovider_tpid'),
                                      'tpphone': get_meta('trainingprovider_tpphone'),
-                                     'tpemail': get_meta('trainingprovider_tpemail')
-                                 })
+                                     'tpemail': get_meta('trainingprovider_tpemail')})
 el_trainingprovider.append(el_class)
 el_trainingprovider.append(el_testaverage)
 
@@ -266,14 +262,25 @@ def export_final_xml():
     def output_filename_scheme():
         # format for the xml file name is
         # TP_CourseNumber_Date_SequenceNumber.xml
-        str_coursenum = 'MGT-464'  ## TODO: Fetch this information from the table instead...
+        str_coursenum = get_meta('class_catalognum')
         date_today = datetime.datetime.today()
         str_datetime = date_today.strftime('%m%d%Y')
-        return 'NCDP-' + str_coursenum + '-' + str_datetime + '-' + '1'
+        return 'NCDP' + '_' + str_coursenum + '_' + str_datetime + '_' + '1'
 
-    export_tree_final = ET.ElementTree(el_submission)
-    export_tree_final.write('data_out/' + output_filename_scheme() + '.xml',
-                            encoding="utf-8", xml_declaration=True)
+    export_tree_manifest = ET.Element('Manifest')
+    export_tree_manifest.append(el_submission)
+
+    # # TODO: include DOCTYPE programmatically? Otherwise we have to manually insert the DOCTYPE...
+    # doctype_submission = DOM.DocumentType
+    # doctype_submission.publicId = 'test'
+    #
+    # treeee = ET.TreeBuilder()
+    # treeee.doctype = ['NAMETEST', 'pubidtest', 'systemtest']
+    # treeee.start('Manifest', '')
+    # treeee.end("tag")
+    # outter = treeee.close()
+    export_tree_final = ET.ElementTree(export_tree_manifest)
+    export_tree_final.write('data_out/' + output_filename_scheme() + '.xml', encoding="utf-8", xml_declaration=True)
 
 
 export_final_xml()
