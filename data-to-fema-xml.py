@@ -116,7 +116,8 @@ def make_eval_tree(df):
             if int(id) > 23:  # Try to cast the id to an integer... might fail with ID's though
                 xml_tag_out = ET.Element('comment')
                 xml_tag_out.set('comment', 'PLACEHOLDER')
-            xml_tag_out = ET.Element('question')
+            else:
+                xml_tag_out = ET.Element('question')
             # formatting
             # <question id="15" answer="5"/>
             xml_tag_out.set('id', str(id))
