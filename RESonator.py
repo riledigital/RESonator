@@ -3,8 +3,9 @@ import xml.etree.ElementTree as ET
 import re
 import datetime
 
+dir_in = 'data_in'
 dir_out = 'data_out'
-lms_path = "data_original/2019-07-16-11-01-11_u0apmv5n7p.csv"
+lms_path = 'data_original/2019-07-16-11-01-11_u0apmv5n7p.csv'
 lms_data = pd.read_csv(lms_path)
 list(lms_data)
 
@@ -83,8 +84,16 @@ df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     axis='columns',
     regex='Stu[0-9]+')
 
+# TODO: Make sure that Stu23+ does NOT get cast into an integer...
+df_only_ints = df_only_questions.filter(
+    axis='columns',
+    regex=''
+)
 # df_cleaned = df_identifiers.join(df_only_questions).astype(int)
 df_cleaned = df_only_questions.fillna(value=0).astype(int)  # Join the filtered df's, convert all to integers
+
+## If the ZipGrade input does not have empty fields for Stu23 to Stu27,
+## Just make empty ones...
 df_ready = df_cleaned.assign(  # Create empty fields for written questions...
     id24='',
     id25='',
@@ -134,9 +143,43 @@ def make_eval_tree(df):
 eval_root = make_eval_tree(df_rename)
 evaluations_xml = ET.ElementTree(eval_root)
 
-
 # evaluations_xml.write('data_out/evals-only.xml')
 
+# Read in metadata and use to populate the other XML fields
+df_meta = pd.read_csv(dir_in + '/' + 'meta-template.csv')
+current_test = df_meta.get('trainingprovider_tpid').item()
+print('testing string output from: ' + current_test)
+
+
+# get_meta -> String
+# field: String representing the field to fetch
+def get_meta(field):
+    out_meta = ''
+    try:
+        out_meta = str(df_meta.get(str(field)).item())
+        if out_meta == 'nan':
+            return ''
+        else:
+            return str(df_meta.get(str(field)).item())
+    except:
+        print("Empty field, returning empty string" + '')
+        return ''
+
+
+# number of people who pass
+# completed
+# is_passed_class -> Boolean
+# in: DF/series representing a class
+# check if person passed the class
+# TODO: Check if this function even works
+def is_passed_class(inp):
+    if inp.loc['Lesson Success'] == 'passed':
+        return True
+    else:
+        return False
+
+
+# TODO: Count number of ppl who passed class
 
 # Make other nodes to finish the xml output file
 def make_comment():
@@ -148,25 +191,29 @@ def make_comment():
 
 element_instructorpoc = ET.Element(
     'instructorpoc',
-    attrib={'instlastname': 'PLACEHOLDER',
-            'instfirstname': 'PLACEHOLDER',
-            'instphone': 'PLACEHOLDER'})
+    attrib={'instlastname': get_meta('instructorpoc_instlastname'),
+            'instfirstname': get_meta('instructorpoc_instfirstname'),
+            'instphone': get_meta('instructorpoc_instphone')})
 
 el_class = ET.Element('class',
                       attrib={
-                          'catalognum': 'PLACEHOLDER',
-                          'classtype': '',
-                          'classcity': '',
-                          'classzipcode': '',
-                          'classcountry': '',
-                          'startdate': '',
-                          'enddate': '',
-                          'starttime': '',
-                          'endtime': '',
-                          'numstudent': '',
-                          'trainingmethod': '',
-                          'contacthours': '',
-                          'numstudent': ''
+                          'preparerlastname': get_meta('class_preparerlastname'),
+                          'preparerfirstname': get_meta('class_preparerlastname'),
+                          'batchpreparerphone': get_meta('class_batchpreparerphone'),
+                          'batchprepareremail': get_meta('class_batchprepareremail'),
+                          'catalognum': get_meta('class_catalognum'),
+                          'classtype': get_meta('class_classtype'),
+                          'classcity': get_meta('class_classcity'),
+                          'classzipcode': get_meta('class_classzipcode'),
+                          'classcountry': get_meta('class_classcountry'),
+                          'startdate': get_meta('class_startdate'),
+                          'enddate': get_meta('class_enddate'),
+                          'starttime': get_meta('class_starttime'),
+                          'endtime': get_meta('class_endtime'),
+                          'numstudent': get_meta('class_numstudent'),
+                          'trainingmethod': get_meta('class_trainingmethod'),
+                          'contacthours': get_meta('class_contacthours'),
+                          'numstudent': get_meta('class_numstudent')
                       })
 el_class.append(element_instructorpoc)
 el_class.append(registration)
@@ -174,8 +221,8 @@ el_class.append(eval_root)
 
 el_testaverage = ET.Element(
     'testaverage',
-    attrib={'pretest': 'PLACEHOLDER',
-            'posttest': 'PLACEHOLDER'})
+    attrib={'pretest': get_meta('testaverage_pretest'),
+            'posttest': get_meta('testaverage_posttest')})
 
 el_trainingprovider = ET.Element('trainingprovider',
                                  attrib={

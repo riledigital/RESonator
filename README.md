@@ -1,14 +1,18 @@
-# Convert CSV to XML File
+# RESonator
+
+RESonator is a tool for preparing course data for input to the FEMA RES system. 
+
+RESOnator takes in three CSV files:
+- Data representing student registration from the LMS system
+- Data representing student evaluations
+- A hand-prepared file representing metadata on the course, instructor, and test averages.
+
+# Developer Information 
 
 Notes: This script uses Python 3.7, [see lang references ](https://docs.python.org/3/)
-
 This Python script reads in a data file and outputs it to a XML file
 
-# TODO Items
-- Figure out cleanup symbols
-- Create one entry for survey data
-
-# Resources for Python  
+## Resources for Python  
 [Using for loops](https://docs.python.org/3/reference/compound_stmts.html#the-for-statement)
 
 [Defining functions in Python](https://docs.python.org/3/reference/compound_stmts.html#function-definitions)
