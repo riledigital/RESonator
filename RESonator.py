@@ -22,10 +22,26 @@ lms_data = pd.read_csv(lms_path)
 lms_data = lms_data.rename(columns=lambda x: x.strip())  # Remove trailing and leading whitespace
 list(lms_data)
 
-# filter only Florida data
-selector = 'Florida: MGT 462 '
-is_fl = lms_data['Lesson'] == selector
-lms_fl = lms_data[is_fl]
+lesson = 'Florida: MGT 462 '
+
+
+def is_filtered(ser):
+    # filter only Florida data
+    cond = ser['Lesson'] == lesson and \
+           ser['Lesson Completion'] == 'completed'
+    if cond:
+        return True
+    else:
+        return False
+
+## TODO: Filter multiple conditions
+lms_data['FilteredInClass'] = lms_data.apply(
+    is_filtered, axis=1).astype('bool')  # Create a new field for Filtered...
+# is_fl = lms_data['Lesson'] == lesson
+is_fil = lms_data['FilteredInClass'] == True  ## Only select rows
+lms_fl = lms_data[is_fil]
+
+print(lms_fl['Lesson Success'].describe())
 
 # Get only the columns we need
 lms_fl_subset = lms_fl.filter(
@@ -68,7 +84,7 @@ def row_to_xml(row):
     new_student.set('studentphone', row['Primary Phone'])
     new_student.set('discipline', row['Discipline'])
     registration.append(new_student)
-    print("Appended record: " + str(row['First Name']))
+    # print("Appended record: " + str(row['First Name']))
 
 
 # This function outputs nothing
@@ -154,7 +170,7 @@ def make_eval_tree(df):
         return 'ok'  ## technically it shouldn't matter what is returned since we just just apply to iterate over
 
     df.apply(make_element_from_question, axis=1)  # Apply function to all rows
-    print('done building evals')
+    print('Finished building XML for evaluations')
     return all_evals
 
 
@@ -166,12 +182,10 @@ evaluations_xml = ET.ElementTree(eval_root)
 # Read in metadata and use to populate the other XML fields
 df_meta = pd.read_csv(dir_in + '/' + 'meta-template.csv')
 df_meta = df_meta.rename(columns=lambda x: x.strip()).rename(columns=lambda y: y.lower())
-current_test = df_meta.get('trainingprovider_tpid').item()
-print('testing string output from: ' + current_test)
 
 
 # get_meta -> String
-# field: String representing the field to fetch
+# field: String representing the field to fetch from the lms dataframe
 def get_meta(field):
     out_meta = ''
     try:
@@ -280,10 +294,10 @@ def export_final_xml():
     # treeee.end("tag")
     # outter = treeee.close()
     export_tree_final = ET.ElementTree(export_tree_manifest)
-    export_tree_final.write('data_out/' + output_filename_scheme() + '.xml', encoding="utf-8", xml_declaration=True)
+    string_output_filename = 'data_out/' + output_filename_scheme() + '.xml'
+    export_tree_final.write(string_output_filename, encoding="utf-8", xml_declaration=True)
+    print('Saved RES XML as: ' + string_output_filename)
 
-
+s
 export_final_xml()
 # exit()
-
-print(get_meta('trainingprovider_tpemail'))
