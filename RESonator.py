@@ -84,7 +84,7 @@ df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     regex='Stu[0-9]+')
 
 # df_cleaned = df_identifiers.join(df_only_questions).astype(int)
-df_cleaned = df_only_questions.fillna(value=0).astype(int)   # Join the filtered df's, convert all to integers
+df_cleaned = df_only_questions.fillna(value=0).astype(int)  # Join the filtered df's, convert all to integers
 df_ready = df_cleaned.assign(  # Create empty fields for written questions...
     id24='',
     id25='',
@@ -114,8 +114,7 @@ def make_eval_tree(df):
             id = re.sub(r'id', '', i)
             val = str(v)
             if int(id) > 23:  # Try to cast the id to an integer... might fail with ID's though
-                xml_tag_out = ET.Element('comment')
-                xml_tag_out.set('comment', 'PLACEHOLDER')
+                xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': 'PLACEHOLDER'})
             else:
                 xml_tag_out = ET.Element('question')
             # formatting
