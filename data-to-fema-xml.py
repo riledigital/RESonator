@@ -66,7 +66,7 @@ def build_registration_xml(df):
 
 build_registration_xml(lms_fl_subset)
 registration_tree = ET.ElementTree(registration)
-registration_tree.write('data_out/test.xml')
+# registration_tree.write('data_out/test.xml')
 
 # Next...
 # Import ZipGrade data...
@@ -75,25 +75,26 @@ eval_df = pd.read_csv(eval_path)
 current = eval_df.head(5)
 evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
 
-df_identifiers = eval_df.filter(  # Filter only the columns we want
-    axis='columns',
-    items=['StudentID'])
+# df_identifiers = eval_df.filter(  # Filter only the columns we want
+#     axis='columns',
+#     items=['StudentID'])
+
 df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     axis='columns',
     regex='Stu[0-9]+')
 
-df_cleaned = df_identifiers.join(df_only_questions)  # Join the filtered df's
+# df_cleaned = df_identifiers.join(df_only_questions).astype(int)
+df_cleaned = df_only_questions.fillna(value=0).astype(int)   # Join the filtered df's, convert all to integers
 df_ready = df_cleaned.assign(  # Create empty fields for written questions...
     id24='',
     id25='',
     id26='',
     id27='')
 
-#  TODO: Create duplicate columns where question number can be identified?...
-
 #  Rename column names to replace Stu with id
 df_rename = df_ready
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
+
 
 # make_eval_tree -> Element
 # takes in a df with rows corresponding to students.
@@ -109,11 +110,15 @@ def make_eval_tree(df):
     def make_element_from_question(qs):
         generated_eval = ET.Element('evaldata')
         for i, v in qs.iteritems():
+            # first process id's and values
+            id = re.sub(r'id', '', i)
+            val = str(v)
+            if int(id) > 23:  # Try to cast the id to an integer... might fail with ID's though
+                xml_tag_out = ET.Element('comment')
+                xml_tag_out.set('comment', 'PLACEHOLDER')
             xml_tag_out = ET.Element('question')
             # formatting
             # <question id="15" answer="5"/>
-            id = re.sub(r'id', '', i)
-            val = str(v)
             xml_tag_out.set('id', str(id))
             xml_tag_out.set('answer', val)  # important: must cast to strings before setting attributes...
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
@@ -128,7 +133,9 @@ def make_eval_tree(df):
 
 eval_root = make_eval_tree(df_rename)
 evaluations_xml = ET.ElementTree(eval_root)
-evaluations_xml.write('data_out/evals-only.xml')
+
+
+# evaluations_xml.write('data_out/evals-only.xml')
 
 
 # Make other nodes to finish the xml output file
@@ -183,8 +190,9 @@ el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
 
 
-# Set up the file name scheme...
 # output_filename_scheme() -> String
+# This function set up the file name scheme
+# and returns a string with the appropriate values
 def output_filename_scheme():
     # format for the xml file name is
     # TP_CourseNumber_Date_SequenceNumber.xml
