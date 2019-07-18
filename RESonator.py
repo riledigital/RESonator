@@ -3,6 +3,14 @@ import xml.etree.ElementTree as ET
 import re
 import datetime
 
+# import tkinter as tk
+# from tkinter import filedialog
+#
+# root = tk.Tk()
+# root.withdraw()
+#
+# file_path = filedialog.askopenfilename()
+
 dir_in = 'data_in'
 dir_out = 'data_out'
 lms_path = 'data_original/2019-07-16-11-01-11_u0apmv5n7p.csv'
@@ -84,11 +92,12 @@ df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     axis='columns',
     regex='Stu[0-9]+')
 
-# TODO: Make sure that Stu23+ does NOT get cast into an integer...
-df_only_ints = df_only_questions.filter(
-    axis='columns',
-    regex=''
-)
+# # TODO: Make sure that Stu23+ does NOT get cast into an integer...
+# df_only_ints = df_only_questions.filter(
+#     axis='columns',
+#     regex=''
+# )
+
 # df_cleaned = df_identifiers.join(df_only_questions).astype(int)
 df_cleaned = df_only_questions.fillna(value=0).astype(int)  # Join the filtered df's, convert all to integers
 
@@ -226,9 +235,9 @@ el_testaverage = ET.Element(
 
 el_trainingprovider = ET.Element('trainingprovider',
                                  attrib={
-                                     'tpid': '',
-                                     'tpphone': '',
-                                     'tpemail': ''
+                                     'tpid': get_meta('trainingprovider_tpid'),
+                                     'tpphone': get_meta('trainingprovider_tpphone'),
+                                     'tpemail': get_meta('trainingprovider_tpemail')
                                  })
 el_trainingprovider.append(el_class)
 el_trainingprovider.append(el_testaverage)
@@ -237,18 +246,24 @@ el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
 
 
-# output_filename_scheme() -> String
-# This function set up the file name scheme
-# and returns a string with the appropriate values
-def output_filename_scheme():
-    # format for the xml file name is
-    # TP_CourseNumber_Date_SequenceNumber.xml
-    str_coursenum = 'MGTETC'
-    date_today = datetime.datetime.today()
-    str_datetime = date_today.strftime('%m%d%Y')
-    return 'NCDP-' + str_coursenum + '-' + str_datetime + '-' + '1'
+# export_final_xml
+# wrapper function to export the xml files at the very end
+def export_final_xml():
+    # output_filename_scheme() -> String
+    # This function set up the file name scheme
+    # and returns a string with the appropriate values
+    def output_filename_scheme():
+        # format for the xml file name is
+        # TP_CourseNumber_Date_SequenceNumber.xml
+        str_coursenum = 'MGT-464'  ## TODO: Fetch this information from the table instead...
+        date_today = datetime.datetime.today()
+        str_datetime = date_today.strftime('%m%d%Y')
+        return 'NCDP-' + str_coursenum + '-' + str_datetime + '-' + '1'
+
+    export_tree_final = ET.ElementTree(el_submission)
+    export_tree_final.write('data_out/' + output_filename_scheme() + '.xml',
+                            encoding="utf-8", xml_declaration=True)
 
 
-export_tree_final = ET.ElementTree(el_submission)
-export_tree_final.write('data_out/' + output_filename_scheme() + '.xml',
-                        encoding="utf-8", xml_declaration=True)
+export_final_xml()
+exit()
