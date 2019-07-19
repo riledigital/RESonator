@@ -22,7 +22,8 @@ lms_data = pd.read_csv(lms_path)
 lms_data = lms_data.rename(columns=lambda x: x.strip())  # Remove trailing and leading whitespace
 list(lms_data)
 
-lesson = 'Florida: MGT 462 '  #TODO: strip all whitespace from column values with strings?
+lesson = 'Florida: MGT 462 '  # TODO: strip all whitespace from column values with strings?
+
 
 def is_filtered(ser):
     # filter only Florida data
@@ -63,13 +64,32 @@ lms_fl_subset = lms_fl.filter(
     ]
 )
 
+
+## recode_by_regex –> String
+## Takes in a string and replaces it with a recoded version,
+## Only returns the acronym in parentheses...
+# helper function meant to be used in apply function...
+def recode_by_regex(input_data):
+    regex_str = '\([A-Z]+\)'
+    regex = re.compile(regex_str)
+    # p = re.compile(regex_str)  # parentheses for capture groups
+    sr = re.search(pattern=regex, string=input_data)
+    captured = sr.group().strip('()')  # remove the parentheses
+    return captured
+
+
+test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
+print('regex test:' + recode_by_regex(test_string))
+
+# Recode values for fields
+lms_fl_subset['Government Level'] = lms_fl_subset['Government Level'].apply(recode_by_regex)
+lms_fl_subset['Discipline'] = lms_fl_subset['Discipline'].apply(recode_by_regex)
+# TODO: Add missing government level... why is this field not rendering?...
+# list(lms_fl_subset['Discipline'].apply(recode_by_regex))
+
+
 ## After subsetting, recode values
-# TODO: Recode values for classcountry
-# TODO: Recode values for govnlevel
 # TODO: Recode values for discipline
-# # classcountry
-# Error in line 2: Attribute "classcountry" with value "USA" must have a value from the list "AA AC AE AF AG AJ AL AM AN AO AR AS AT AU AV AX AY BA BB BC BD BE BF BG BH BK BL BM BN BO BP BQ BR BT BU BV BX BY CA CB CD CE CF CG CH CI CJ CK CM CN CO CR CS CT CU CV CW CY DA DJ DO DQ DR DX EC EG EI EK EN ER ES ET EZ FI FJ FK FO FP FQ FR FS GA GB GG GH GI GJ GK GL GM GR GT GV GY HA HK HM HO HQ HR HU IC ID IM IN IO IP IR IS IT IV IZ JA JE JM JN JO JQ KE KG KN KQ KR KS KT KU KZ LA LE LG LH LI LO LQ LS LT LU LY MA MC MD MF MG MH MI MJ MK ML MN MO MP MQ MR MT MU MV MX MY MZ NC NE NF NG NH NI NL NO NP NR NS NT NU NZ PA PC PE PF PG PK PL PM PO PP PU QA RB RN RO RP RS RW SA SB SC SE SF SG SH SI SL SM SN SO SP ST SU SV SW SX SY SZ TB TD TH TI TK TL TN TO TP TS TT TU TV TW TX TZ UG UK UP UV UY UZ VC VE VI VM VT WA WF WI WQ WS WZ YM ZA ZI ".
-# Error in line 2: Attribute "govnlevel" is required and must be specified for element type "student".
 # Error in line 2: Attribute "discipline" with value "Emergency Management (EM)" must have a value from the list "LE EMS EM FS HM PW GA PSC HC PH SR AES AGS CV TS IT PSP OTH E SS ".
 
 
@@ -79,20 +99,22 @@ lms_fl_subset = lms_fl.filter(
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node
 
+
 # row_to_xml
 # row: Series representing user data
 # this helper function creates a new XML node
 # for students, using the selected fields.
 # returns: returns null.
 def row_to_xml(row):
-    new_student = ET.Element('student')
-    new_student.set('international', row['International Status'])
-    new_student.set('studentfirstname', row['First Name'])
-    new_student.set('studentlastname', row['Last Name'])
-    new_student.set('studentcity', row['City'])
-    new_student.set('studentzipcode', row['Postal Code'])
-    new_student.set('studentphone', row['Primary Phone'])
-    new_student.set('discipline', row['Discipline'])
+    new_student = ET.Element('student', attrib={
+        'international': row['International Status'],
+        'studentfirstname': row['First Name'],
+        'studentlastname': row['Last Name'],
+        'studentcity': row['City'],
+        'studentzipcode': row['Postal Code'],
+        'studentphone': row['Primary Phone'],
+        'discipline': row['Discipline'],
+        'govnlevel': row['Government Level']})
     registration.append(new_student)
     # print("Appended record: " + str(row['First Name']))
 
@@ -126,7 +148,9 @@ df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
 
 df_only_likerts = df_only_questions.drop(labels=['Stu24', 'Stu25', 'Stu26', 'Stu27'], axis=1) \
     .fillna(0) \
-    .astype(int)
+    .astype(int)  # \
+# .recode()# TODO: Recode out-of-range-values to 0
+
 # Join the filtered df's, convert all to integers
 
 df_only_comments = df_only_questions.filter(
@@ -162,27 +186,29 @@ def make_eval_tree(df):
 
     # make_tree_from_question -> Element
     # q: a Series representing a single question
-    def make_element_from_question(qs):
+    def make_element_from_response(qs):
         generated_eval = ET.Element('evaldata')
         for i, v in qs.iteritems():
             # first process id's and values
             id = re.sub(r'id', '', i)
             val = str(v)
-            if int(id) > 23:  # Try to cast the id to an integer... might fail with ID's though
-                xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': 'PLACEHOLDER'})
+            # print('string id casting to int as: ' + str(id))
+            if int(id) >= 24:  # Try to cast the id to an integer... might fail with ID's though
+                # TODO: Verify... what if there are empty responses?...
+                xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': val})
+            elif 1 == 1:
+                xml_tag_out = ET.Element('question', attrib={'id': id, 'answer': val})
             else:
-                xml_tag_out = ET.Element('question')
+                raise Exception('Error processing XML tags on: ' + i + ', val: ' + val)
             # formatting
             # <question id="15" answer="5"/>
-            xml_tag_out.set('id', str(id))
-            xml_tag_out.set('answer', val)  # important: must cast to strings before setting attributes...
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
             # print('index: ', i, 'value: ', v)
         all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
         return 'ok'  ## technically it shouldn't matter what is returned
         # since we just just apply to iterate over
 
-    df.apply(make_element_from_question, axis=1)  # Apply function to all rows
+    df.apply(make_element_from_response, axis=1)  # Apply function to all rows
     print('Finished building XML for evaluations')
     return all_evals
 
@@ -249,7 +275,6 @@ el_class = ET.Element('class',
                           'classtype': get_meta('class_classtype'),
                           'classcity': get_meta('class_classcity'),
                           'classzipcode': get_meta('class_classzipcode'),
-                          'classcountry': get_meta('class_classcountry'),
                           'startdate': get_meta('class_startdate'),
                           'enddate': get_meta('class_enddate'),
                           'starttime': get_meta('class_starttime'),
@@ -308,7 +333,6 @@ def export_final_xml():
     string_output_filename = 'data_out/' + output_filename_scheme() + '.xml'
     export_tree_final.write(string_output_filename, encoding="utf-8", xml_declaration=True)
     print('Saved RES XML as: ' + string_output_filename)
-
 
 
 export_final_xml()
