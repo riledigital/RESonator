@@ -139,7 +139,8 @@ df_merged_responses = df_only_likerts.join(df_only_comments)
 
 #  Rename column names to replace Stu with id
 df_rename = df_merged_responses
-df_rename_sample = df_merged_responses.sample(n=num_students, random_state=0)  # TODO double-check random sampling
+df_rename_sample = df_merged_responses.sample(
+    n=num_students, random_state=0)  # TODO double-check random sampling
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
 
@@ -171,7 +172,8 @@ def make_eval_tree(df):
             generated_eval.append(xml_tag_out)  ## append it to the global eval_out
             # print('index: ', i, 'value: ', v)
         all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
-        return 'ok'  ## technically it shouldn't matter what is returned since we just just apply to iterate over
+        return 'ok'  ## technically it shouldn't matter what is returned
+        # since we just just apply to iterate over
 
     df.apply(make_element_from_question, axis=1)  # Apply function to all rows
     print('Finished building XML for evaluations')
@@ -245,7 +247,7 @@ el_class = ET.Element('class',
                           'enddate': get_meta('class_enddate'),
                           'starttime': get_meta('class_starttime'),
                           'endtime': get_meta('class_endtime'),
-                          'numstudent': str(num_students),  ## TODO: count the number of students
+                          'numstudent': str(num_students),
                           'trainingmethod': get_meta('class_trainingmethod'),
                           'contacthours': get_meta('class_contacthours'),
                       })
