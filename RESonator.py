@@ -34,14 +34,17 @@ def is_filtered(ser):
     else:
         return False
 
-## TODO: Filter multiple conditions
+
+## TODO: Filter multiple conditions?? or just one?
 lms_data['FilteredInClass'] = lms_data.apply(
     is_filtered, axis=1).astype('bool')  # Create a new field for Filtered...
 # is_fl = lms_data['Lesson'] == lesson
 is_fil = lms_data['FilteredInClass'] == True  ## Only select rows
-lms_fl = lms_data[is_fil]
+lms_fl = lms_data[is_fil]  ## TODO: drop record for josh
 
-print(lms_fl['Lesson Success'].describe())
+## TODO: Get the count?
+num_students = lms_fl.shape[0]
+# print(lms_fl['Lesson Success'].describe())
 
 # Get only the columns we need
 lms_fl_subset = lms_fl.filter(
@@ -136,6 +139,7 @@ df_merged_responses = df_only_likerts.join(df_only_comments)
 
 #  Rename column names to replace Stu with id
 df_rename = df_merged_responses
+df_rename_sample = df_merged_responses.sample(n=num_students, random_state=0)  # TODO double-check random sampling
 df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
 
 
@@ -241,10 +245,9 @@ el_class = ET.Element('class',
                           'enddate': get_meta('class_enddate'),
                           'starttime': get_meta('class_starttime'),
                           'endtime': get_meta('class_endtime'),
-                          'numstudent': get_meta('class_numstudent'),
+                          'numstudent': str(num_students),  ## TODO: count the number of students
                           'trainingmethod': get_meta('class_trainingmethod'),
                           'contacthours': get_meta('class_contacthours'),
-                          'numstudent': get_meta('class_numstudent')
                       })
 el_class.append(element_instructorpoc)
 el_class.append(registration)
@@ -287,7 +290,6 @@ def export_final_xml():
     # # TODO: include DOCTYPE programmatically? Otherwise we have to manually insert the DOCTYPE...
     # doctype_submission = DOM.DocumentType
     # doctype_submission.publicId = 'test'
-    #
     # treeee = ET.TreeBuilder()
     # treeee.doctype = ['NAMETEST', 'pubidtest', 'systemtest']
     # treeee.start('Manifest', '')
@@ -298,6 +300,6 @@ def export_final_xml():
     export_tree_final.write(string_output_filename, encoding="utf-8", xml_declaration=True)
     print('Saved RES XML as: ' + string_output_filename)
 
-s
+
 export_final_xml()
 # exit()
