@@ -22,8 +22,7 @@ lms_data = pd.read_csv(lms_path)
 lms_data = lms_data.rename(columns=lambda x: x.strip())  # Remove trailing and leading whitespace
 list(lms_data)
 
-lesson = 'Florida: MGT 462 '
-
+lesson = 'Florida: MGT 462 '  #TODO: strip all whitespace from column values with strings?
 
 def is_filtered(ser):
     # filter only Florida data
@@ -35,16 +34,15 @@ def is_filtered(ser):
         return False
 
 
-## TODO: Filter multiple conditions?? or just one?
 lms_data['FilteredInClass'] = lms_data.apply(
     is_filtered, axis=1).astype('bool')  # Create a new field for Filtered...
 # is_fl = lms_data['Lesson'] == lesson
 is_fil = lms_data['FilteredInClass'] == True  ## Only select rows
-lms_fl = lms_data[is_fil]  ## TODO: drop record for josh
-
-## TODO: Get the count?
+lms_fl = lms_data[is_fil]
+# Drop Josh's record and other test users/instructors
+lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
+# TODO: Rewrite to be non-mutation
 num_students = lms_fl.shape[0]
-# print(lms_fl['Lesson Success'].describe())
 
 # Get only the columns we need
 lms_fl_subset = lms_fl.filter(
@@ -65,12 +63,21 @@ lms_fl_subset = lms_fl.filter(
     ]
 )
 
+## After subsetting, recode values
+# TODO: Recode values for classcountry
+# TODO: Recode values for govnlevel
+# TODO: Recode values for discipline
+# # classcountry
+# Error in line 2: Attribute "classcountry" with value "USA" must have a value from the list "AA AC AE AF AG AJ AL AM AN AO AR AS AT AU AV AX AY BA BB BC BD BE BF BG BH BK BL BM BN BO BP BQ BR BT BU BV BX BY CA CB CD CE CF CG CH CI CJ CK CM CN CO CR CS CT CU CV CW CY DA DJ DO DQ DR DX EC EG EI EK EN ER ES ET EZ FI FJ FK FO FP FQ FR FS GA GB GG GH GI GJ GK GL GM GR GT GV GY HA HK HM HO HQ HR HU IC ID IM IN IO IP IR IS IT IV IZ JA JE JM JN JO JQ KE KG KN KQ KR KS KT KU KZ LA LE LG LH LI LO LQ LS LT LU LY MA MC MD MF MG MH MI MJ MK ML MN MO MP MQ MR MT MU MV MX MY MZ NC NE NF NG NH NI NL NO NP NR NS NT NU NZ PA PC PE PF PG PK PL PM PO PP PU QA RB RN RO RP RS RW SA SB SC SE SF SG SH SI SL SM SN SO SP ST SU SV SW SX SY SZ TB TD TH TI TK TL TN TO TP TS TT TU TV TW TX TZ UG UK UP UV UY UZ VC VE VI VM VT WA WF WI WQ WS WZ YM ZA ZI ".
+# Error in line 2: Attribute "govnlevel" is required and must be specified for element type "student".
+# Error in line 2: Attribute "discipline" with value "Emergency Management (EM)" must have a value from the list "LE EMS EM FS HM PW GA PSC HC PH SR AES AGS CV TS IT PSP OTH E SS ".
+
+
 # Export a CSV of filtered LMS
 # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
 
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node
-
 
 # row_to_xml
 # row: Series representing user data
@@ -301,6 +308,7 @@ def export_final_xml():
     string_output_filename = 'data_out/' + output_filename_scheme() + '.xml'
     export_tree_final.write(string_output_filename, encoding="utf-8", xml_declaration=True)
     print('Saved RES XML as: ' + string_output_filename)
+
 
 
 export_final_xml()
