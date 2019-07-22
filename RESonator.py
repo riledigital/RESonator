@@ -182,21 +182,22 @@ def make_eval_tree(df):
     # q: a Series representing a single question
     def make_element_from_response(qs):
         generated_eval = ET.Element('evaldata')
-        for i, v in qs.iteritems():
+        for i, v in qs.iteritems():  ## Loop through all questions in a row..
             # first process id's and values
             id = re.sub(r'id', '', i)
             val = str(v)
             # print('string id casting to int as: ' + str(id))
-            if int(id) >= 24:  # Try to cast the id to an integer... might fail with ID's though
-                # TODO: Verify... what if there are empty responses?...
-                xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': val})
-            elif 1 == 1:
-                xml_tag_out = ET.Element('question', attrib={'id': id, 'answer': val})
-            else:
-                raise Exception('Error processing XML tags on: ' + i + ', val: ' + val)
-            # formatting
-            # <question id="15" answer="5"/>
-            generated_eval.append(xml_tag_out)  ## append it to the global eval_out
+            if val != '':  ## If the value is empty, don't make a node for it
+                if int(id) >= 24:  ## logic to only write comment tag
+                    # AND Try to cast the id to an integer... might fail with ID's though
+                    # TODO: Verify... what if there are empty responses?...
+                    xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': val})
+                    generated_eval.append(xml_tag_out)  # append it to the global eval_out
+                elif 1 == 1:
+                    xml_tag_out = ET.Element('question', attrib={'id': id, 'answer': val})
+                    generated_eval.append(xml_tag_out)  # append it to the global eval_out
+                else:
+                    raise Exception('Error processing XML tags on: ' + i + ', val: ' + val)
             # print('index: ', i, 'value: ', v)
         all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
         return 'ok'  ## technically it shouldn't matter what is returned
@@ -297,13 +298,14 @@ el_testaverage = ET.Element(
     attrib={'pretest': get_meta('testaverage_pretest'),
             'posttest': get_meta('testaverage_posttest')})
 
+el_class.append(el_testaverage)
+
 el_trainingprovider = ET.Element('trainingprovider',
                                  attrib={
                                      'tpid': get_meta('trainingprovider_tpid'),
                                      'tpphone': get_meta('trainingprovider_tpphone'),
                                      'tpemail': get_meta('trainingprovider_tpemail')})
 el_trainingprovider.append(el_class)
-el_trainingprovider.append(el_testaverage)
 
 el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
@@ -358,6 +360,7 @@ def write_doctype():
     contents = "".join(contents)
     f.write(contents)
     f.close()
+
 
 write_doctype()
 # exit()
