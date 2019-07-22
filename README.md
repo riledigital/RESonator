@@ -17,7 +17,6 @@ Seems like the DOCTYPE must be inserted by hand after the XML declaration?
 
 ` <!DOCTYPE Manifest SYSTEM "submission.dtd"> `
 
-
 Notes: This script uses Python 3.7, [see lang references ](https://docs.python.org/3/)
 This Python script reads in a data file and outputs it to a XML file
 

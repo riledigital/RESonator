@@ -82,16 +82,11 @@ test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
 print('regex test:' + recode_by_regex(test_string))
 
 # Recode values for fields
-lms_fl_subset['Government Level'] = lms_fl_subset['Government Level'].apply(recode_by_regex)
-lms_fl_subset['Discipline'] = lms_fl_subset['Discipline'].apply(recode_by_regex)
-# TODO: Add missing government level... why is this field not rendering?...
-# list(lms_fl_subset['Discipline'].apply(recode_by_regex))
+lms_fl_subset['Government Level'] = \
+    lms_fl_subset['Government Level'].apply(recode_by_regex)
 
-
-## After subsetting, recode values
-# TODO: Recode values for discipline
-# Error in line 2: Attribute "discipline" with value "Emergency Management (EM)" must have a value from the list "LE EMS EM FS HM PW GA PSC HC PH SR AES AGS CV TS IT PSP OTH E SS ".
-
+lms_fl_subset['Discipline'] = \
+    lms_fl_subset['Discipline'].apply(recode_by_regex)
 
 # Export a CSV of filtered LMS
 # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
@@ -135,7 +130,6 @@ registration_tree = ET.ElementTree(registration)
 eval_path = './data_in2/quiz-Eval-full.csv'
 eval_df = pd.read_csv(eval_path, encoding='latin1')
 eval_df = eval_df.rename(columns=lambda x: x.strip())
-current = eval_df.head(5)
 evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
 
 # df_identifiers = eval_df.filter(  # Filter only the columns we want
@@ -219,7 +213,18 @@ evaluations_xml = ET.ElementTree(eval_root)
 # evaluations_xml.write('data_out/evals-only.xml')
 
 # Read in metadata and use to populate the other XML fields
-df_meta = pd.read_csv(dir_in + '/' + 'meta-template.csv')
+# TODO: Check if parsing dates properyl on input
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
+# current = df_meta_onlytimes['class_startdate'].apply(lambda x: pd.to_date(x))
+df_meta = pd.read_csv(
+    dir_in + '/' + 'meta-template.csv',
+    skipinitialspace=True,
+    parse_dates=['class_startdate',
+                 'class_enddate',
+                 'class_starttime',
+                 'class_endtime'],
+    infer_datetime_format=True
+)
 df_meta = df_meta.rename(columns=lambda x: x.strip()).rename(columns=lambda y: y.lower())
 
 
@@ -304,23 +309,23 @@ el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
 
 
+# output_filename_scheme() -> String
+# This function set up the file name scheme
+# and returns a string with the appropriate values
+def output_filename_scheme():
+    # format for the xml file name is
+    # TP_CourseNumber_Date_SequenceNumber.xml
+    str_coursenum = get_meta('class_catalognum')
+    date_today = datetime.datetime.today()
+    str_datetime = date_today.strftime('%m%d%Y')
+    return 'NCDP' + '_' + str_coursenum + '_' + str_datetime + '_' + '1'
+
+
 # export_final_xml
 # wrapper function to export the xml files at the very end
 def export_final_xml():
-    # output_filename_scheme() -> String
-    # This function set up the file name scheme
-    # and returns a string with the appropriate values
-    def output_filename_scheme():
-        # format for the xml file name is
-        # TP_CourseNumber_Date_SequenceNumber.xml
-        str_coursenum = get_meta('class_catalognum')
-        date_today = datetime.datetime.today()
-        str_datetime = date_today.strftime('%m%d%Y')
-        return 'NCDP' + '_' + str_coursenum + '_' + str_datetime + '_' + '1'
-
     export_tree_manifest = ET.Element('Manifest')
     export_tree_manifest.append(el_submission)
-
     # # TODO: include DOCTYPE programmatically? Otherwise we have to manually insert the DOCTYPE...
     # doctype_submission = DOM.DocumentType
     # doctype_submission.publicId = 'test'
@@ -336,4 +341,23 @@ def export_final_xml():
 
 
 export_final_xml()
+
+
+# write_doctype()
+# writes the DOCTYPE string to the first line of the output XML file
+def write_doctype():
+    # Read in the export file, then
+    ## https://stackoverflow.com/a/10507291
+    insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
+    out_filename = 'data_out/' + output_filename_scheme() + '.xml'
+    f = open(out_filename, "r")
+    contents = f.readlines()
+    f.close()
+    contents.insert(1, insert)
+    f = open(out_filename, "w")
+    contents = "".join(contents)
+    f.write(contents)
+    f.close()
+
+write_doctype()
 # exit()
