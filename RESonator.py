@@ -5,9 +5,6 @@ import datetime
 from sys import exit
 import xml.dom as DOM
 
-import tkinter as tk
-from tkinter import filedialog
-
 # TODO: make file pickers for selecting CSV files
 # root = tk.Tk()
 # root.withdraw()
@@ -18,11 +15,22 @@ from tkinter import filedialog
 dir_in = 'data_in2'
 dir_out = 'data_out'
 lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
-lms_data = pd.read_csv(lms_path)
-lms_data = lms_data.rename(columns=lambda x: x.strip())  # Remove trailing and leading whitespace
-list(lms_data)
+lms_data = pd.read_csv(
+    lms_path)
+lms_data = lms_data.rename(
+    columns=lambda x: x.strip())
+# Remove whitespace from column names, end and beginning
+# lms_data[''] = lms_data[]
 
-lesson = 'Florida: MGT 462 '  # TODO: strip all whitespace from column values with strings?
+# print(list(lms_data))
+
+lesson = 'Florida: MGT 462 '
+
+
+# TODO: clean up lesson codes...
+# TODO: replace trailing spaces
+# TODO: replace
+# TODO: strip all whitespace from column values with strings?
 
 
 def is_filtered(ser):
@@ -44,25 +52,26 @@ lms_fl = lms_data[is_fil]
 lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
 # TODO: Rewrite to be non-mutation
 num_students = lms_fl.shape[0]
+# lms_fl.rename(columns={'Government Level': 'govnlevel'}, inplace=True)
 
 # Get only the columns we need
 lms_fl_subset = lms_fl.filter(
     items=[
+        'International Status',
         'Last Name',
         'First Name',
+        'City',
+        'Primary Phone',
+        'Discipline',
         'Job Title',
         'Street Address',
-        'City',
         'State/Province',
         'Postal Code',
-        'Primary Phone',
         'Email',
-        'Discipline',
-        'Government Level',
-        'International Status'
-        ## note that there are trailing whitespace
-    ]
-)
+        'Government Level'])  # govt needs to be last
+
+
+# print(lms_fl.columns)
 
 
 ## recode_by_regex –> String
@@ -78,8 +87,8 @@ def recode_by_regex(input_data):
     return captured
 
 
-test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
-print('regex test:' + recode_by_regex(test_string))
+# test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
+# print('regex test:' + recode_by_regex(test_string))
 
 # Recode values for fields
 lms_fl_subset['Government Level'] = \
@@ -130,7 +139,8 @@ registration_tree = ET.ElementTree(registration)
 eval_path = './data_in2/quiz-Eval-full.csv'
 eval_df = pd.read_csv(eval_path, encoding='latin1')
 eval_df = eval_df.rename(columns=lambda x: x.strip())
-evaldata = ET.Element('evaldata')  # initialize XML node representing set of all evaluations
+evaldata = ET.Element(
+    'evaldata')  # initialize XML node representing set of all evaluations
 
 # df_identifiers = eval_df.filter(  # Filter only the columns we want
 #     axis='columns',
@@ -140,7 +150,8 @@ df_only_questions = eval_df.filter(  ## Filter columns by regular expressions
     axis='columns',
     regex='Stu[0-9]+')
 
-df_only_likerts = df_only_questions.drop(labels=['Stu24', 'Stu25', 'Stu26', 'Stu27'], axis=1) \
+df_only_likerts = df_only_questions.drop(
+    labels=['Stu24', 'Stu25', 'Stu26', 'Stu27'], axis=1) \
     .fillna(0) \
     .astype(int)  # \
 # .recode()# TODO: Recode out-of-range-values to 0
@@ -164,9 +175,13 @@ df_merged_responses = df_only_likerts.join(df_only_comments)
 
 #  Rename column names to replace Stu with id
 df_rename = df_merged_responses
-df_rename_sample = df_merged_responses.sample(
-    n=num_students, random_state=0)  # TODO double-check random sampling
-df_rename.columns = [col.replace('Stu', 'id') for col in df_rename.columns]
+df_rename.columns = [
+    col.replace('Stu', 'id') for col in df_rename.columns]
+df_rename_sampled = df_rename.sample(
+    n=num_students,
+    random_state=0)  # TODO pass the random sample to be entered in
+
+print(len(df_rename_sampled))
 
 
 # make_eval_tree -> Element
@@ -187,28 +202,32 @@ def make_eval_tree(df):
             id = re.sub(r'id', '', i)
             val = str(v)
             # print('string id casting to int as: ' + str(id))
-            if val != '':  ## If the value is empty, don't make a node for it
-                if int(id) >= 24:  ## logic to only write comment tag
-                    # AND Try to cast the id to an integer... might fail with ID's though
-                    # TODO: Verify... what if there are empty responses?...
-                    xml_tag_out = ET.Element('comment', attrib={'id': id, 'answer': val})
-                    generated_eval.append(xml_tag_out)  # append it to the global eval_out
-                elif 1 == 1:
-                    xml_tag_out = ET.Element('question', attrib={'id': id, 'answer': val})
-                    generated_eval.append(xml_tag_out)  # append it to the global eval_out
+            if val != '':
+                ## If the value is empty, don't make a node for it
+                if int(id) >= 24:
+                    xml_tag_out = ET.Element(
+                        'comment',
+                        attrib={'id': id, 'answer': val})
+                    generated_eval.append(
+                        xml_tag_out)  # append it to the global eval_out
                 else:
-                    raise Exception('Error processing XML tags on: ' + i + ', val: ' + val)
-            # print('index: ', i, 'value: ', v)
-        all_evals.append(generated_eval)  # don't forget to append the new evaldata to every thing
-        return 'ok'  ## technically it shouldn't matter what is returned
-        # since we just just apply to iterate over
+                    xml_tag_out = ET.Element(
+                        'question',
+                        attrib={'id': id, 'answer': val})
+                    generated_eval.append(
+                        xml_tag_out)  # append it to the global eval_out
+                # Don't create a new element if there is no need to
+        all_evals.append(
+            generated_eval)
+        # don't forget to append the new evaldata to every thing
+        return 'ok'  ## should not matter
 
-    df.apply(make_element_from_response, axis=1)  # Apply function to all rows
+    df.apply(make_element_from_response, axis=1)  # Apply to all rows
     print('Finished building XML for evaluations')
     return all_evals
 
 
-eval_root = make_eval_tree(df_rename)
+eval_root = make_eval_tree(df_rename_sampled)
 evaluations_xml = ET.ElementTree(eval_root)
 
 # evaluations_xml.write('data_out/evals-only.xml')
@@ -216,7 +235,6 @@ evaluations_xml = ET.ElementTree(eval_root)
 # Read in metadata and use to populate the other XML fields
 # TODO: Check if parsing dates properyl on input
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
-# current = df_meta_onlytimes['class_startdate'].apply(lambda x: pd.to_date(x))
 df_meta = pd.read_csv(
     dir_in + '/' + 'meta-template.csv',
     skipinitialspace=True,
@@ -226,7 +244,8 @@ df_meta = pd.read_csv(
                  'class_endtime'],
     infer_datetime_format=True
 )
-df_meta = df_meta.rename(columns=lambda x: x.strip()).rename(columns=lambda y: y.lower())
+df_meta = df_meta.rename(columns=lambda x: x.strip()).rename(
+    columns=lambda y: y.lower())
 
 
 # get_meta -> String
@@ -251,7 +270,7 @@ def get_meta(field):
 # check if person passed the class
 # TODO: Calculate the number of students who passed
 def is_passed_class(inp):
-    if inp.loc['Lesson Success'] == 'passed':
+    if inp['Lesson Success'] == 'passed':
         return True
     else:
         return False
@@ -267,44 +286,74 @@ def make_comment():
 
 element_instructorpoc = ET.Element(
     'instructorpoc',
-    attrib={'instlastname': get_meta('instructorpoc_instlastname'),
-            'instfirstname': get_meta('instructorpoc_instfirstname'),
-            'instphone': get_meta('instructorpoc_instphone')})
+    attrib={
+        'instlastname':
+            get_meta('instructorpoc_instlastname'),
+        'instfirstname':
+            get_meta('instructorpoc_instfirstname'),
+        'instphone':
+            get_meta('instructorpoc_instphone')})
 
-el_class = ET.Element('class',
-                      attrib={
-                          'preparerlastname': get_meta('class_preparerlastname'),
-                          'preparerfirstname': get_meta('class_preparerlastname'),
-                          'batchpreparerphone': get_meta('class_batchpreparerphone'),
-                          'batchprepareremail': get_meta('class_batchprepareremail'),
-                          'catalognum': get_meta('class_catalognum'),
-                          'classtype': get_meta('class_classtype'),
-                          'classcity': get_meta('class_classcity'),
-                          'classzipcode': get_meta('class_classzipcode'),
-                          'startdate': get_meta('class_startdate'),
-                          'enddate': get_meta('class_enddate'),
-                          'starttime': get_meta('class_starttime'),
-                          'endtime': get_meta('class_endtime'),
-                          'numstudent': str(num_students),
-                          'trainingmethod': get_meta('class_trainingmethod'),
-                          'contacthours': get_meta('class_contacthours'),
-                      })
+el_class = ET.Element(
+    'class',
+    attrib={
+        'preparerlastname':
+            get_meta('class_preparerlastname'),
+        'preparerfirstname':
+            get_meta('class_preparerlastname'),
+        'batchpreparerphone':
+            get_meta('class_batchpreparerphone'),
+        'batchprepareremail':
+            get_meta('class_batchprepareremail'),
+        'catalognum':
+            get_meta('class_catalognum'),
+        'classtype':
+            get_meta('class_classtype'),
+        'classcity':
+            get_meta('class_classcity'),
+        'classstate':
+            get_meta('class_state'),
+        'classzipcode':
+            get_meta('class_classzipcode'),
+        'startdate':
+            get_meta('class_startdate'),
+        'enddate':
+            get_meta('class_enddate'),
+        'starttime':
+            get_meta('class_starttime'),
+        'endtime':
+            get_meta('class_endtime'),
+        'numstudent':
+            str(num_students),
+        'trainingmethod':
+            get_meta('class_trainingmethod'),
+        'contacthours':
+            get_meta('class_contacthours')})
+
 el_class.append(element_instructorpoc)
 el_class.append(registration)
 el_class.append(eval_root)
 
 el_testaverage = ET.Element(
     'testaverage',
-    attrib={'pretest': get_meta('testaverage_pretest'),
-            'posttest': get_meta('testaverage_posttest')})
+    attrib={
+        'pretest':
+            get_meta('testaverage_pretest'),
+        'posttest':
+            get_meta('testaverage_posttest')
+    })
 
 el_class.append(el_testaverage)
 
-el_trainingprovider = ET.Element('trainingprovider',
-                                 attrib={
-                                     'tpid': get_meta('trainingprovider_tpid'),
-                                     'tpphone': get_meta('trainingprovider_tpphone'),
-                                     'tpemail': get_meta('trainingprovider_tpemail')})
+el_trainingprovider = ET.Element(
+    'trainingprovider',
+    attrib={
+        'tpid':
+            get_meta('trainingprovider_tpid'),
+        'tpphone':
+            get_meta('trainingprovider_tpphone'),
+        'tpemail':
+            get_meta('trainingprovider_tpemail')})
 el_trainingprovider.append(el_class)
 
 el_submission = ET.Element('submission')
@@ -338,7 +387,8 @@ def export_final_xml():
     # outter = treeee.close()
     export_tree_final = ET.ElementTree(export_tree_manifest)
     string_output_filename = 'data_out/' + output_filename_scheme() + '.xml'
-    export_tree_final.write(string_output_filename, encoding="utf-8", xml_declaration=True)
+    export_tree_final.write(string_output_filename, encoding="utf-8",
+                            xml_declaration=True)
     print('Saved RES XML as: ' + string_output_filename)
 
 
