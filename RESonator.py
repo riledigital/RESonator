@@ -2,16 +2,22 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 import re
 import datetime
+
+import tkinter as tk
+from tkinter import filedialog
+
 from sys import exit
 import xml.dom as DOM
 
 # TODO: make file pickers for selecting CSV files
-# root = tk.Tk()
-# root.withdraw()
-# file_path = filedialog.askopenfilename()
-# root.update()
+root = tk.Tk()
+root.withdraw()
+file_path_evaluations = filedialog.askopenfilename()
+file_path_lms = filedialog.askopenfilename()
+file_path_meta = filedialog.askopenfilename()
+root.update()
 
-# GET ALL INPUT FILES
+# GET ALL INPUT FILESe
 dir_in = 'data_in2'
 dir_out = 'data_out'
 lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
@@ -227,11 +233,6 @@ def make_eval_tree(df):
     return all_evals
 
 
-eval_root = make_eval_tree(df_rename_sampled)
-evaluations_xml = ET.ElementTree(eval_root)
-
-# evaluations_xml.write('data_out/evals-only.xml')
-
 # Read in metadata and use to populate the other XML fields
 # TODO: Check if parsing dates properyl on input
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
@@ -358,6 +359,9 @@ el_trainingprovider.append(el_class)
 
 el_submission = ET.Element('submission')
 el_submission.append(el_trainingprovider)
+
+eval_root = make_eval_tree(df_rename_sampled)
+evaluations_xml = ET.ElementTree(eval_root)
 
 
 # output_filename_scheme() -> String
