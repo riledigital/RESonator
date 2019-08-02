@@ -2,15 +2,15 @@ from PyQt5.QtWidgets import \
     QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, \
     QFileDialog, QLineEdit, QHBoxLayout, QGroupBox
 
-import logging
-
 app = QApplication([])  ## every PyQT app needs QApplication
 
 
 class RESonatorGUI():
     ## Store the paths as class attributes?
-    paths = {'path_lms': 'empty'}
-    choose_path_1_edit = QLineEdit(paths['path_lms'])
+    paths = {
+        'lms': '',
+        'evaluation': '',
+        'metadata': ''}
 
     def __init__(self) -> None:
         # setup a vertical layout for the window
@@ -50,19 +50,24 @@ class RESonatorGUI():
     def make_filepicker_section(self, data_name):
         self.horizontalGroupBox = \
             QGroupBox('Select input file for ' + str(data_name))
-        lt_lms = QHBoxLayout()  # creates a layout
+        lt = QHBoxLayout()  # creates a layout
         ## Start edit section
-        lt_lms.addWidget(self.choose_path_1_edit)
+        # choose_path_1_edit = QLineEdit()
+        # lt.addWidget(self.choose_path_1_edit)
+        data_label = ''
+        if self.paths[data_name] != '':
+            data_label = self.paths[data_name]
+        lt.addWidget(QLabel('File selected: ' + data_label))
 
         ## Choose Button
         layout_files_1 = QGroupBox('Choose the file below')
         choose_1 = QPushButton('Choose')
-        lt_lms.addWidget(choose_1)
+        lt.addWidget(choose_1)
         choose_1.clicked.connect(lambda:
                                  self.open_file(
                                      file_name=data_name))
 
-        self.horizontalGroupBox.setLayout(lt_lms)
+        self.horizontalGroupBox.setLayout(lt)
         return self.horizontalGroupBox
         # layout_files_1
         #     choose_1
@@ -84,7 +89,7 @@ class RESonatorGUI():
 
     # Methods that handle events
     def update_paths(self, updated_text):
-        self.choose_path_1_edit.setText(updated_text)
+        # self.choose_path_1_edit.setText(updated_text)
         print("Updated paths in GUI")
 
     def open_file(self, file_name):
@@ -96,6 +101,7 @@ class RESonatorGUI():
         print('Selected ' + file_name)
         self.update_paths(updated_text=new_path_str)
 
+    # This will start the data processing program
     def orchestrate_xml(self):
         print('orchestrate_xml')
 
