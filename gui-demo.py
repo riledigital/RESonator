@@ -4,8 +4,10 @@
 
 import wx
 
-
 ## create a class for the app
+from wx import FilePickerCtrl
+
+
 class AppInterface(wx.Frame):
     ## Instantiation
     def __init__(self, *args, **kwargs):
@@ -14,9 +16,9 @@ class AppInterface(wx.Frame):
         self.InitUI()  # on instantiation, create the UI picker...
 
     def InitUI(self):
-        instruction_1 = 'Select the LMS data file:'
-        instruction_2 = 'Select the ZipGrade data file:'
-        instruction_3 = 'Select the hand-prepared metadata file:'
+        # instruction_1 = 'Select the LMS data file:'
+        # instruction_2 = 'Select the ZipGrade data file:'
+        # instruction_3 = 'Select the hand-prepared metadata file:'
 
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
@@ -30,12 +32,14 @@ class AppInterface(wx.Frame):
         self.SetSize((600, 450))
         panel1 = wx.Panel(self)  # set up a panel
         vbox = wx.BoxSizer(wx.VERTICAL)  # BoxSizer
+        top_row = wx.BoxSizer(wx.HORIZONTAL)
         panel1.SetSizer(vbox)  # set up a sizer for layout...
 
         font = wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.DEFAULT)
 
         # instance the widgets
-        button_picker_1 = wx.FilePickerCtrl()
+        in_picker_1: FilePickerCtrl = wx.FilePickerCtrl()
+        top_row.Add(in_picker_1)
         st1 = wx.StaticText(panel1, label=instruction_1, style=wx.ALIGN_LEFT)
         st2 = wx.StaticText(panel1, label=instruction_2, style=wx.ALIGN_LEFT)
         st3 = wx.StaticText(panel1, label=instruction_3, style=wx.ALIGN_LEFT)
@@ -50,11 +54,12 @@ class AppInterface(wx.Frame):
 
         # Add the widgets to boxsizer>panel>Frame
         vbox.Add(st1, flag=wx.ALL, border=15)
+        vbox.Add(top_row)
         vbox.Add(st2, flag=wx.ALL, border=15)
         vbox.Add(st3, flag=wx.ALL, border=15)
-        # vbox.Add(button_picker_1, flag=wx.LEFT, border=5)
-        # oddly enough, adding the button picker crashes the app with a
-        # segfault
+        # oddly enough, adding the button picker crashes
+        # the app with a segfault
+        vbox.Add(in_picker_1, flag=wx.LEFT)
 
         self.SetTitle('RESonator')
         self.Centre()

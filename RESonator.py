@@ -3,21 +3,12 @@ import xml.etree.ElementTree as ET
 import re
 import datetime
 
-import tkinter as tk
-from tkinter import filedialog
-
 from sys import exit
 import xml.dom as DOM
 
 # TODO: make file pickers for selecting CSV files
-root = tk.Tk()
-root.withdraw()
-file_path_evaluations = filedialog.askopenfilename()
-file_path_lms = filedialog.askopenfilename()
-file_path_meta = filedialog.askopenfilename()
-root.update()
 
-# GET ALL INPUT FILESe
+# GET ALL INPUT FILES
 dir_in = 'data_in2'
 dir_out = 'data_out'
 lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
@@ -395,9 +386,7 @@ def export_final_xml():
                             xml_declaration=True)
     print('Saved RES XML as: ' + string_output_filename)
 
-
 export_final_xml()
-
 
 # write_doctype()
 # writes the DOCTYPE string to the first line of the output XML file
