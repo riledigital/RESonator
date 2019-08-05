@@ -94,7 +94,8 @@ class RESonatorGUI():
 
     def open_file(self, file_name):
         name = QFileDialog.getOpenFileName(
-            caption='Select the .CSV file for' + file_name)
+            caption='Select the .CSV file for' + file_name,
+            filter="csv(*.csv)")
         new_path_dict = {file_name: name[0]}  # make new pair
         new_path_str = name[0]
         self.paths.update(new_path_dict)  # update pair to the global dict

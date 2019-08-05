@@ -23,12 +23,10 @@ lms_data = lms_data.rename(
 
 lesson = 'Florida: MGT 462 '
 
-
 # TODO: clean up lesson codes...
 # TODO: replace trailing spaces
 # TODO: replace
 # TODO: strip all whitespace from column values with strings?
-
 
 def is_filtered(ser):
     # filter only Florida data
@@ -39,17 +37,15 @@ def is_filtered(ser):
     else:
         return False
 
-
 lms_data['FilteredInClass'] = lms_data.apply(
     is_filtered, axis=1).astype('bool')  # Create a new field for Filtered...
-# is_fl = lms_data['Lesson'] == lesson
 is_fil = lms_data['FilteredInClass'] == True  ## Only select rows
 lms_fl = lms_data[is_fil]
 # Drop Josh's record and other test users/instructors
 lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
+
 # TODO: Rewrite to be non-mutation
 num_students = lms_fl.shape[0]
-# lms_fl.rename(columns={'Government Level': 'govnlevel'}, inplace=True)
 
 # Get only the columns we need
 lms_fl_subset = lms_fl.filter(
@@ -66,16 +62,13 @@ lms_fl_subset = lms_fl.filter(
         'Postal Code',
         'Email',
         'Government Level'])  # govt needs to be last
-
-
 # print(lms_fl.columns)
-
 
 ## recode_by_regex –> String
 ## Takes in a string and replaces it with a recoded version,
 ## Only returns the acronym in parentheses...
 # helper function meant to be used in apply function...
-def recode_by_regex(input_data):
+def recode_acronyns_parens(input_data):
     regex_str = '\([A-Z]+\)'
     regex = re.compile(regex_str)
     # p = re.compile(regex_str)  # parentheses for capture groups
@@ -83,23 +76,17 @@ def recode_by_regex(input_data):
     captured = sr.group().strip('()')  # remove the parentheses
     return captured
 
-
-# test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
-# print('regex test:' + recode_by_regex(test_string))
-
 # Recode values for fields
 lms_fl_subset['Government Level'] = \
-    lms_fl_subset['Government Level'].apply(recode_by_regex)
-
+    lms_fl_subset['Government Level'].apply(recode_acronyns_parens)
 lms_fl_subset['Discipline'] = \
-    lms_fl_subset['Discipline'].apply(recode_by_regex)
+    lms_fl_subset['Discipline'].apply(recode_acronyns_parens)
 
 # Export a CSV of filtered LMS
 # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
 
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node
-
 
 # row_to_xml
 # row: Series representing user data
@@ -179,4 +166,3 @@ df_rename_sampled = df_rename.sample(
     random_state=0)  # TODO pass the random sample to be entered in
 
 print(len(df_rename_sampled))
-

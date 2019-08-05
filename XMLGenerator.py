@@ -2,13 +2,26 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 import re
 import datetime
-from sys import exit
-import xml.dom as DOM
 
 
 class XMLGenerator():
     in_df = pd.DataFrame()
     out_df = pd.DataFrame()
+
+    # get_meta -> String
+    # field: String representing the field to fetch from the lms dataframe
+    def get_meta(self, field):
+        out_meta = ''
+        try:
+            out_meta = str(df_meta.get(str(field)).item())
+            if out_meta == 'nan':
+                return ''
+            else:
+                return str(df_meta.get(str(field)).item())
+        except:
+            print("Empty field, returning empty string" + '')
+            return ''
+        ## Finally, return the data.
 
     def __init__(self, inputty):
         print('Initialized XML generator with input' + str(inputty))
@@ -16,6 +29,40 @@ class XMLGenerator():
     ## main entry point for this class
     def processXML(self, in_df):
         print(in_df)
+
+        evaldata = ET.Element(
+            'evaldata')  # initialize XML node representing set of all evaluations
+
+        # Build the node for registration which will be appended later...
+        registration = ET.Element('registration')  # initialize XML node
+
+        # row_to_xml
+        # row: Series representing user data
+        # this helper function creates a new XML node
+        # for students, using the selected fields.
+        # returns: returns null.
+        def row_to_xml(row):
+            new_student = ET.Element('student', attrib={
+                'international': row['International Status'],
+                'studentfirstname': row['First Name'],
+                'studentlastname': row['Last Name'],
+                'studentcity': row['City'],
+                'studentzipcode': row['Postal Code'],
+                'studentphone': row['Primary Phone'],
+                'discipline': row['Discipline'],
+                'govnlevel': row['Government Level']})
+            registration.append(new_student)
+            # print("Appended record: " + str(row['First Name']))
+
+        # This function outputs nothing
+        # build_registration_xml
+        # df: data frame representing user data from LMS system
+        def build_registration_xml(df):
+            df.apply(row_to_xml, axis=1)
+
+        build_registration_xml(lms_fl_subset)
+        registration_tree = ET.ElementTree(registration)
+        # registration_tree.write('data_out/test.xml')
 
     # make_eval_tree -> Element
     # takes in a df with rows corresponding to students.
@@ -69,9 +116,8 @@ class XMLGenerator():
                      'class_enddate',
                      'class_starttime',
                      'class_endtime'],
-        infer_datetime_format=True
-    )
-    df_meta = df_meta.rename(columns=lambda x: x.strip()).rename(
+        infer_datetime_format=True).rename(
+        columns=lambda x: x.strip()).rename(
         columns=lambda y: y.lower())
 
     # get_meta -> String
@@ -198,7 +244,7 @@ class XMLGenerator():
 
     # export_final_xml
     # wrapper function to export the xml files at the very end
-    def export_final_xml():
+    def export_final_xml(self):
         export_tree_manifest = ET.Element('Manifest')
         export_tree_manifest.append(el_submission)
         # # TODO: include DOCTYPE programmatically? Otherwise we have to manually insert the DOCTYPE...
@@ -219,7 +265,7 @@ class XMLGenerator():
 
     # write_doctype()
     # writes the DOCTYPE string to the first line of the output XML file
-    def write_doctype():
+    def write_doctype(self):
         # Read in the export file, then
         ## https://stackoverflow.com/a/10507291
         insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'

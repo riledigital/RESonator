@@ -1,52 +1,50 @@
 import pandas as pd
-import xml.etree.ElementTree as ET
 import re
-import datetime
 from sys import exit
-import xml.dom as DOM
-
 
 class DataPrep():
     # Initialize the final data that will be returned by this class
-    prepped_data = pd.DataFrame()
+    prepped_data_lms = pd.DataFrame()
+    prepped_data_eval = pd.DataFrame()
+    prepped_data_meta = pd.DataFrame()
+
     # GET ALL INPUT FILES
     dir_in = 'data_in2'
     dir_out = 'data_out'
     lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
-    lms_data = pd.read_csv(lms_path)
+    lms_data = ''
+    lesson = 'Florida: MGT 462 '
+    num_students = 0
 
     def __init__(self):
-        self.read_inputs()
-        self.lms_data = self.lms_data.rename(
-            columns=lambda x: x.strip())
-        lesson = 'Florida: MGT 462 '
+        print('Instantiated a DataPrep object')
 
-        # TODO: clean up lesson codes...
-        # TODO: replace trailing spaces
-        # TODO: replace
-        # TODO: strip all whitespace from column values with strings?
-
+    def prep_data_lms(self, input_data):
         def is_in_florida(ser):
             # filter only Florida data
-            cond = ser['Lesson'] == lesson and \
-                   ser['Lesson Completion'] == 'completed'
+            cond = \
+                ser['Lesson'] == self.lesson and \
+                ser['Lesson Completion'] == 'completed'
             if cond:
                 return True
             else:
                 return False
 
+        self.read_inputs(input_data)
+        ## START LMS DATA PROCESS
+        self.lms_data = \
+            self.lms_data.rename(columns=lambda x: x.strip())
+
         self.lms_data['FilteredInClass'] = self.lms_data.apply(
             is_in_florida, axis=1).astype(
             'bool')
-        # Create a new field for Filtered...
-        # is_fl = self.lms_data['Lesson'] == lesson
-        is_fil = self.lms_data['FilteredInClass'] == True  ## Only select rows
+        is_fil = self.lms_data['FilteredInClass'] == True
+        ## Only select rows
         lms_fl = self.lms_data[is_fil]
         # Drop Josh's record and other test users/instructors
         lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
         # TODO: Rewrite to be non-mutation
-        num_students = lms_fl.shape[0]
-        # lms_fl.rename(columns={'Government Level': 'govnlevel'}, inplace=True)
+        self.num_students = lms_fl.shape[0]
 
         # Get only the columns we need
         lms_fl_subset = lms_fl.filter(
@@ -78,9 +76,6 @@ class DataPrep():
             captured = sr.group().strip('()')  # remove the parentheses
             return captured
 
-        # test_string = 'safalsdf (RWER) fasfd (AES) (ESFGASDF)'
-        # print('regex test:' + recode_by_regex(test_string))
-
         # Recode values for fields
         lms_fl_subset['Government Level'] = \
             lms_fl_subset['Government Level'].apply(recode_by_regex)
@@ -88,54 +83,16 @@ class DataPrep():
         lms_fl_subset['Discipline'] = \
             lms_fl_subset['Discipline'].apply(recode_by_regex)
 
-        # Export a CSV of filtered LMS
+        # Export a CSV of filtered, cleaned
         # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
+        return lms_fl_subset
 
-        # Build the node for registration which will be appended later...
-        registration = ET.Element('registration')  # initialize XML node
+    def prep_data_eval(self, input_data):
+        ## START EVAL PROCESS
+        input_data = input_data.rename(columns=lambda x: x.strip())
 
-        # row_to_xml
-        # row: Series representing user data
-        # this helper function creates a new XML node
-        # for students, using the selected fields.
-        # returns: returns null.
-        def row_to_xml(row):
-            new_student = ET.Element('student', attrib={
-                'international': row['International Status'],
-                'studentfirstname': row['First Name'],
-                'studentlastname': row['Last Name'],
-                'studentcity': row['City'],
-                'studentzipcode': row['Postal Code'],
-                'studentphone': row['Primary Phone'],
-                'discipline': row['Discipline'],
-                'govnlevel': row['Government Level']})
-            registration.append(new_student)
-            # print("Appended record: " + str(row['First Name']))
-
-        # This function outputs nothing
-        # build_registration_xml
-        # df: data frame representing user data from LMS system
-        def build_registration_xml(df):
-            df.apply(row_to_xml, axis=1)
-
-        build_registration_xml(lms_fl_subset)
-        registration_tree = ET.ElementTree(registration)
-        # registration_tree.write('data_out/test.xml')
-
-        # Next...
-        # Import ZipGrade data...
-        eval_path = './data_in2/quiz-Eval-full.csv'
-        eval_df = pd.read_csv(eval_path, encoding='latin1')
-        eval_df = eval_df.rename(columns=lambda x: x.strip())
-        evaldata = ET.Element(
-            'evaldata')  # initialize XML node representing set of all evaluations
-
-        # df_identifiers = eval_df.filter(  # Filter only the columns we want
-        #     axis='columns',
-        #     items=['StudentID'])
-
+        ## Filter columns by regular expressions
         df_only_questions = eval_df.filter(
-            ## Filter columns by regular expressions
             axis='columns',
             regex='Stu[0-9]+')
 
@@ -159,34 +116,34 @@ class DataPrep():
         df_rename.columns = [
             col.replace('Stu', 'id') for col in df_rename.columns]
         df_rename_sampled = df_rename.sample(
-            n=num_students,
-            random_state=0)  # TODO pass the random sample to be entered in
+            n=self.num_students,
+            random_state=0)
+        # TODO pass the random sample to be entered in
 
         print(len(df_rename_sampled))
+        self.prepped_data_eval = df_rename_sampled
+        return self.prepped_data_eval
 
-        # get_meta -> String
-        # field: String representing the field to fetch from the lms dataframe
-        def get_meta(field):
-            out_meta = ''
-            try:
-                out_meta = str(df_meta.get(str(field)).item())
-                if out_meta == 'nan':
-                    return ''
-                else:
-                    return str(df_meta.get(str(field)).item())
-            except:
-                print("Empty field, returning empty string" + '')
-                return ''
-            ## Finally, return the data.
+    def prep_data_meta(self, input_meta):
+        return self.prepped_data_meta
 
-        self.prepped_data = df_rename_sampled
+    def read_inputs(self, input_data_lms):
+        self.lms_data = input_data_lms
 
-    def prepped_data(self):
-        return self.prepped_data
 
-    def read_inputs(self):
-        return ''
-
+# END OF CLASS
+# Testing code below
 
 out_data_test = DataPrep()
-print(out_data_test.prepped_data)
+lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
+
+# Import ZipGrade data...
+eval_path = './data_in2/quiz-Eval-full.csv'
+eval_df = pd.read_csv(eval_path, encoding='latin1')
+A_final_lms = out_data_test.prep_data_lms(pd.read_csv(lms_path))
+A_final_eval = out_data_test.prep_data_eval(eval_df)
+A_final_meta = out_data_test.prep_data_eval(eval_df)
+
+print(A_final_lms)
+print(A_final_eval)
+print(A_final_meta)
