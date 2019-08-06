@@ -5,30 +5,22 @@ import datetime
 
 
 class XMLGenerator():
-    in_df = pd.DataFrame()
+    in_df_lms = pd.DataFrame()
+    in_df_eval = pd.DataFrame()
+    in_df_meta = pd.DataFrame()
+
     out_df = pd.DataFrame()
 
-    # get_meta -> String
-    # field: String representing the field to fetch from the lms dataframe
-    def get_meta(self, field):
-        out_meta = ''
-        try:
-            out_meta = str(df_meta.get(str(field)).item())
-            if out_meta == 'nan':
-                return ''
-            else:
-                return str(df_meta.get(str(field)).item())
-        except:
-            print("Empty field, returning empty string" + '')
-            return ''
-        ## Finally, return the data.
-
-    def __init__(self, inputty):
-        print('Initialized XML generator with input' + str(inputty))
+    def __init__(self):
+        print('Initialized XML generator')
 
     ## main entry point for this class
-    def processXML(self, in_df):
-        print(in_df)
+    def generate_XML(
+            self,
+            input_lms,
+            input_eval,
+            input_meta):
+        print("Loaded data: " + str(input_lms)
 
         evaldata = ET.Element(
             'evaldata')  # initialize XML node representing set of all evaluations
@@ -106,19 +98,7 @@ class XMLGenerator():
         print('Finished building XML for evaluations')
         return all_evals
 
-    # Read in metadata and use to populate the other XML fields
-    # TODO: Check if parsing dates properyl on input
-    # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
-    df_meta = pd.read_csv(
-        dir_in + '/' + 'meta-template.csv',
-        skipinitialspace=True,
-        parse_dates=['class_startdate',
-                     'class_enddate',
-                     'class_starttime',
-                     'class_endtime'],
-        infer_datetime_format=True).rename(
-        columns=lambda x: x.strip()).rename(
-        columns=lambda y: y.lower())
+
 
     # get_meta -> String
     # field: String representing the field to fetch from the lms dataframe
@@ -247,14 +227,6 @@ class XMLGenerator():
     def export_final_xml(self):
         export_tree_manifest = ET.Element('Manifest')
         export_tree_manifest.append(el_submission)
-        # # TODO: include DOCTYPE programmatically? Otherwise we have to manually insert the DOCTYPE...
-        # doctype_submission = DOM.DocumentType
-        # doctype_submission.publicId = 'test'
-        # treeee = ET.TreeBuilder()
-        # treeee.doctype = ['NAMETEST', 'pubidtest', 'systemtest']
-        # treeee.start('Manifest', '')
-        # treeee.end("tag")
-        # outter = treeee.close()
         export_tree_final = ET.ElementTree(export_tree_manifest)
         string_output_filename = 'data_out/' + output_filename_scheme() + '.xml'
         export_tree_final.write(string_output_filename, encoding="utf-8",
@@ -262,6 +234,21 @@ class XMLGenerator():
         print('Saved RES XML as: ' + string_output_filename)
 
     export_final_xml()
+
+    # get_meta -> String
+    # field: String representing the field to fetch from the lms dataframe
+    def get_meta(self, field):
+        out_meta = ''
+        try:
+            out_meta = str(df_meta.get(str(field)).item())
+            if out_meta == 'nan':
+                return ''
+            else:
+                return str(df_meta.get(str(field)).item())
+        except:
+            print("Empty field, returning empty string" + '')
+            return ''
+        ## Finally, return the data.
 
     # write_doctype()
     # writes the DOCTYPE string to the first line of the output XML file
@@ -281,3 +268,7 @@ class XMLGenerator():
 
     write_doctype()
     # exit()
+
+
+generator = XMLGenerator()
+XMLGenerator.generate_XML(data_lms, data_eval, data_meta)

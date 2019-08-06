@@ -2,6 +2,7 @@ import pandas as pd
 import re
 from sys import exit
 
+
 class DataPrep():
     # Initialize the final data that will be returned by this class
     prepped_data_lms = pd.DataFrame()
@@ -124,7 +125,23 @@ class DataPrep():
         self.prepped_data_eval = df_rename_sampled
         return self.prepped_data_eval
 
-    def prep_data_meta(self, input_meta):
+    def prep_data_meta(self, input_meta: pd.DataFrame):
+        """
+        returns a df containing the processed metadata df
+        :param input_meta: df representing
+        :return:
+        """
+        my_meta = pd.read_csv(
+            self.dir_in + '/' + 'meta-template.csv',
+            skipinitialspace=True,
+            parse_dates=['class_startdate',
+                         'class_enddate',
+                         'class_starttime',
+                         'class_endtime'],
+            infer_datetime_format=True).rename(
+            columns=lambda x: x.strip()).rename(
+            columns=lambda y: y.lower())
+        self.prepped_data_meta = my_meta
         return self.prepped_data_meta
 
     def read_inputs(self, input_data_lms):
@@ -140,9 +157,11 @@ lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
 # Import ZipGrade data...
 eval_path = './data_in2/quiz-Eval-full.csv'
 eval_df = pd.read_csv(eval_path, encoding='latin1')
+meta_df = pd.read_csv('./data_in2/meta-template.csv')
+
 A_final_lms = out_data_test.prep_data_lms(pd.read_csv(lms_path))
 A_final_eval = out_data_test.prep_data_eval(eval_df)
-A_final_meta = out_data_test.prep_data_eval(eval_df)
+A_final_meta = out_data_test.prep_data_meta(meta_df)
 
 print(A_final_lms)
 print(A_final_eval)
