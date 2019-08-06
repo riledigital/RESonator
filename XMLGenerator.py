@@ -6,10 +6,10 @@ import DataPrep
 
 
 class XMLGenerator():
-    in_df_lms = pd.DataFrame()
-    in_df_eval = pd.DataFrame()
-    in_df_meta = pd.DataFrame()
-    num_students = 0  # change later
+    in_df_lms = None
+    in_df_eval = None
+    in_df_meta = None
+    num_students = None  # change later
     registration = et.Element('registration')  # initialize XML node
     evaldata = et.Element('evaldata')
     el_submission = et.Element('submission')
@@ -172,7 +172,7 @@ class XMLGenerator():
         :return: String
         """
 
-        element_instructorpoc = et.Element(
+        el_instructorpoc = et.Element(
             'instructorpoc',
             attrib={
                 'instlastname':
@@ -220,7 +220,7 @@ class XMLGenerator():
 
         eval_root = self.make_eval_tree(self.in_df_eval)
         evaluations_xml = et.ElementTree(eval_root)
-        el_class.append(element_instructorpoc)
+        el_class.append(el_instructorpoc)
         el_class.append(self.registration)
         el_class.append(eval_root)
 
@@ -232,7 +232,6 @@ class XMLGenerator():
                 'posttest':
                     self.get_meta('testaverage_posttest')
             })
-
         el_class.append(el_testaverage)
 
         el_trainingprovider = et.Element(
@@ -258,24 +257,24 @@ class XMLGenerator():
             :return: none
             """
 
-            def row_to_xml(row):
+            def row_to_xml(student):
                 """
                 this helper function creates a new XML node for students
                 based on the selected fields.
-                :param row: Series representing user data
+                :param student: Series representing user data
                 :return: none
                 """
                 new_student = et.Element('student', attrib={
-                    'international': row['International Status'],
-                    'studentfirstname': row['First Name'],
-                    'studentlastname': row['Last Name'],
-                    'studentcity': row['City'],
-                    'studentzipcode': row['Postal Code'],
-                    'studentphone': row['Primary Phone'],
-                    'discipline': row['Discipline'],
-                    'govnlevel': row['Government Level']})
+                    'international': student['International Status'],
+                    'studentfirstname': student['First Name'],
+                    'studentlastname': student['Last Name'],
+                    'studentcity': student['City'],
+                    'studentzipcode': student['Postal Code'],
+                    'studentphone': student['Primary Phone'],
+                    'discipline': student['Discipline'],
+                    'govnlevel': student['Government Level']})
                 self.registration.append(new_student)
-                print("Appended record: " + str(row['First Name']))
+                print("Appended record: " + str(student['First Name']))
 
             df.apply(row_to_xml, axis=1)
             print('Finished building XML tree for registration data')

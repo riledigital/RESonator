@@ -1,51 +1,48 @@
 import pandas as pd
 import re
-from sys import exit
 
 
 class DataPrep():
+
+    def __init__(self, lms, evalu, metadf):
+        self.pre_data_lms = lms
+        self.pre_data_eval = evalu
+        self.pre_data_meta = metadf
+        self.lesson = 'Florida: MGT 462 '
+        # self.num_students_total = int(self.pre_data_lms.shape[0])
+        print('Instantiated a DataPrep object')
+
+    # pre-prepped data
+    pre_data_lms = None
+    pre_data_eval = None
+    pre_data_meta = None
+
     # Initialize the final data that will be returned by this class
-    prepped_data_lms = pd.DataFrame()
-    prepped_data_eval = pd.DataFrame()
-    prepped_data_meta = pd.DataFrame()
+    prepped_data_lms = None
+    prepped_data_eval = None
+    prepped_data_meta = None
 
     # GET ALL INPUT FILES
     dir_in = 'data_in2'
     dir_out = 'data_out'
     lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
-    lms_data = ''
-    lesson = 'Florida: MGT 462 '
-    num_students = 0
+    pre_data_lms = None
+    lesson = None
+    num_students_total = None
+    num_students_completed = None
 
-    def __init__(self):
-        print('Instantiated a DataPrep object')
+    def prep_data_lms(self):
+        lms_prefilter = self.pre_data_lms.rename(columns=lambda x: x.strip())
+        lesson_str = 'Florida: MGT 462 '
 
-    def prep_data_lms(self, input_data):
-        def is_in_florida(ser):
-            # filter only Florida data
-            cond = \
-                ser['Lesson'] == self.lesson and \
-                ser['Lesson Completion'] == 'completed'
-            if cond:
-                return True
-            else:
-                return False
+        lms_fl = lms_prefilter[
+            (lms_prefilter['Lesson'] == lesson_str)
+            & (lms_prefilter['Lesson Completion'] == 'completed')]
 
-        self.read_inputs(input_data)
-        ## START LMS DATA PROCESS
-        self.lms_data = \
-            self.lms_data.rename(columns=lambda x: x.strip())
+        self.num_students_completed = lms_fl.shape[0]
 
-        self.lms_data['FilteredInClass'] = self.lms_data.apply(
-            is_in_florida, axis=1).astype(
-            'bool')
-        is_fil = self.lms_data['FilteredInClass'] == True
-        ## Only select rows
-        lms_fl = self.lms_data[is_fil]
         # Drop Josh's record and other test users/instructors
         lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
-        # TODO: Rewrite to be non-mutation
-        self.num_students = lms_fl.shape[0]
 
         # Get only the columns we need
         lms_fl_subset = lms_fl.filter(
@@ -63,13 +60,16 @@ class DataPrep():
                 'Email',
                 'Government Level'])  # govt needs to be last
 
-        # print(lms_fl.columns)
-
-        ## recode_by_regex –> String
-        ## Takes in a string and replaces it with a recoded version,
-        ## Only returns the acronym in parentheses...
-        # helper function meant to be used in apply function...
         def recode_by_regex(input_data):
+            """
+
+            Takes in a string and replaces it with a recoded version,
+            Only returns the acronym in parentheses...
+            helper function meant to be used in apply function...
+
+            :param input_data: String
+            :return: String
+            """
             regex_str = '\([A-Z]+\)'
             regex = re.compile(regex_str)
             # p = re.compile(regex_str)  # parentheses for capture groups
@@ -88,12 +88,13 @@ class DataPrep():
         # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
         return lms_fl_subset
 
-    def prep_data_eval(self, input_data):
+    def prep_data_eval(self):
         ## START EVAL PROCESS
-        input_data = input_data.rename(columns=lambda x: x.strip())
+        input_eval = self.pre_data_eval
+        input_eval = input_eval.rename(columns=lambda x: x.strip())
 
         ## Filter columns by regular expressions
-        df_only_questions = input_data.filter(
+        df_only_questions = input_eval.filter(
             axis='columns',
             regex='Stu[0-9]+')
 
@@ -117,18 +118,18 @@ class DataPrep():
         df_rename.columns = [
             col.replace('Stu', 'id') for col in df_rename.columns]
         df_rename_sampled = df_rename.sample(
-            n=self.num_students,
+            n=self.num_students_completed,
             random_state=0)
 
         self.prepped_data_eval = df_rename_sampled
         return self.prepped_data_eval
 
-    def prep_data_meta(self, input_meta: pd.DataFrame):
+    def prep_data_meta(self):
         """
         returns a df containing the processed metadata df
-        :param input_meta: df representing
-        :return:
+        :return: self.prepped_data_meta
         """
+
         my_meta = pd.read_csv(
             self.dir_in + '/' + 'meta-template.csv',
             skipinitialspace=True,
@@ -141,6 +142,3 @@ class DataPrep():
             columns=lambda y: y.lower())
         self.prepped_data_meta = my_meta
         return self.prepped_data_meta
-
-    def read_inputs(self, input_data_lms):
-        self.lms_data = input_data_lms
