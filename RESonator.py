@@ -83,7 +83,7 @@ lms_fl_subset['Discipline'] = \
     lms_fl_subset['Discipline'].apply(recode_acronyns_parens)
 
 # Export a CSV of filtered LMS
-# lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
+# lms_fl_subset.to_csv('ut/lms_fl_subsetted.csv')
 
 # Build the node for registration which will be appended later...
 registration = ET.Element('registration')  # initialize XML node

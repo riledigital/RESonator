@@ -93,7 +93,7 @@ class DataPrep():
         input_data = input_data.rename(columns=lambda x: x.strip())
 
         ## Filter columns by regular expressions
-        df_only_questions = eval_df.filter(
+        df_only_questions = input_data.filter(
             axis='columns',
             regex='Stu[0-9]+')
 
@@ -119,9 +119,7 @@ class DataPrep():
         df_rename_sampled = df_rename.sample(
             n=self.num_students,
             random_state=0)
-        # TODO pass the random sample to be entered in
 
-        print(len(df_rename_sampled))
         self.prepped_data_eval = df_rename_sampled
         return self.prepped_data_eval
 
@@ -146,23 +144,3 @@ class DataPrep():
 
     def read_inputs(self, input_data_lms):
         self.lms_data = input_data_lms
-
-
-# END OF CLASS
-# Testing code below
-
-out_data_test = DataPrep()
-lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
-
-# Import ZipGrade data...
-eval_path = './data_in2/quiz-Eval-full.csv'
-eval_df = pd.read_csv(eval_path, encoding='latin1')
-meta_df = pd.read_csv('./data_in2/meta-template.csv')
-
-A_final_lms = out_data_test.prep_data_lms(pd.read_csv(lms_path))
-A_final_eval = out_data_test.prep_data_eval(eval_df)
-A_final_meta = out_data_test.prep_data_meta(meta_df)
-
-print(A_final_lms)
-print(A_final_eval)
-print(A_final_meta)
