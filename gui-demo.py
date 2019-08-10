@@ -9,8 +9,16 @@ from wx import FilePickerCtrl
 
 
 class AppInterface(wx.Frame):
-    ## Instantiation
+    ## Setup class variables for files to be output
+    data_lms = None
+    data_eval = None
+    data_meta = None
+
     def __init__(self, *args, **kwargs):
+        """
+        :param args: variables for
+        :param kwargs:
+        """
         super(AppInterface, self).__init__(*args, **kwargs)
 
         self.InitUI()  # on instantiation, create the UI picker...
@@ -22,7 +30,8 @@ class AppInterface(wx.Frame):
 
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
-        fileItem = fileMenu.Append(wx.ID_EXIT, 'Quit', 'Quit application')
+        fileItem = fileMenu.Append(
+            xwx.ID_EXIT, 'Quit', 'Quit application')
         # menubar.Append(fileMenu, '&File')
         # self.SetMenuBar(menubar)
 
@@ -68,6 +77,9 @@ class AppInterface(wx.Frame):
         print(self)
         print(one)
         print('Ran file picker')
+
+    def read_inputs(self, lms, eval, meta):
+        print('Calling read_inputs to setup input files...')
 
     def OnQuit(self, e):  # event for closing app
         self.Close()

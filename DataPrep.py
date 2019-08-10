@@ -32,7 +32,8 @@ class DataPrep():
     num_students_completed = None
 
     def prep_data_lms(self):
-        lms_prefilter = self.pre_data_lms.rename(columns=lambda x: x.strip())
+        lms_prefilter = self.pre_data_lms
+        lms_prefilter = lms_prefilter.rename(columns=lambda x: x.strip())
         lesson_str = 'Florida: MGT 462 '
 
         lms_fl = lms_prefilter[
