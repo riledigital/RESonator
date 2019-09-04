@@ -2,10 +2,10 @@ import pandas as pd
 import xml.etree.ElementTree as et
 import re
 import datetime
-import DataPrep
+import logging
+from pathlib import Path
 
-
-class XMLGenerator():
+class XMLGenerator:
     in_df_lms = None
     in_df_eval = None
     in_df_meta = None
@@ -26,6 +26,16 @@ class XMLGenerator():
         :param input_eval:
         :param input_meta:
         """
+
+        fileout_str = datetime.datetime.today().strftime(
+            '%m%d%Y') + '.log'
+        path = Path()
+        logging.basicConfig(
+            path=Path.cwd() / 'dataout' / fileout_str,
+            # filename = './dataout' + datetime.datetime.today().strftime(
+            # '%m%d%Y') + '.log',
+            level=logging.DEBUG)
+
         self.in_df_lms = input_lms
         self.in_df_eval = input_eval
         self.in_df_meta = input_meta
@@ -33,11 +43,11 @@ class XMLGenerator():
         self.string_output_filename = self.output_filename_scheme()
         self.string_output_file_path = \
             'data_out/' + self.string_output_filename + '.xml'
-        print("Loaded lms data: " + str(self.in_df_lms))
-        print("Loaded eval data: " + str(self.in_df_eval))
-        print("Loaded meta data: " + str(self.in_df_meta))
-        print('Number of students: ' + str(self.num_students))
-        print('Initialized XML generator instance')
+        logging.info("Loaded lms data: " + str(self.in_df_lms))
+        logging.info("Loaded eval data: " + str(self.in_df_eval))
+        logging.info("Loaded meta data: " + str(self.in_df_meta))
+        logging.info('Number of students: ' + str(self.num_students))
+        logging.info('Initialized XML generator instance')
 
     def get_meta(self, field):
         """
@@ -53,7 +63,7 @@ class XMLGenerator():
             else:
                 return str(df_meta.get(str(field)).item())
         except:
-            print("Empty field, returning empty string" + '')
+            logging.warning("Empty field, returning empty string" + '')
             return ''
 
     def make_eval_tree(self, df):
@@ -101,7 +111,7 @@ class XMLGenerator():
         export_tree_manifest = et.Element('Manifest')
         export_tree_manifest.append(self.el_submission)
         self.export_tree_final = et.ElementTree(export_tree_manifest)
-        print('Finished building XML for evaluations')
+        logging.info('Finished building XML for evaluations')
         return all_evals
 
     def is_passed_class(inp):
@@ -136,10 +146,12 @@ class XMLGenerator():
         wrapper function to export the xml files at the very end
         :return: none
         """
+
         self.export_tree_final.write(self.string_output_file_path,
                                      encoding="utf-8",
                                      xml_declaration=True)
-        print('Saved RES XML as: ' + self.string_output_file_path)
+
+        logging.info('Saved RES XML as: ' + self.string_output_file_path)
 
     def write_doctype(self):
         """
@@ -147,7 +159,7 @@ class XMLGenerator():
 
         :return:
         """
-        print('Writing DOCTYPE to XML file...')
+        logging.info('Writing DOCTYPE to XML file...')
         # Read in the export file, then
         ## https://stackoverflow.com/a/10507291
         insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
@@ -160,7 +172,7 @@ class XMLGenerator():
         contents = "".join(contents)
         f.write(contents)
         f.close()
-        print('Finished writing DOCTYPE string to XML file')
+        logging.info('Finished writing DOCTYPE string to XML file')
 
     def generate_xml(self):
         """
@@ -247,7 +259,7 @@ class XMLGenerator():
 
         self.el_submission.append(el_trainingprovider)
 
-        print('Finished generating XML with name: ' + str(
+        logging.info('Finished generating XML with name: ' + str(
             self.string_output_filename))
 
         def build_registration_xml(df):
@@ -274,10 +286,10 @@ class XMLGenerator():
                     'discipline': student['Discipline'],
                     'govnlevel': student['Government Level']})
                 self.registration.append(new_student)
-                print("Appended record: " + str(student['First Name']))
+                logging.info("Appended record: " + str(student['First Name']))
 
             df.apply(row_to_xml, axis=1)
-            print('Finished building XML tree for registration data')
+            logging.info('Finished building XML tree for registration data')
 
         build_registration_xml(self.in_df_lms)
         self.export_final_xml()

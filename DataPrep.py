@@ -1,16 +1,16 @@
 import pandas as pd
 import re
+import logging
 
-
-class DataPrep():
+class DataPrep:
 
     def __init__(self, lms, evalu, metadf):
         self.pre_data_lms = lms
         self.pre_data_eval = evalu
         self.pre_data_meta = metadf
-        self.lesson = 'Florida: MGT 462 '
+        self.lesson = 'New Jersey: MGT 462 '
         # self.num_students_total = int(self.pre_data_lms.shape[0])
-        print('Instantiated a DataPrep object')
+        logging.info('Instantiated a DataPrep object')
 
     # pre-prepped data
     pre_data_lms = None
@@ -32,10 +32,11 @@ class DataPrep():
     num_students_completed = None
 
     def prep_data_lms(self):
+        logging.info('Starting prep_data_lms')
         lms_prefilter = self.pre_data_lms
         lms_prefilter = lms_prefilter.rename(columns=lambda x: x.strip())
-        lesson_str = 'Florida: MGT 462 '
-
+        lesson_str = 'New Jersey: MGT 462' # Important for selecting course
+        logging.info('Starting prefiltering for lesson')
         lms_fl = lms_prefilter[
             (lms_prefilter['Lesson'] == lesson_str)
             & (lms_prefilter['Lesson Completion'] == 'completed')]
@@ -43,7 +44,9 @@ class DataPrep():
         self.num_students_completed = lms_fl.shape[0]
 
         # Drop Josh's record and other test users/instructors
-        lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
+        # TODO: Do this by hand...
+        # logging.info('Droppped instructor')
+        # lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
 
         # Get only the columns we need
         lms_fl_subset = lms_fl.filter(
@@ -60,6 +63,7 @@ class DataPrep():
                 'Postal Code',
                 'Email',
                 'Government Level'])  # govt needs to be last
+        logging.info('Subsetted columns in lms data')
 
         def recode_by_regex(input_data):
             """
@@ -91,6 +95,7 @@ class DataPrep():
 
     def prep_data_eval(self):
         ## START EVAL PROCESS
+        logging.info('Running prep_data_eval()')
         input_eval = self.pre_data_eval
         input_eval = input_eval.rename(columns=lambda x: x.strip())
 
@@ -130,7 +135,7 @@ class DataPrep():
         returns a df containing the processed metadata df
         :return: self.prepped_data_meta
         """
-
+        logging.info('Reading in metadata file')
         my_meta = pd.read_csv(
             self.dir_in + '/' + 'meta-template.csv',
             skipinitialspace=True,
