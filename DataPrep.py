@@ -4,11 +4,12 @@ import logging
 
 class DataPrep:
 
-    def __init__(self, lms, evalu, metadf):
+    def __init__(self, lms, evalu, meta_path, lesson_filter_str):
         self.pre_data_lms = lms
         self.pre_data_eval = evalu
-        self.pre_data_meta = metadf
-        self.lesson = 'New Jersey: MGT 462 '
+        self.pre_data_meta = meta_path
+        #self.lesson = 'New Jersey: MGT 462 '
+        self.lesson_str = str(lesson_filter_str)
         # self.num_students_total = int(self.pre_data_lms.shape[0])
         logging.info('Instantiated a DataPrep object')
 
@@ -23,24 +24,47 @@ class DataPrep:
     prepped_data_meta = None
 
     # GET ALL INPUT FILES
-    dir_in = 'data_in2'
+    dir_in = 'data_in'
     dir_out = 'data_out'
-    lms_path = 'data_in2/2019-07-18-12-32-33_d43o0sted3.csv'
+    lms_path = 'data_in/2019-07-18-12-32-33_d43o0sted3.csv'
     pre_data_lms = None
     lesson = None
     num_students_total = None
     num_students_completed = None
+    lessons_list = None
+    lesson_str = 'INITIALIZED_DEFAULT'
+
+    def get_lessons_list(self):
+        """
+        Returns a list of all lessons
+        :return:
+        """
+        try:
+            # Make a list of all the lessons?
+            self.lesson_list = self.pre_data_lms['Lesson'].unique().tolist()
+            return self.lesson_list
+        except:
+            Exception('ERROR: Error reading list of lessons')
+
+    def select_specific_lesson(self, new_lesson_str):
+        """
+        Choose a specific lesson. Call this after initializing the df
+        :param new_lesson_str:
+        :return:
+        """
+        self.lesson_str = new_lesson_str
+        logging.info('Narrowing lesson to: ' + str(new_lesson_str))
 
     def prep_data_lms(self):
         logging.info('Starting prep_data_lms')
         lms_prefilter = self.pre_data_lms
         lms_prefilter = lms_prefilter.rename(columns=lambda x: x.strip())
-        lesson_str = 'New Jersey: MGT 462' # Important for selecting course
-        logging.info('Starting prefiltering for lesson')
-        lms_fl = lms_prefilter[
-            (lms_prefilter['Lesson'] == lesson_str)
-            & (lms_prefilter['Lesson Completion'] == 'completed')]
+        # lesson_str = 'New Jersey: MGT 462' # Important for selecting course
 
+        lms_fl = lms_prefilter[
+            (lms_prefilter['Lesson'] == self.lesson_str)
+            & (lms_prefilter['Lesson Completion'] == 'completed')]
+        logging.info('Starting prefiltering for lesson: ' + str(self.lesson_str))
         self.num_students_completed = lms_fl.shape[0]
 
         # Drop Josh's record and other test users/instructors
@@ -108,7 +132,7 @@ class DataPrep:
             labels=['Stu24', 'Stu25', 'Stu26', 'Stu27'], axis=1) \
             .fillna(0) \
             .astype(int)  # \
-        # .recode()# TODO: Recode out-of-range-values to 0
+        # .recode()
 
         # Join the filtered df's, convert all to integers
 
@@ -137,13 +161,15 @@ class DataPrep:
         """
         logging.info('Reading in metadata file')
         my_meta = pd.read_csv(
-            self.dir_in + '/' + 'meta-template.csv',
+            # self.dir_in + '/' + 'meta-template.csv',
+            self.pre_data_meta,
             skipinitialspace=True,
             parse_dates=['class_startdate',
                          'class_enddate',
                          'class_starttime',
                          'class_endtime'],
-            infer_datetime_format=True).rename(
+            infer_datetime_format=True,
+            encoding='latin1').rename(
             columns=lambda x: x.strip()).rename(
             columns=lambda y: y.lower())
         self.prepped_data_meta = my_meta

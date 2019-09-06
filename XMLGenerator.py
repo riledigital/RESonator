@@ -42,7 +42,7 @@ class XMLGenerator:
         self.num_students = input_lms.shape[0]
         self.string_output_filename = self.output_filename_scheme()
         self.string_output_file_path = \
-            'data_out/' + self.string_output_filename + '.xml'
+            str(self.out_path) + self.string_output_filename + '.xml'
         logging.info("Loaded lms data: " + str(self.in_df_lms))
         logging.info("Loaded eval data: " + str(self.in_df_eval))
         logging.info("Loaded meta data: " + str(self.in_df_meta))
