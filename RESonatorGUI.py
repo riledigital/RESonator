@@ -1,4 +1,5 @@
 import sys
+import os
 import pandas as pd
 import DataPrep as dp
 import XMLGenerator as xmlgen
@@ -6,32 +7,41 @@ import logging
 import datetime
 from pathlib import Path
 
+# from PyQt5.QtCore import *
+# from PyQt5.QtGui import *
+
 from PyQt5.QtWidgets import \
     QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, \
     QFileDialog, QLineEdit, QHBoxLayout, QGroupBox, QComboBox, \
     QMessageBox
 
 # set the version number...
-__version__: str = '0.1'
+# __version__: str = '0.1'
 
 # Setup file paths for saving and loading files...
 path = Path()
+home = Path.home()
+
+path_cwd:Path = os.getcwd()
+print('current cwd is + ' + str(path_cwd))
 
 # Setup logging output
-logging_output: str = str(datetime.datetime.today().strftime(
-    '%m%d%Y') + '.log')
+logging_output = str(datetime.datetime.today().strftime('%m%d%Y') + '.log')
+logging_path = os.path.join(home, logging_output)
+if not os.path.exists(logging_path):
+    open(logging_path, 'w')
 
 # logging_output: str = str(datetime.datetime.strftime("%Y-%m-%d_%H-%M-%S") +
 #                           '.log'
 
 logging.basicConfig(
-    filename=Path.cwd() / 'logs' / logging_output,
+    filename=os.path.join(home, logging_output),
     level=logging.DEBUG)
 
-logging.info('RESonator version: ' + str(__version__))
+# logging.info('RESonator version: ' + str(__version__))
 logging.info('New session started on ' + str(datetime.datetime.now()))
 app = QApplication([])  ## every PyQT app needs QApplication
-
+app.setQuitOnLastWindowClosed(True)
 
 class RESonatorGUI:
     """
@@ -237,7 +247,7 @@ class RESonatorGUI:
             # Successfully compiled XML
             QMessageBox.about(
                 self.window, "Success", "Compiled XML as: " +
-                                        str(generator.string_output_filename))
+                                        str(generator.string_output_file_path))
         except Exception as e:
             logging.error('Error: ' + str(e))
             QMessageBox.about(
@@ -251,6 +261,18 @@ class RESonatorGUI:
 
 #app.exec_()  # Run the program
 # Calling this function sets up the GUI and leaves it ready it for input
+
+## Check if running in a bundle or from source
+# https://pyinstaller.readthedocs.io/en/stable/runtime-information.html#run-time-information
+try:
+    if getattr(sys, 'frozen') and hasattr(sys, '_MEIPASS'):
+        print('running in a PyInstaller bundle')
+    else:
+        print('running in a normal Python process')
+        print('_MEIPASS is ' + str(sys._MEIPASS))
+except Exception as e:
+    print('Exception: ' + str(e))
+
 RESonatorGUI()
 #ret = app.exec_()
 #sys.exit(ret)

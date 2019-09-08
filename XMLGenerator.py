@@ -4,6 +4,9 @@ import re
 import datetime
 import logging
 from pathlib import Path
+import RESonatorGUI
+import os
+
 
 class XMLGenerator:
     in_df_lms = None
@@ -41,8 +44,12 @@ class XMLGenerator:
         self.in_df_meta = input_meta
         self.num_students = input_lms.shape[0]
         self.string_output_filename = self.output_filename_scheme()
+        # self.string_output_file_path = \
+        #     str(self.out_path) + self.string_output_filename + '.xml'
+        ## TODO: allow user to specify where a file is saved?
         self.string_output_file_path = \
-            str(self.out_path) + self.string_output_filename + '.xml'
+            os.path.join(RESonatorGUI.home, self.string_output_filename)
+
         logging.info("Loaded lms data: " + str(self.in_df_lms))
         logging.info("Loaded eval data: " + str(self.in_df_eval))
         logging.info("Loaded meta data: " + str(self.in_df_meta))
@@ -138,7 +145,7 @@ class XMLGenerator:
         str_datetime = date_today.strftime('%m%d%Y')
         output_name = \
             'NCDP' + '_' + str_coursenum + \
-            '_' + str_datetime + '_' + '1'
+            '_' + str_datetime + '_' + '1' + '.xml'
         return output_name
 
     def export_final_xml(self):
