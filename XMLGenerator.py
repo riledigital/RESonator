@@ -4,7 +4,6 @@ import re
 import datetime
 import logging
 from pathlib import Path
-import RESonatorGUI
 import os
 
 
@@ -43,12 +42,12 @@ class XMLGenerator:
         self.in_df_eval = input_eval
         self.in_df_meta = input_meta
         self.num_students = input_lms.shape[0]
-        self.string_output_filename = self.output_filename_scheme()
+        self.string_output_filename = self.output_filename_scheme() + '.xml'
         # self.string_output_file_path = \
         #     str(self.out_path) + self.string_output_filename + '.xml'
         ## TODO: allow user to specify where a file is saved?
         self.string_output_file_path = \
-            os.path.join(RESonatorGUI.home, self.string_output_filename)
+            os.path.join(Path.home(), self.string_output_filename)
 
         logging.info("Loaded lms data: " + str(self.in_df_lms))
         logging.info("Loaded eval data: " + str(self.in_df_eval))
@@ -145,7 +144,7 @@ class XMLGenerator:
         str_datetime = date_today.strftime('%m%d%Y')
         output_name = \
             'NCDP' + '_' + str_coursenum + \
-            '_' + str_datetime + '_' + '1' + '.xml'
+            '_' + str_datetime + '_' + '1'
         return output_name
 
     def export_final_xml(self):
@@ -154,9 +153,10 @@ class XMLGenerator:
         :return: none
         """
 
-        self.export_tree_final.write(self.string_output_file_path,
-                                     encoding="utf-8",
-                                     xml_declaration=True)
+        self.export_tree_final.write(
+            self.string_output_file_path,
+            encoding="utf-8",
+            xml_declaration=True)
 
         logging.info('Saved RES XML as: ' + self.string_output_file_path)
 
@@ -170,16 +170,16 @@ class XMLGenerator:
         # Read in the export file, then
         ## https://stackoverflow.com/a/10507291
         insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
-        out_filename = self.out_path + self.output_filename_scheme() + '.xml'
-        f = open(out_filename, "r")
+        # out_filename = self.out_path + self.output_filename_scheme() + '.xml'
+        f = open(self.string_output_file_path, "r")
         contents = f.readlines()
         f.close()
         contents.insert(1, insert)
-        f = open(out_filename, "w")
+        f = open(self.string_output_file_path, "w")
         contents = "".join(contents)
         f.write(contents)
         f.close()
-        logging.info('Finished writing DOCTYPE string to XML file')
+        logging.info('Finished writing DOCTYPE string to  file')
 
     def generate_xml(self):
         """

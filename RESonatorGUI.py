@@ -1,8 +1,8 @@
 import sys
 import os
 import pandas as pd
-import DataPrep as dp
-import XMLGenerator as xmlgen
+import DataPrep
+import XMLGenerator
 import logging
 import datetime
 from pathlib import Path
@@ -221,7 +221,7 @@ class RESonatorGUI:
                     "Please choose a lesson to filter by.")
                 raise Exception("No lesson defined!")
 
-            prep = dp.DataPrep(
+            prep = DataPrep.DataPrep(
                 pd.read_csv(self.paths.get('lms'),
                             encoding='latin1'),
                 pd.read_csv(self.paths.get('evaluation'),
@@ -231,8 +231,9 @@ class RESonatorGUI:
             a_final_lms = prep.prep_data_lms()
             a_final_eval = prep.prep_data_eval()
             a_final_meta = prep.prep_data_meta()
-            generator = xmlgen.XMLGenerator(
-                a_final_lms, a_final_eval, a_final_meta)
+            generator = \
+                XMLGenerator.XMLGenerator(
+                    a_final_lms, a_final_eval, a_final_meta)
             logging.info('Firing event generate_xml() from GUI...')
             logging.info('TEST: List of Lessons:' + str(
                 prep.get_lessons_list()))
@@ -242,7 +243,7 @@ class RESonatorGUI:
             except Exception as e:
                 logging.error("Error: Couldn't generate XML. " + str(e))
                 QMessageBox.about(
-                    qself.window, "Error", "Couldn't generate XML. " +
+                    self.window, "Error", "Couldn't generate XML. " +
                                            str(e))
             # Successfully compiled XML
             QMessageBox.about(
