@@ -1,4 +1,53 @@
-# RESonator
+# RESonator Guide
+
+Created: Aug 10, 2019 4:23 AM
+
+## Installation
+
+On Windows, run RESonator.exe
+
+On Mac OS, run RESonator.app
+
+### Building RESonator from source
+
+Requisite packages: pandas, PyQT, Python 3
+
+On any platform with Python, install the dependencies, then build the dist
+with PyInstaller.
+    pyinstaller --windowed --onefile  RESonatorMain.py RESonatorGUI.spec
+
+The executable is placed in the ./dist folder
+
+## Choose the 3 files
+
+### Pre-requisites for files:
+
+- Save all data files as .csv format, comma-separated, with Latin ISO/IEC 8859-1 encoding
+
+### Pre-processing required for LMS/Roster data:
+
+- Pre-filter the student data records via the LMS data output OR manually remove non-relevant student records before using RESonator
+- Manually remove the instructors' records from the LMS data
+
+### Evaluation Data (from ZipGrade):
+
+- Do not change any field names
+
+### Metadata
+
+Copy the metadata template file and 
+
+- Ensure date/times are in MMDDYYYY format
+- Save with Latin ISO/IEC 8859-1 encoding
+
+## Click "Compile XML" to begin the XML compilation process
+
+- Manually adjust the final sequence number from "n" to the desired number.
+- Date is automatically filled to the current date/time
+- RESonator will overwrite an existing file with the same name
+- XML outputs to the user's home folder
+
+## RESonator Developer's Guide
 
 RESonator is a tool for preparing course data for input to the FEMA RES system. 
 
