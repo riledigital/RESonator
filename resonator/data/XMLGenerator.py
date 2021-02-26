@@ -8,6 +8,11 @@ import os
 
 
 class XMLGenerator:
+    """Received data and outputs RES XML
+
+    Returns:
+        [type]: [description]
+    """
     in_df_lms = None
     in_df_eval = None
     in_df_meta = None

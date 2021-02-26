@@ -1,7 +1,5 @@
 # RESonator Guide
 
-Created: Aug 10, 2019 4:23 AM
-
 ## Installation
 
 On Windows, run RESonator.exe
@@ -10,11 +8,15 @@ On Mac OS, run RESonator.app
 
 ### Building RESonator from source
 
+### Dependency management
+
+[Install Poetry](https://python-poetry.org/docs/basic-usage/#project-setup) for
+dependency management. `poetry install` to install dependencies.
+
 Requisite packages: pandas, PyQT, Python 3
 
-On any platform with Python, install the dependencies, then build the dist
-with PyInstaller.
-    pyinstaller --windowed --onefile  RESonatorMain.py RESonatorGUI.spec
+On any platform with Python, install the dependencies, then build the dist with
+PyInstaller. pyinstaller --windowed --onefile RESonatorMain.py RESonatorGUI.spec
 
 The executable is placed in the ./dist folder
 
@@ -22,11 +24,13 @@ The executable is placed in the ./dist folder
 
 ### Pre-requisites for files:
 
-- Save all data files as .csv format, comma-separated, with Latin ISO/IEC 8859-1 encoding
+- Save all data files as .csv format, comma-separated, with Latin ISO/IEC 8859-1
+  encoding
 
 ### Pre-processing required for LMS/Roster data:
 
-- Pre-filter the student data records via the LMS data output OR manually remove non-relevant student records before using RESonator
+- Pre-filter the student data records via the LMS data output OR manually remove
+  non-relevant student records before using RESonator
 - Manually remove the instructors' records from the LMS data
 
 ### Evaluation Data (from ZipGrade):
@@ -35,7 +39,7 @@ The executable is placed in the ./dist folder
 
 ### Metadata
 
-Copy the metadata template file and 
+Copy the metadata template file and
 
 - Ensure date/times are in MMDDYYYY format
 - Save with Latin ISO/IEC 8859-1 encoding
@@ -49,14 +53,16 @@ Copy the metadata template file and
 
 ## RESonator Developer's Guide
 
-RESonator is a tool for preparing course data for input to the FEMA RES system. 
+RESonator is a tool for preparing course data for input to the FEMA RES system.
 
 RESonator takes in three CSV files:
+
 - Data representing student registration from the LMS system
 - Data representing student evaluations
-- A hand-prepared file representing metadata on the course, instructor, and test averages.
+- A hand-prepared file representing metadata on the course, instructor, and test
+  averages.
 
-# Developer Information 
+# Developer Information
 
 ## Major issues
 
@@ -64,12 +70,14 @@ RESonator takes in three CSV files:
 
 Seems like the DOCTYPE must be inserted by hand after the XML declaration?
 
-` <!DOCTYPE Manifest SYSTEM "submission.dtd"> `
+`<!DOCTYPE Manifest SYSTEM "submission.dtd">`
 
-Notes: This script uses Python 3.7, [see lang references ](https://docs.python.org/3/)
-This Python script reads in a data file and outputs it to a XML file
+Notes: This script uses Python 3.7,
+[see lang references ](https://docs.python.org/3/) This Python script reads in a
+data file and outputs it to a XML file
 
-## Resources for Python  
+## Resources for Python
+
 [Using for loops](https://docs.python.org/3/reference/compound_stmts.html#the-for-statement)
 
 [Defining functions in Python](https://docs.python.org/3/reference/compound_stmts.html#function-definitions)
@@ -82,10 +90,12 @@ This Python script reads in a data file and outputs it to a XML file
 
 [Casting datatypes in dataframes](https://stackoverflow.com/questions/37697934/how-to-remove-symbol-for-particular-column-in-dataframeusing-python-pandas)
 
-## XML-specific Stuff 
+## XML-specific Stuff
+
 [API Docs for ElementTree](https://docs.python.org/3/library/xml.etree.elementtree.html)
 
 # Scratch
+
 [Apply pandas functions](https://realpython.com/fast-flexible-pandas/#pandas-apply)
 
 https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9
