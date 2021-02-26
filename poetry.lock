@@ -161,8 +161,8 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7.1"
-content-hash = "3c757445572c11238b213575fce027e3b72892c809a9a8d3e7023ea7046b0c37"
+python-versions = "3.7.10"
+content-hash = "d6c13208cbd265f152676dd96beb718762663b0a2152f816944838596dcada55"
 
 [metadata.files]
 altgraph = [

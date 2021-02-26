@@ -10,13 +10,13 @@ On Mac OS, run RESonator.app
 
 ### Dependency management
 
+[Install pyenv](https://github.com/pyenv/pyenv) and use Python 3.7.10.
+
 [Install Poetry](https://python-poetry.org/docs/basic-usage/#project-setup) for
 dependency management. `poetry install` to install dependencies.
 
-Requisite packages: pandas, PyQT, Python 3
-
 On any platform with Python, install the dependencies, then build the dist with
-PyInstaller. pyinstaller --windowed --onefile RESonatorMain.py RESonatorGUI.spec
+PyInstaller. `pyinstaller --windowed --onefile RESonatorMain.py RESonatorGUI.spec` or just run `make build`.
 
 The executable is placed in the ./dist folder
 

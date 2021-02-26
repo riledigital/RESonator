@@ -6,10 +6,12 @@ authors = ["Ri Le <r.le@columbia.edu>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
+python = "3.7.10"
 pandas = "^1.2.2"
+numpy = "^1.20.1"
 
 [tool.poetry.dev-dependencies]
+black = "*"
 pyinstaller = "*"
 
 [build-system]
