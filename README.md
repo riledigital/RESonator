@@ -13,6 +13,6 @@ On Mac OS, run RESonator.app
 
 - Run `make build` which will auto clean the outputs.
 
-If you run into issues with Pandas/Numpy/PyQt5, update pip to 21.x with `python -m pip install -U pip`. Poetry has issues installing PyQt5, so install that dependency manually with `pip` once you `poetry shell` to switch into the venv.
+If you run into issues with Pandas/Numpy/PyQt5, update pip to 21.x with `python -m pip install -U pip`. Poetry has issues installing PyQt5, so install that dependency manually with `pip` once you `poetry shell` to switch into the venv. Pyinstaller may output a bunch of errors about missing `dylib`s but the application should build successfully and run without issues. [May be fixable by building pyenv Python with headers?](https://github.com/pyenv/pyenv/issues/397)
 
 The executable is placed in the ./dist folder. Run the binary to get a GUI and a console.
