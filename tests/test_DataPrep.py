@@ -2,8 +2,25 @@ import resonator.data.DataPrep as DataPrep
 import logging
 
 
-class TestDataPrep:
-    def test_initialize():
-        # TODO initialize options
-        print("Testing instantiation")
-        assert 1 == 1
+class TestDataPrepSchedule:
+    """
+    Unit test for successfully generating schedule XML data
+    """
+
+    def test_training_provider():
+        # tpid
+        # tpphone
+        # tpemail
+        pass
+
+    def test_schedule():
+        pass
+
+
+class TestDataPrepSubmission:
+    """
+    Unit test for generating final RES submission.xml
+    """
+
+    def test_submission():
+        pass

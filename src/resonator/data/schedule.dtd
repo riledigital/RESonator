@@ -1,0 +1,23 @@
+<!ELEMENT Manifest (submission)>
+<!ELEMENT submission (trainingprovider)>
+
+
+<!-- GENERAL INFORMATION OF TRAINING PROVIDER -->
+
+<!ELEMENT trainingprovider (class+)>
+			<!ATTLIST trainingprovider 
+				tpid CDATA #REQUIRED
+				tpphone CDATA #REQUIRED 
+				tpemail CDATA #REQUIRED>
+				
+			
+			<!ELEMENT class EMPTY>
+			<!ATTLIST class 
+				catalognum CDATA #REQUIRED 
+				classcity CDATA #REQUIRED 
+ 				classstate (AL|AK|AZ|AR|CA|CO|CT|DC|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|AS|FM|GU|MH|MP|PW|PR|VI|AA|AE|AP) #IMPLIED 
+ 				classzipcode CDATA #REQUIRED
+ 				startdate CDATA #REQUIRED
+ 				enddate CDATA #REQUIRED 
+				starttime CDATA #REQUIRED 
+ 				contactinfo CDATA #REQUIRED>
