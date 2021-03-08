@@ -13,18 +13,19 @@ class XMLGenerator:
     Returns:
         [type]: [description]
     """
+
     in_df_lms = None
     in_df_eval = None
     in_df_meta = None
     num_students = None  # change later
-    registration = et.Element('registration')  # initialize XML node
-    evaldata = et.Element('evaldata')
-    el_submission = et.Element('submission')
+    registration = et.Element("registration")  # initialize XML node
+    evaldata = et.Element("evaldata")
+    el_submission = et.Element("submission")
     export_tree_final = et.ElementTree()
-    out_path = 'data_out/'
-    string_output_filename = ''
+    out_path = "data_out/"
+    string_output_filename = ""
 
-    string_output_file_path = ''
+    string_output_file_path = ""
 
     def __init__(self, input_lms, input_eval, input_meta):
         """
@@ -34,31 +35,32 @@ class XMLGenerator:
         :param input_meta:
         """
 
-        fileout_str = datetime.datetime.today().strftime(
-            '%m%d%Y') + '.log'
+        fileout_str = datetime.datetime.today().strftime("%m%d%Y") + ".log"
         path = Path()
         logging.basicConfig(
-            path=Path.cwd() / 'dataout' / fileout_str,
+            path=Path.cwd() / "dataout" / fileout_str,
             # filename = './dataout' + datetime.datetime.today().strftime(
             # '%m%d%Y') + '.log',
-            level=logging.DEBUG)
+            level=logging.DEBUG,
+        )
 
         self.in_df_lms = input_lms
         self.in_df_eval = input_eval
         self.in_df_meta = input_meta
         self.num_students = input_lms.shape[0]
-        self.string_output_filename = self.output_filename_scheme() + '.xml'
+        self.string_output_filename = self.output_filename_scheme() + ".xml"
         # self.string_output_file_path = \
         #     str(self.out_path) + self.string_output_filename + '.xml'
         ## TODO: allow user to specify where a file is saved?
-        self.string_output_file_path = \
-            os.path.join(Path.home(), self.string_output_filename)
+        self.string_output_file_path = os.path.join(
+            Path.home(), self.string_output_filename
+        )
 
         logging.info("Loaded lms data: " + str(self.in_df_lms))
         logging.info("Loaded eval data: " + str(self.in_df_eval))
         logging.info("Loaded meta data: " + str(self.in_df_meta))
-        logging.info('Number of students: ' + str(self.num_students))
-        logging.info('Initialized XML generator instance')
+        logging.info("Number of students: " + str(self.num_students))
+        logging.info("Initialized XML generator instance")
 
     def get_meta(self, field):
         """
@@ -69,13 +71,13 @@ class XMLGenerator:
         df_meta = self.in_df_meta
         try:
             out_meta = str(df_meta.get(str(field)).item())
-            if out_meta == 'nan':
-                return ''
+            if out_meta == "nan":
+                return ""
             else:
                 return str(df_meta.get(str(field)).item())
         except:
-            logging.warning("Empty field, returning empty string" + '')
-            return ''
+            logging.warning("Empty field, returning empty string" + "")
+            return ""
 
     def make_eval_tree(self, df):
         """
@@ -87,51 +89,29 @@ class XMLGenerator:
         :param df: DataFrame representing evaluations
         :return: none
         """
-        all_evals = et.Element('evaluations')
+        all_evals = et.Element("evaluations")
 
         # make_tree_from_question -> Element
         # q: a Series representing a single question
-        def make_element_from_response(qs):
-            generated_eval = et.Element('evaldata')
-            for i, v in qs.iteritems():  ## Loop through all questions in a row..
-                # first process id's and values
-                id = re.sub(r'id', '', i)
-                val = str(v)
-                # print('string id casting to int as: ' + str(id))
-                if val != '':
-                    ## If the value is empty, don't make a node for it
-                    if int(id) >= 24:
-                        xml_tag_out = et.Element(
-                            'comment',
-                            attrib={'id': id, 'answer': val})
-                        generated_eval.append(
-                            xml_tag_out)  # append it to the global eval_out
-                    else:
-                        xml_tag_out = et.Element(
-                            'question',
-                            attrib={'id': id, 'answer': val})
-                        generated_eval.append(
-                            xml_tag_out)  # append it to the global eval_out
-                    # Don't create a new element if there is no need to
-            all_evals.append(
-                generated_eval)
-            # don't forget to append the new evaldata to every thing
-            return 'ok'  ## should not matter
+        def process_row(row):
+            generated_eval = XMLGenerator.make_element_from_response(row)
+            all_evals.append(generated_eval)
 
-        df.apply(make_element_from_response, axis=1)  # Apply to all rows
-        export_tree_manifest = et.Element('Manifest')
+        df.apply(process_row, axis=1)  # Apply to all rows
+        export_tree_manifest = et.Element("Manifest")
         export_tree_manifest.append(self.el_submission)
         self.export_tree_final = et.ElementTree(export_tree_manifest)
-        logging.info('Finished building XML for evaluations')
+        logging.info("Finished building XML for evaluations")
         return all_evals
 
+    @staticmethod
     def is_passed_class(inp):
         """
         calculates number of people whonumber of people who pass
         :param inp: DataFrame/Series representing a class
         :return: Boolean
         """
-        if inp['Lesson Success'] == 'passed':
+        if inp["Lesson Success"] == "passed":
             return True
         else:
             return False
@@ -144,12 +124,10 @@ class XMLGenerator:
         """
         # format for the xml file name is
         # TP_CourseNumber_Date_SequenceNumber.xml
-        str_coursenum = self.get_meta('class_catalognum')
+        str_coursenum = self.get_meta("class_catalognum")
         date_today = datetime.datetime.today()
-        str_datetime = date_today.strftime('%m%d%Y')
-        output_name = \
-            'NCDP' + '_' + str_coursenum + \
-            '_' + str_datetime + '_' + '1'
+        str_datetime = date_today.strftime("%m%d%Y")
+        output_name = "NCDP" + "_" + str_coursenum + "_" + str_datetime + "_" + "1"
         return output_name
 
     def export_final_xml(self):
@@ -159,11 +137,10 @@ class XMLGenerator:
         """
 
         self.export_tree_final.write(
-            self.string_output_file_path,
-            encoding="utf-8",
-            xml_declaration=True)
+            self.string_output_file_path, encoding="utf-8", xml_declaration=True
+        )
 
-        logging.info('Saved RES XML as: ' + self.string_output_file_path)
+        logging.info("Saved RES XML as: " + self.string_output_file_path)
 
     def write_doctype(self):
         """
@@ -171,7 +148,7 @@ class XMLGenerator:
 
         :return:
         """
-        logging.info('Writing DOCTYPE to XML file...')
+        logging.info("Writing DOCTYPE to XML file...")
         # Read in the export file, then
         ## https://stackoverflow.com/a/10507291
         insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
@@ -184,7 +161,7 @@ class XMLGenerator:
         contents = "".join(contents)
         f.write(contents)
         f.close()
-        logging.info('Finished writing DOCTYPE string to  file')
+        logging.info("Finished writing DOCTYPE string to  file")
 
     def generate_xml(self):
         """
@@ -195,52 +172,36 @@ class XMLGenerator:
         :param input_meta: DataFrame
         :return: String
         """
-
         el_instructorpoc = et.Element(
-            'instructorpoc',
+            "instructorpoc",
             attrib={
-                'instlastname':
-                    self.get_meta('instructorpoc_instlastname'),
-                'instfirstname':
-                    self.get_meta('instructorpoc_instfirstname'),
-                'instphone':
-                    self.get_meta('instructorpoc_instphone')})
+                "instlastname": self.get_meta("instructorpoc_instlastname"),
+                "instfirstname": self.get_meta("instructorpoc_instfirstname"),
+                "instphone": self.get_meta("instructorpoc_instphone"),
+            },
+        )
 
         el_class = et.Element(
-            'class',
+            "class",
             attrib={
-                'preparerlastname':
-                    self.get_meta('class_preparerlastname'),
-                'preparerfirstname':
-                    self.get_meta('class_preparerlastname'),
-                'batchpreparerphone':
-                    self.get_meta('class_batchpreparerphone'),
-                'batchprepareremail':
-                    self.get_meta('class_batchprepareremail'),
-                'catalognum':
-                    self.get_meta('class_catalognum'),
-                'classtype':
-                    self.get_meta('class_classtype'),
-                'classcity':
-                    self.get_meta('class_classcity'),
-                'classstate':
-                    self.get_meta('class_state'),
-                'classzipcode':
-                    self.get_meta('class_classzipcode'),
-                'startdate':
-                    self.get_meta('class_startdate'),
-                'enddate':
-                    self.get_meta('class_enddate'),
-                'starttime':
-                    self.get_meta('class_starttime'),
-                'endtime':
-                    self.get_meta('class_endtime'),
-                'numstudent':
-                    str(self.num_students),
-                'trainingmethod':
-                    self.get_meta('class_trainingmethod'),
-                'contacthours':
-                    self.get_meta('class_contacthours')})
+                "preparerlastname": self.get_meta("class_preparerlastname"),
+                "preparerfirstname": self.get_meta("class_preparerlastname"),
+                "batchpreparerphone": self.get_meta("class_batchpreparerphone"),
+                "batchprepareremail": self.get_meta("class_batchprepareremail"),
+                "catalognum": self.get_meta("class_catalognum"),
+                "classtype": self.get_meta("class_classtype"),
+                "classcity": self.get_meta("class_classcity"),
+                "classstate": self.get_meta("class_state"),
+                "classzipcode": self.get_meta("class_classzipcode"),
+                "startdate": self.get_meta("class_startdate"),
+                "enddate": self.get_meta("class_enddate"),
+                "starttime": self.get_meta("class_starttime"),
+                "endtime": self.get_meta("class_endtime"),
+                "numstudent": str(self.num_students),
+                "trainingmethod": self.get_meta("class_trainingmethod"),
+                "contacthours": self.get_meta("class_contacthours"),
+            },
+        )
 
         eval_root = self.make_eval_tree(self.in_df_eval)
         evaluations_xml = et.ElementTree(eval_root)
@@ -249,60 +210,131 @@ class XMLGenerator:
         el_class.append(eval_root)
 
         el_testaverage = et.Element(
-            'testaverage',
+            "testaverage",
             attrib={
-                'pretest':
-                    self.get_meta('testaverage_pretest'),
-                'posttest':
-                    self.get_meta('testaverage_posttest')
-            })
+                "pretest": self.get_meta("testaverage_pretest"),
+                "posttest": self.get_meta("testaverage_posttest"),
+            },
+        )
         el_class.append(el_testaverage)
 
         el_trainingprovider = et.Element(
-            'trainingprovider',
+            "trainingprovider",
             attrib={
-                'tpid':
-                    self.get_meta('trainingprovider_tpid'),
-                'tpphone':
-                    self.get_meta('trainingprovider_tpphone'),
-                'tpemail':
-                    self.get_meta('trainingprovider_tpemail')})
+                "tpid": self.get_meta("trainingprovider_tpid"),
+                "tpphone": self.get_meta("trainingprovider_tpphone"),
+                "tpemail": self.get_meta("trainingprovider_tpemail"),
+            },
+        )
         el_trainingprovider.append(el_class)
-
         self.el_submission.append(el_trainingprovider)
-
-        logging.info('Finished generating XML with name: ' + str(
-            self.string_output_filename))
-
-        def build_registration_xml(df):
-            """
-            This function builds the XML node for registration info
-            :param df: DataFrame to build XML from
-            :return: none
-            """
-
-            def row_to_xml(student):
-                """
-                this helper function creates a new XML node for students
-                based on the selected fields.
-                :param student: Series representing user data
-                :return: none
-                """
-                new_student = et.Element('student', attrib={
-                    'international': student['International Status'],
-                    'studentfirstname': student['First Name'],
-                    'studentlastname': student['Last Name'],
-                    'studentcity': student['City'],
-                    'studentzipcode': student['Postal Code'],
-                    'studentphone': student['Primary Phone'],
-                    'discipline': student['Discipline'],
-                    'govnlevel': student['Government Level']})
-                self.registration.append(new_student)
-                logging.info("Appended record: " + str(student['First Name']))
-
-            df.apply(row_to_xml, axis=1)
-            logging.info('Finished building XML tree for registration data')
-
         build_registration_xml(self.in_df_lms)
         self.export_final_xml()
         self.write_doctype()
+        logging.info(
+            "Finished generating XML with name: " + str(self.string_output_filename)
+        )
+
+    @staticmethod
+    def make_element_from_response(qs):
+        """Generate XML element from a singular DataFrame row
+         of question responses
+
+        Args:
+            qs (DataFrame): DataFrame with 1 row(!)
+
+        Returns:
+            [type]: [description]
+        """
+        generated_eval = et.Element("evaldata")
+        for i, v in qs.iteritems():  ## Loop through all questions in a row..
+            # first process id's and values
+            id = re.sub(r"id", "", i)
+            val = str(v)
+            # print('string id casting to int as: ' + str(id))
+            if val != "":
+                ## If the value is empty, don't make a node for it
+                if int(id) >= 24:
+                    xml_tag_out = et.Element(
+                        "comment", attrib={"id": id, "answer": val}
+                    )
+                    generated_eval.append(
+                        xml_tag_out
+                    )  # append it to the global eval_out
+                else:
+                    xml_tag_out = et.Element(
+                        "question", attrib={"id": id, "answer": val}
+                    )
+                    generated_eval.append(
+                        xml_tag_out
+                    )  # append it to the global eval_out
+                # Don't create a new element if there is no need to
+        # TODO move this thing outta here
+        # don't forget to append the new evaldata to every thing
+        return generated_eval
+
+    @staticmethod
+    def make_student(student):
+        """
+        this helper function creates a new XML node for students
+        based on the selected fields.
+        :param student: Series representing user data
+        :return: none
+        """
+        new_student = et.Element(
+            "student",
+            attrib={
+                "international": student["International Status"],
+                "studentfirstname": student["First Name"],
+                "studentlastname": student["Last Name"],
+                "studentcity": student["City"],
+                "studentzipcode": student["Postal Code"],
+                "studentphone": student["Primary Phone"],
+                "discipline": student["Discipline"],
+                "govnlevel": student["Government Level"],
+            },
+        )
+        self.registration.append(new_student)
+        logging.info("Appended record: " + str(student["First Name"]))
+
+    def build_registration_xml(df):
+        """
+        This function builds the XML node for registration info
+        :param df: DataFrame to build XML from
+        :return: none
+        """
+        df.apply(XMLGenerator.make_student, axis=1)
+        logging.info("Finished building XML tree for registration data")
+
+    @staticmethod
+    def make_el_class(metadata):
+        """Creates a class node from input metadata
+
+        Args:
+            metadata (Dict): dict representing metadata
+
+        Returns:
+            et.Element: a single XML element
+        """
+        el_class = et.Element(
+            "class",
+            attrib={
+                "preparerlastname": metadata.get("class_preparerlastname"),
+                "preparerfirstname": metadata.get("class_preparerlastname"),
+                "batchpreparerphone": metadata.get("class_batchpreparerphone"),
+                "batchprepareremail": metadata.get("class_batchprepareremail"),
+                "catalognum": metadata.get("class_catalognum"),
+                "classtype": metadata.get("class_classtype"),
+                "classcity": metadata.get("class_classcity"),
+                "classstate": metadata.get("class_state"),
+                "classzipcode": metadata.get("class_classzipcode"),
+                "startdate": metadata.get("class_startdate"),
+                "enddate": metadata.get("class_enddate"),
+                "starttime": metadata.get("class_starttime"),
+                "endtime": metadata.get("class_endtime"),
+                "numstudent": str(self.num_students),
+                "trainingmethod": metadata.get("class_trainingmethod"),
+                "contacthours": metadata.get("class_contacthours"),
+            },
+        )
+        return el_class

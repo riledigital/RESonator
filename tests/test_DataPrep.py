@@ -7,13 +7,13 @@ class TestDataPrepSchedule:
     Unit test for successfully generating schedule XML data
     """
 
-    def test_training_provider():
+    def test_training_provider(self):
         # tpid
         # tpphone
         # tpemail
         pass
 
-    def test_schedule():
+    def test_schedule(self):
         pass
 
 
@@ -22,5 +22,5 @@ class TestDataPrepSubmission:
     Unit test for generating final RES submission.xml
     """
 
-    def test_submission():
+    def test_submission(self):
         pass

@@ -11,6 +11,8 @@ On Mac OS, run RESonator.app
 - [Install Poetry](https://python-poetry.org/docs/basic-usage/#project-setup) for
   dependency management. `poetry install` to install dependencies.
 
+- Run `make setup` to auto-install dev environment for Mac OS.
+
 - Run `make build` which will auto clean the outputs.
 
 - Run `make test` to run unit tests with `pytest`
