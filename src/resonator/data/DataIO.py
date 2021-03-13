@@ -27,7 +27,7 @@ class DataIO:
         """
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
         if path_in.suffix == ".xlsx":
-            data = pd.read_excel(path_in)
+            data = pd.read_excel(path_in, skiprows=1)
             logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":

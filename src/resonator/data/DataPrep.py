@@ -144,13 +144,24 @@ class DataPrep:
         # lms_fl_subset.to_csv('data_out/lms_fl_subsetted.csv')
         return lms_fl_subset
 
-    def prep_data_eval(self):
-        ## START EVAL PROCESS
-        logging.info("Running prep_data_eval()")
-        input_eval = self.pre_data_eval
-        input_eval = input_eval.rename(columns=lambda x: x.strip())
+    @classmethod
+    def prep_data_eval(cls, input_eval: pd.DataFrame) -> pd.DataFrame:
+        """Prep eval DataFrame for XML transformation. Only keep the questions, and rename the fields!
 
-        ## Filter columns by regular expressions
+        Args:
+            input_eval (pd.DataFrame): input dataframe
+
+        Returns:
+            [type]: DataFrame ready to be converted to XML
+        """
+        ## START EVAL PROCESS
+        logging.info("Running prep_data_eval")
+        input_eval = input_eval.iloc[:, 17:]
+        # Strip annoying column spaces
+        input_eval = input_eval.rename(columns=lambda x: x.strip())
+        new_q_numbers = list(range(1, 28)
+
+        ## Filter columns by regular expression matching questions
         df_only_questions = input_eval.filter(axis="columns", regex="Stu[0-9]+")
 
         df_only_likerts = (

@@ -52,16 +52,13 @@ class TestEvalPrep:
     Unit tests for preparing the LMS data
     """
 
-    def test_data_lms(self):
+    def test_data_eval(self):
         """Should properly subset the fields"""
-        test_users = ["jld2225"]
         loader = ld.DataIO()
-        lms_data = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
-        output = DataPrep.prep_data_lms(
-            input_lms=lms_data,
-            course="Preparedness Actions to Promote Economic Resilience and Recovery  (#10268)",
-            remove_users=test_users,
-        )
+        lms_data = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
+
+        output = DataPrep.prep_data_eval(input_lms=lms_data)
+        assert output.shape[1] == 27, "Output should have 27 columns"
         assert isinstance(output, pd.DataFrame), "Output should be a DataFrame"
 
 
