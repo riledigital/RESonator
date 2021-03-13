@@ -153,3 +153,44 @@ class TestDataIo:
         )
         assert isinstance(file, pd.DataFrame)
         assert file.columns.array == target_columns.array
+
+    def test_load_csv_meta(self):
+        """
+        Load the metaata sample data, and then test for columns present
+        """
+        loader = dl.DataIO()
+        file = loader.load_file_disk(Path("tests/sampledata/meta_sample.csv"))
+        # Target the full columns in this case
+        target_columns = pd.Index(
+            data=[
+                "trainingprovider_tpid",
+                "trainingprovider_tpphone",
+                "trainingprovider_tpemail",
+                "class_catalognum",
+                "class_classtype",
+                "class_classcity",
+                "class_classzipcode",
+                "class_classcountry",
+                "class_startdate",
+                "class_enddate",
+                "class_starttime",
+                "class_endtime",
+                "class_numstudent",
+                "class_trainingmethod",
+                "class_contacthours",
+                "class_numstudent.1",
+                "testaverage_pretest",
+                "testaverage_posttest",
+                "instructorpoc_instlastname",
+                "instructorpoc_instfirstname",
+                "instructorpoc_instphone",
+                "instructorpoc_instemail",
+                "class_preparerlastname",
+                "class_preparerfirstname",
+                "class_preparerphone",
+                "class_batchprepareremail",
+            ],
+            dtype="object",
+        )
+        assert isinstance(file, pd.DataFrame)
+        assert file.columns.array == target_columns.array
