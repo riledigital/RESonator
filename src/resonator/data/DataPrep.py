@@ -59,36 +59,46 @@ class DataPrep:
         self.lesson_str = new_lesson_str
         logging.info("Narrowing lesson to: " + str(new_lesson_str))
 
-    @staticmethod
-    def prep_data_lms(input_lms: pd.DataFrame, lesson: str) -> pd.DataFrame:
-        """Prepare the data for XML transform
+    @classmethod
+    def prep_data_lms(
+        cls, input_lms: pd.DataFrame, course: str, remove_users: list
+    ) -> pd.DataFrame:
+        """Prepare the data for XML transform. Note tbat this function subsets rows by course.
 
         Args:f
             input_lms (pd.DataFrame): [description]
-            lesson (str): [description]
+            course (str): [description]
+            remove_users (list): Test users to be filtered out
 
         Returns:
             pd.DataFrame: [description]
         """
-        logging.info("Starting prep_data_lms")
-        lms_prefilter = input_lms
-        lms_prefilter = lms_prefilter.rename(columns=lambda x: x.strip())
-        # lesson_str = 'New Jersey: MGT 462' # Important for selecting course
+        logging.info(f"Starting prep_data_lms for course: {course}")
 
-        lms_fl = lms_prefilter[
-            (lms_prefilter["Lesson"] == lesson)
-            & (lms_prefilter["Lesson Completion"] == "completed")
-        ]
-        logging.info("Starting prefiltering for lesson: " + lesson)
-        self.num_students_completed = lms_fl.shape[0]
+        logging.debug("Stripping column names of spaces")
+        lms_prefilter = input_lms.rename(columns=lambda x: x.strip())
+
+        logging.debug("Stripping usernames of spaces")
+        lms_prefilter.loc[:, "Username"].apply(lambda x: x.strip())
+
+        filtered_completion = lms_prefilter.query(
+            "(Course == @course) & (`Course Status` == 'Completed')"
+        )
+
+        # TODO: remove implicit dependency
+        # self.num_students_completed = lms_fl.shape[0]
 
         # Drop Josh's record and other test users/instructors
         # TODO: Do this by hand...
         # logging.info('Droppped instructor')
         # lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
+        # jld2225
+        filtered_completion = filtered_completion.loc[
+            ~input_lms["Username"].isin(remove_users)
+        ]
 
         # Get only the columns we need
-        lms_fl_subset = lms_fl.filter(
+        lms_fl_subset = filtered_completion.filter(
             items=[
                 "International Status",
                 "Last Name",

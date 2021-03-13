@@ -12,7 +12,8 @@ class DataIO:
     def __init__(self):
         logging.info("DataIO ready to read!")
 
-    def load_file_disk(self, path_in: Path):
+    @classmethod
+    def load_file_disk(self, path_in: Path) -> pd.DataFrame:
         """loads a file from disk and outputs a pandas dataframe
 
         Args:
@@ -27,9 +28,11 @@ class DataIO:
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in)
+            logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":
             data = pd.read_csv(path_in, encoding="utf8")
+            logging.debug(data.columns)
             return data
         else:
             raise ValueError(

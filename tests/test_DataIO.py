@@ -14,11 +14,7 @@ class TestDataIo:
         Test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_file_disk(
-            Path(
-                "tests/sampledata/LMS Output Example_UserCourseTranscripts_2021-02-26-21-28-46.csv"
-            )
-        )
+        file = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
         # Target the full columns in this case
         target_columns = pd.Index(
             data=[
