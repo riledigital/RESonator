@@ -59,17 +59,27 @@ class DataPrep:
         self.lesson_str = new_lesson_str
         logging.info("Narrowing lesson to: " + str(new_lesson_str))
 
-    def prep_data_lms(self):
+    @staticmethod
+    def prep_data_lms(input_lms: pd.DataFrame, lesson: str) -> pd.DataFrame:
+        """Prepare the data for XML transform
+
+        Args:f
+            input_lms (pd.DataFrame): [description]
+            lesson (str): [description]
+
+        Returns:
+            pd.DataFrame: [description]
+        """
         logging.info("Starting prep_data_lms")
-        lms_prefilter = self.pre_data_lms
+        lms_prefilter = input_lms
         lms_prefilter = lms_prefilter.rename(columns=lambda x: x.strip())
         # lesson_str = 'New Jersey: MGT 462' # Important for selecting course
 
         lms_fl = lms_prefilter[
-            (lms_prefilter["Lesson"] == self.lesson_str)
+            (lms_prefilter["Lesson"] == lesson)
             & (lms_prefilter["Lesson Completion"] == "completed")
         ]
-        logging.info("Starting prefiltering for lesson: " + str(self.lesson_str))
+        logging.info("Starting prefiltering for lesson: " + lesson)
         self.num_students_completed = lms_fl.shape[0]
 
         # Drop Josh's record and other test users/instructors
