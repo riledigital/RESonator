@@ -86,8 +86,8 @@ class TestDataIo:
             ],
             dtype="object",
         )
-        assert isinstance(file, pd.DataFrame)
-        assert file.columns.array == target_columns.array
+        assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
+        assert file.columns.array == target_columns.array, , "Output should match expected columns"
 
     def test_load_csv_eval(self):
         """
@@ -147,8 +147,8 @@ class TestDataIo:
             ],
             dtype="object",
         )
-        assert isinstance(file, pd.DataFrame)
-        assert file.columns.array == target_columns.array
+        assert isinstance(file, pd.DataFrame), , "Output should be a DataFrame"
+        assert file.columns.array == target_columns.array, , "Output should match expected columns"
 
     def test_load_csv_meta(self):
         """
@@ -188,5 +188,5 @@ class TestDataIo:
             ],
             dtype="object",
         )
-        assert isinstance(file, pd.DataFrame)
-        assert file.columns.array == target_columns.array
+        assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
+        assert file.columns.array == target_columns.array, "Output should match expected columns"
