@@ -78,8 +78,10 @@ class DataPrep:
         logging.debug("Stripping column names of spaces")
         lms_prefilter = input_lms.rename(columns=lambda x: x.strip())
 
-        logging.debug("Stripping usernames of spaces")
-        lms_prefilter.loc[:, "Username"].apply(lambda x: x.strip())
+        logging.debug("Stripping all string fields of trailing spaces")
+        lms_prefilter = lms_prefilter.apply(
+            lambda x: x.str.strip() if x.dtype == "object" else x
+        )
 
         filtered_completion = lms_prefilter.query(
             "(Course == @course) & (`Course Status` == 'Completed')"
@@ -88,14 +90,12 @@ class DataPrep:
         # TODO: remove implicit dependency
         # self.num_students_completed = lms_fl.shape[0]
 
-        # Drop Josh's record and other test users/instructors
-        # TODO: Do this by hand...
-        # logging.info('Droppped instructor')
+        # Drop test users/instructors
         # lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
-        # jld2225
         filtered_completion = filtered_completion.loc[
             ~input_lms["Username"].isin(remove_users)
         ]
+        logging.debug(f"Dropped instructors: {remove_users}")
 
         # Get only the columns we need
         lms_fl_subset = filtered_completion.filter(
