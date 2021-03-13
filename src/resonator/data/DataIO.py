@@ -20,15 +20,16 @@ class DataIO:
             path_in (Path): Path
         """
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
-        if path_in.suffix == ".csv":
-            data = pd.read_csv(path_in, encoding="utf8")
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in)
+            return data
+        elif path_in.suffix == ".csv":
+            data = pd.read_csv(path_in, encoding="utf8")
+            return data
         else:
             raise Exception(
                 f"Input file isn't csv or xslx. Please check input for: {path_in}"
             )
-        return data
 
     def load_from_request(self):
         """TODO: Placeholder, load data from an HTTP request?"""

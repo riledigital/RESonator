@@ -1,7 +1,7 @@
 import pytest
 import logging
 from pathlib import Path
-import resonator.data.DataLoader as dl
+import resonator.data.DataIO as dl
 import resonator.data.XMLGenerator as xmlgen
 
 
@@ -14,7 +14,7 @@ class TestXmlGenerator:
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_lms_input(self):
-        loader = dl.DataLoader()
+        loader = dl.DataIO()
         path_in = Path(
             "tests/sampledata/LMS Output Example_UserCourseTranscripts_2021-02-26-21-28-46.csv"
         )
