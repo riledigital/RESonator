@@ -71,19 +71,18 @@ class XMLGenerator:
         else:
             return False
 
-    def output_filename_scheme(self):
+    @classmethod
+    def output_filename_scheme(cls, course_num: str):
         """
         This function set up the file name scheme
         and returns a string with the appropriate values
         :return: String
         """
         # format for the xml file name is
-        # TP_CourseNumber_Date_SequenceNumber.xml
-        str_coursenum = self.get_meta("class_catalognum")
+        # NCDP_CourseNumber_DateTime
         date_today = datetime.datetime.today()
-        str_datetime = date_today.strftime("%m%d%Y")
-        output_name = "NCDP" + "_" + str_coursenum + "_" + str_datetime + "_" + "1"
-        return output_name
+        str_datetime = date_today.strftime("%Y%m%d_%X")
+        return f"NCDP_{course_num}_{str_datetime}"
 
     def export_final_xml(self):
         """
@@ -228,9 +227,12 @@ class XMLGenerator:
         # don't forget to append the new evaldata to every thing
         return generated_eval
 
-    def make_registration(cls, students_df):
+    @classmethod
+    def make_registration(cls, lms_df: pd.DataFrame):
         registration = et.Element("registration")
-        # TODO append all the students to Registration
+        for (index, row) in lms_df.iterrows():
+            registration.append(cls.make_student(row))
+        return registration
 
     @classmethod
     def make_student(cls, student):
