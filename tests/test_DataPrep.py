@@ -10,21 +10,6 @@ class TestLMSPrep:
     Unit tests for preparing the LMS data
     """
 
-    TARGET_COLUMNS = [
-        "International Status",
-        "Last Name",
-        "First Name",
-        "City",
-        "Primary Phone",
-        "Discipline",
-        "Job Title",
-        "Street Address",
-        "State/Province",
-        "Postal Code",
-        "Email",
-        "Government Level",
-    ]
-
     def test_data_lms(self):
         """Should properly subset the fields"""
         test_users = ["jld2225"]
@@ -37,7 +22,20 @@ class TestLMSPrep:
         )
 
         target_columns = pd.Index(
-            data=self.TARGET_COLUMNS,
+            data=[
+                "International Status",
+                "Last Name",
+                "First Name",
+                "City",
+                "Primary Phone",
+                "Discipline",
+                "Job Title",
+                "Street Address",
+                "State/Commonwealth/ Territory",
+                "Postal Code",
+                "Email",
+                "Government Level",
+            ],
             dtype="object",
         )
         # Check if

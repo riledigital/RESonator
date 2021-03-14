@@ -1,5 +1,6 @@
 import pandas as pd
 import xml.etree.ElementTree as et
+from lxml import etree
 import re
 import datetime
 import logging
@@ -8,58 +9,12 @@ import os
 
 
 class XMLGenerator:
-    """Received data and outputs RES XML
-
-    Returns:
-        [type]: [description]
+    """
+    Takes in DataFrames and exports XML data
     """
 
-    in_df_lms = None
-    in_df_eval = None
-    in_df_meta = None
-    num_students = None  # change later
-    registration = et.Element("registration")  # initialize XML node
-    evaldata = et.Element("evaldata")
-    el_submission = et.Element("submission")
-    export_tree_final = et.ElementTree()
-    out_path = "data_out/"
-    string_output_filename = ""
-
-    string_output_file_path = ""
-
-    def __init__(self, input_lms, input_eval, input_meta):
-        """
-        Instantiates a job by taking input data
-        :param input_lms:
-        :param input_eval:
-        :param input_meta:
-        """
-
-        fileout_str = datetime.datetime.today().strftime("%m%d%Y") + ".log"
-        path = Path()
-        logging.basicConfig(
-            path=Path.cwd() / "dataout" / fileout_str,
-            # filename = './dataout' + datetime.datetime.today().strftime(
-            # '%m%d%Y') + '.log',
-            level=logging.DEBUG,
-        )
-
-        self.in_df_lms = input_lms
-        self.in_df_eval = input_eval
-        self.in_df_meta = input_meta
-        self.num_students = input_lms.shape[0]
-        self.string_output_filename = self.output_filename_scheme() + ".xml"
-        # self.string_output_file_path = \
-        #     str(self.out_path) + self.string_output_filename + '.xml'
-        ## TODO: allow user to specify where a file is saved?
-        self.string_output_file_path = os.path.join(
-            Path.home(), self.string_output_filename
-        )
-
-        logging.info("Loaded lms data: " + str(self.in_df_lms))
-        logging.info("Loaded eval data: " + str(self.in_df_eval))
-        logging.info("Loaded meta data: " + str(self.in_df_meta))
-        logging.info("Number of students: " + str(self.num_students))
+    def __init__(self):
+        """Initializes instance but doesn't really do anything since its stateless..."""
         logging.info("Initialized XML generator instance")
 
     def get_meta(self, field):
@@ -235,8 +190,8 @@ class XMLGenerator:
             "Finished generating XML with name: " + str(self.string_output_filename)
         )
 
-    @staticmethod
-    def make_element_from_response(qs):
+    @classmethod
+    def make_evaldata(cls, qs) -> list:
         """Generate XML element from a singular DataFrame row
          of question responses
 
@@ -244,7 +199,7 @@ class XMLGenerator:
             qs (DataFrame): DataFrame with 1 row(!)
 
         Returns:
-            [type]: [description]
+            [et.Element]: <evaldata> element with <question> inside
         """
         generated_eval = et.Element("evaldata")
         for i, v in qs.iteritems():  ## Loop through all questions in a row..
@@ -273,8 +228,12 @@ class XMLGenerator:
         # don't forget to append the new evaldata to every thing
         return generated_eval
 
-    @staticmethod
-    def make_student(student):
+    def make_registration(cls, students_df):
+        registration = et.Element("registration")
+        # TODO append all the students to Registration
+
+    @classmethod
+    def make_student(cls, student):
         """
         this helper function creates a new XML node for students
         based on the selected fields.
@@ -294,8 +253,8 @@ class XMLGenerator:
                 "govnlevel": student["Government Level"],
             },
         )
-        self.registration.append(new_student)
-        logging.info("Appended record: " + str(student["First Name"]))
+        logging.info("Created record for: " + str(student["First Name"]))
+        return new_student
 
     def build_registration_xml(df):
         """

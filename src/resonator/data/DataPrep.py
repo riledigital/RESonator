@@ -5,7 +5,7 @@ import logging
 
 class DataPrep:
     """
-    Handles all general input and data transformations
+    Handles all general data transformations
     """
 
     def __init__(self):
@@ -60,7 +60,6 @@ class DataPrep:
             ~input_lms["Username"].isin(remove_users)
         ]
         logging.debug(f"Dropped instructors: {remove_users}")
-
         # Get only the columns we need
         lms_fl_subset = filtered_completion.filter(
             items=[
@@ -72,7 +71,7 @@ class DataPrep:
                 "Discipline",
                 "Job Title",
                 "Street Address",
-                "State/Province",
+                "State/Commonwealth/ Territory",
                 "Postal Code",
                 "Email",
                 "Government Level",

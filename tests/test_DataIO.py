@@ -163,38 +163,34 @@ class TestDataIo:
             Path("tests/sampledata/meta_sample.csv"), meta=True
         )
         # Target the full columns in this case
-        target_columns = pd.Index(
-            data=[
-                "trainingprovider_tpid",
-                "trainingprovider_tpphone",
-                "trainingprovider_tpemail",
-                "class_catalognum",
-                "class_classtype",
-                "class_classcity",
-                "class_classzipcode",
-                "class_classcountry",
-                "class_startdate",
-                "class_enddate",
-                "class_starttime",
-                "class_endtime",
-                "class_numstudent",
-                "class_trainingmethod",
-                "class_contacthours",
-                "class_numstudent.1",
-                "testaverage_pretest",
-                "testaverage_posttest",
-                "instructorpoc_instlastname",
-                "instructorpoc_instfirstname",
-                "instructorpoc_instphone",
-                "instructorpoc_instemail",
-                "class_preparerlastname",
-                "class_preparerfirstname",
-                "class_preparerphone",
-                "class_batchprepareremail",
-            ],
-            dtype="object",
-        )
-        assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
-        assert (
-            file.columns.array == target_columns.array
-        ), "Output should match expected columns"
+        target_keys = [
+            "trainingprovider_tpid",
+            "trainingprovider_tpphone",
+            "trainingprovider_tpemail",
+            "class_catalognum",
+            "class_classtype",
+            "class_classcity",
+            "class_classzipcode",
+            "class_classcountry",
+            "class_startdate",
+            "class_enddate",
+            "class_starttime",
+            "class_endtime",
+            "class_numstudent",
+            "class_trainingmethod",
+            "class_contacthours",
+            "class_numstudent.1",
+            "testaverage_pretest",
+            "testaverage_posttest",
+            "instructorpoc_instlastname",
+            "instructorpoc_instfirstname",
+            "instructorpoc_instphone",
+            "instructorpoc_instemail",
+            "class_preparerlastname",
+            "class_preparerfirstname",
+            "class_preparerphone",
+            "class_batchprepareremail",
+        ]
+
+        assert isinstance(file, dict), "Output should be a dict"
+        assert [*file.keys()] == target_keys, "Output should match expected keys"

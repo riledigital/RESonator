@@ -44,7 +44,7 @@ class DataIO:
                 .rename(columns=lambda x: x.strip())
                 .rename(columns=lambda y: y.lower())
             )
-            return my_meta
+            return my_meta.to_dict(orient="records")[0]
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in, header=0, skiprows=1)
             logging.debug(data.columns)
