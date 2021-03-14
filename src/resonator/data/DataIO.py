@@ -13,7 +13,7 @@ class DataIO:
         logging.info("DataIO ready to read!")
 
     @classmethod
-    def load_file_disk(self, path_in: Path) -> pd.DataFrame:
+    def load_file_disk(self, path_in: Path, meta: bool = False) -> pd.DataFrame:
         """loads a file from disk and outputs a pandas dataframe
 
         Args:
@@ -26,6 +26,25 @@ class DataIO:
             [type]: [description]
         """
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
+        if meta:
+            my_meta = (
+                pd.read_csv(
+                    path_in,
+                    skipinitialspace=True,
+                    parse_dates=[
+                        "class_startdate",
+                        "class_enddate",
+                        "class_starttime",
+                        "class_endtime",
+                    ],
+                    infer_datetime_format=True,
+                    # TODO: Note that meta has to be utf8
+                    encoding="utf8",
+                )
+                .rename(columns=lambda x: x.strip())
+                .rename(columns=lambda y: y.lower())
+            )
+            return my_meta
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in, header=0, skiprows=1)
             logging.debug(data.columns)

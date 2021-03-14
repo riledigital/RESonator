@@ -159,7 +159,9 @@ class TestDataIo:
         Load the metaata sample data, and then test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/meta_sample.csv"))
+        file = loader.load_file_disk(
+            Path("tests/sampledata/meta_sample.csv"), meta=True
+        )
         # Target the full columns in this case
         target_columns = pd.Index(
             data=[
