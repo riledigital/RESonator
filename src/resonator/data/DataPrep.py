@@ -156,39 +156,16 @@ class DataPrep:
         """
         ## START EVAL PROCESS
         logging.info("Running prep_data_eval")
-        input_eval = input_eval.iloc[:, 17:]
+        subset = input_eval.iloc[:, 19:]
         # Strip annoying column spaces
-        input_eval = input_eval.rename(columns=lambda x: x.strip())
-        new_q_numbers = list(range(1, 28)
-
-        ## Filter columns by regular expression matching questions
-        df_only_questions = input_eval.filter(axis="columns", regex="Stu[0-9]+")
-
-        df_only_likerts = (
-            df_only_questions.drop(labels=["Stu24", "Stu25", "Stu26", "Stu27"], axis=1)
-            .fillna(0)
-            .astype(int)
-        )  # \
-        # .recode()
-
-        # Join the filtered df's, convert all to integers
-
-        df_only_comments = df_only_questions.filter(
-            axis="columns", regex="Stu[2][4-9]"
-        ).fillna("")
-
-        # df_cleaned = df_identifiers.join(df_only_questions).astype(int)
-        df_merged_responses = df_only_likerts.join(df_only_comments)
-
-        #  Rename column names to replace Stu with id
-        df_rename = df_merged_responses
-        df_rename.columns = [col.replace("Stu", "id") for col in df_rename.columns]
-        df_rename_sampled = df_rename.sample(
-            n=self.num_students_completed, random_state=0
+        subset = subset.rename(columns=lambda x: x.strip())
+        new_q_numbers = map(lambda x: f"NQ{x}", list(range(1, 28)))
+        subset.columns = new_q_numbers
+        # extract the number from col index 0 - 23 for likerts
+        subset.iloc[:, 0:23] = subset.iloc[:, 0:23].apply(
+            lambda x: x.str.findall("\d")[0]
         )
-
-        self.prepped_data_eval = df_rename_sampled
-        return self.prepped_data_eval
+        return subset
 
     def prep_data_meta(self):
         """
