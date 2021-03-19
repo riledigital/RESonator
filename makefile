@@ -14,3 +14,11 @@ clean :
 .PHONY: test
 test: clean
 	pytest
+
+.PHONY: docker-build
+docker-build:
+	docker build -t resonator .
+
+.PHONY: docker-test
+docker-test: docker-build
+	./bin/test.sh

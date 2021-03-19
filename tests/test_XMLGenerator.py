@@ -7,11 +7,7 @@ import resonator.data.DataPrep as dp
 
 
 class TestXmlGenerator:
-    """XML generation tests
-
-    Returns:
-        [type]: [description]
-    """
+    """XML generation tests"""
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_lms_input(self):

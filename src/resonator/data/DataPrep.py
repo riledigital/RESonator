@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import logging
+import pycountry
 
 
 class DataPrep:
@@ -79,6 +80,33 @@ class DataPrep:
         )  # govt needs to be last
         logging.info("Subsetted columns in lms data")
 
+        lms_fl_subset["International Status"] = lms_fl_subset[
+            "International Status"
+        ].str[0]
+
+        def recode_subdivisions(input: str):
+            """Recodes state code by lookup
+
+            Args:
+                input (str): Input country string
+            """
+            if len(input) > 2:
+                subdivisions = pycountry.subdivisions.get(country_code="US")
+                return subdivisions.lookup(input).alpha_2
+            else:
+                return input
+
+        def recode_country(input: str):
+            """Recodes country code by lookup, unused?
+
+            Args:
+                input (str): Input country string
+            """
+            if len(input) > 2:
+                return pycountry.countries.lookup("United States").alpha_2
+            else:
+                return input
+
         def recode_by_regex(input_data):
             """
 
@@ -95,6 +123,8 @@ class DataPrep:
             sr = re.search(pattern=regex, string=input_data)
             captured = sr.group().strip("()")  # remove the parentheses
             return captured
+
+        lms_fl_subset[""]
 
         # Recode values for fields required
         lms_fl_subset["Government Level"] = lms_fl_subset["Government Level"].apply(

@@ -81,7 +81,7 @@ class XMLGenerator:
         # format for the xml file name is
         # NCDP_CourseNumber_DateTime
         date_today = datetime.datetime.today()
-        str_datetime = date_today.strftime("%Y%m%d_%X")
+        str_datetime = date_today.strftime("%m%d%Y")
         return f"NCDP_{course_num}_{str_datetime}"
 
     def export_final_xml(self):
