@@ -167,3 +167,8 @@ class DataPrep:
             lambda x: x.str.findall(r"\d")[0]
         )
         return subset
+
+    @classmethod
+    def prep_data_meta(cls, input_meta: pd.DataFrame) -> pd.DataFrame:
+        # TODO
+        pass
