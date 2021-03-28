@@ -122,7 +122,7 @@ class DataPrep:
             :param input_data: String
             :return: String
             """
-            regex_str = "\([A-Z]+\)"
+            regex_str = r"\([A-Z]+\)"
             regex = re.compile(regex_str)
             # p = re.compile(regex_str)  # parentheses for capture groups
             sr = re.search(pattern=regex, string=input_data)
@@ -164,6 +164,6 @@ class DataPrep:
         subset.columns = new_q_numbers
         # extract the number from col index 0 - 23 for likerts
         subset.iloc[:, 0:23] = subset.iloc[:, 0:23].apply(
-            lambda x: x.str.findall("\d")[0]
+            lambda x: x.str.findall(r"\d")[0]
         )
         return subset

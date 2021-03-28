@@ -21,6 +21,18 @@ class TestXmlGenerator:
             remove_users=["jld2225"],
         )
 
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_eval_input(self):
+        pass
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_meta_input(self):
+        pass
+
+    def test_make_student(self):
+        # make single student
+        pass
+
     def test_make_registration(self, sample_lms_input):
         registration = xmlgen.XMLGenerator.make_registration(sample_lms_input)
 
@@ -28,15 +40,24 @@ class TestXmlGenerator:
             len([*registration]) == sample_lms_input.shape[0]
         ), "# of elements inside registration should be equivalent to number of students in dataframe"
 
+    def test_make_instructorpoc(self):
+        """test xml generation of instructorpoc"""
+        # TODO
+        pass
+
+    def test_make_qcomment(self):
+        pass
+
+    def test_make_evaldata(self):
+        pass
+
+    def test_make_evaluations(self):
+        pass
+
     def test_make_class(self, sample_lms_input):
         """Tests the generation of a single class"""
         logging.info(sample_lms_input)
         assert True == True
-        pass
-
-    def test_make_instructorpoc(self):
-        """test xml generation of instructorpoc"""
-        # TODO
         pass
 
     def test_make_testaverage(self):
@@ -54,6 +75,12 @@ class TestXmlGenerator:
         assert True == True
         pass
 
+    def test_make_manifest(self):
+        pass
+
     def test_write_doctype(self):
         """test doctype insertion"""
+        pass
+
+    def test_dtd_validate(self):
         pass

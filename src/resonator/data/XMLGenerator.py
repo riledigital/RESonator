@@ -34,7 +34,7 @@ class XMLGenerator:
             logging.warning("Empty field, returning empty string" + "")
             return ""
 
-    def make_eval_tree(self, df):
+    def make_evaluations(self, df):
         """
         takes in a df with rows corresponding to students.
         each column is a single question. this func returns
@@ -49,13 +49,11 @@ class XMLGenerator:
         # make_tree_from_question -> Element
         # q: a Series representing a single question
         def process_row(row):
-            generated_eval = XMLGenerator.make_element_from_response(row)
+            generated_eval = XMLGenerator.make_evaldata(row)
             all_evals.append(generated_eval)
 
         df.apply(process_row, axis=1)  # Apply to all rows
-        export_tree_manifest = et.Element("Manifest")
-        export_tree_manifest.append(self.el_submission)
-        self.export_tree_final = et.ElementTree(export_tree_manifest)
+
         logging.info("Finished building XML for evaluations")
         return all_evals
 
@@ -203,29 +201,43 @@ class XMLGenerator:
         generated_eval = et.Element("evaldata")
         for i, v in qs.iteritems():  ## Loop through all questions in a row..
             # first process id's and values
-            id = re.sub(r"id", "", i)
+            idnumber = re.sub(r"id", "", i)
             val = str(v)
             # print('string id casting to int as: ' + str(id))
             if val != "":
                 ## If the value is empty, don't make a node for it
                 if int(id) >= 24:
-                    xml_tag_out = et.Element(
-                        "comment", attrib={"id": id, "answer": val}
-                    )
                     generated_eval.append(
-                        xml_tag_out
+                        XMLGenerator.make_el_qcomment(
+                            node_type="comment", id=idnumber, answer=val
+                        )
                     )  # append it to the global eval_out
                 else:
-                    xml_tag_out = et.Element(
-                        "question", attrib={"id": id, "answer": val}
-                    )
+                    # make_el_qcomment(node_type="question", id=id, answer=val)
                     generated_eval.append(
-                        xml_tag_out
+                        XMLGenerator.make_el_qcomment(
+                            node_type="question", id=idnumber, answer=val
+                        )
                     )  # append it to the global eval_out
                 # Don't create a new element if there is no need to
         # TODO move this thing outta here
         # don't forget to append the new evaldata to every thing
         return generated_eval
+
+    @classmethod
+    def make_el_qcomment(cls, node_type: str, idnum: str, answer) -> et.Element:
+        """
+        Make a single q or comment element
+
+        Args:
+            node_type (str): [description]
+            id (str): [description]
+            answer (int): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        return et.Element(node_type, attrib={"id": idnum, "answer": answer})
 
     @classmethod
     def make_registration(cls, lms_df: pd.DataFrame):
@@ -298,4 +310,19 @@ class XMLGenerator:
                 "contacthours": metadata.get("class_contacthours"),
             },
         )
+        # TODO insert instructorpoc, registration, and evaluations
         return el_class
+
+    @classmethod
+    def make_manifest(el_submission: et.Element) -> et.Element:
+        """Creates a Manifest element and wraps the submission in it
+
+        Args:
+            el_submission (et.Element): [description]
+
+        Returns:
+            et.Element: [description]
+        """
+        export_tree_manifest = et.Element("Manifest")
+        export_tree_manifest.append(el_submission)
+        return et.ElementTree(export_tree_manifest)
