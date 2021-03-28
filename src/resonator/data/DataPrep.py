@@ -43,14 +43,19 @@ class DataPrep:
         logging.debug("Stripping column names of spaces")
         lms_prefilter = input_lms.rename(columns=lambda x: x.strip())
 
+        lms_prefilter.drop_duplicates(subset=["Username"], inplace=True, keep="first")
+        logging.info("Dropped duplicate users")
+
         logging.debug("Stripping all string fields of trailing spaces")
         lms_prefilter = lms_prefilter.apply(
             lambda x: x.str.strip() if x.dtype == "object" else x
         )
 
-        filtered_completion = lms_prefilter.query(
-            "(Course == @course) & (`Course Status` == 'Completed')"
-        )
+        # TODO: check if this is right
+        mask_code = lms_prefilter["Code"].str.startswith("MGT462BL").fillna(False)
+        lms_prefilter = lms_prefilter[mask_code]
+
+        filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
 
         # TODO: remove implicit dependency
         # self.num_students_completed = lms_fl.shape[0]
