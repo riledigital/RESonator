@@ -124,7 +124,10 @@ class DataPrep:
             captured = sr.group().strip("()")  # remove the parentheses
             return captured
 
-        lms_fl_subset[""]
+        # Recode State values
+        lms_fl_subset["State/Commonwealth/ Territory"] = lms_fl_subset[
+            "State/Commonwealth/ Territory"
+        ].apply(recode_subdivisions)
 
         # Recode values for fields required
         lms_fl_subset["Government Level"] = lms_fl_subset["Government Level"].apply(
