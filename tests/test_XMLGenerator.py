@@ -17,12 +17,13 @@ class TestXmlGenerator:
         file = loader.load_file_disk(path_in)
         return dp.DataPrep.prep_data_lms(
             file,
-            course="Preparedness Actions to Promote Economic Resilience and Recovery  (#9178)",
+            # course="Community Planning for Economic Recovery  (#7540)",
             remove_users=["jld2225"],
         )
 
     def test_make_registration(self, sample_lms_input):
         registration = xmlgen.XMLGenerator.make_registration(sample_lms_input)
+
         assert (
             len([*registration]) == sample_lms_input.shape[0]
         ), "# of elements inside registration should be equivalent to number of students in dataframe"
