@@ -31,7 +31,7 @@ class TestXmlGenerator:
     def sample_meta_input(self):
         loader = dl.DataIO()
         file = loader.load_file_disk("tests/sampledata/meta_sample.csv")
-        return dp.DataPrep.
+        return dp.DataPrep.prep_data_meta(file)
         pass
 
     def test_make_student(self):
