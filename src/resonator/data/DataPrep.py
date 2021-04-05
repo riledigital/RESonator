@@ -26,7 +26,7 @@ class DataPrep:
 
     @classmethod
     def prep_data_lms(
-        cls, input_lms: pd.DataFrame, course: str, remove_users: list
+        cls, input_lms: pd.DataFrame, courses: list, remove_users: list
     ) -> pd.DataFrame:
         """Prepare the data for XML transform. Note tbat this function subsets rows by course.
 
@@ -38,7 +38,7 @@ class DataPrep:
         Returns:
             pd.DataFrame: [description]
         """
-        logging.info(f"Starting prep_data_lms for course: {course}")
+        logging.info(f"Starting prep_data_lms for courses: {courses}")
 
         logging.debug("Stripping column names of spaces")
         lms_prefilter = input_lms.rename(columns=lambda x: x.strip())
@@ -51,9 +51,9 @@ class DataPrep:
             lambda x: x.str.strip() if x.dtype == "object" else x
         )
 
-        # TODO: check if this is right
-        mask_code = lms_prefilter["Code"].str.startswith("MGT462BL").fillna(False)
-        lms_prefilter = lms_prefilter[mask_code]
+        logging.debug(f"Selecting only courses: {courses}")
+        mask_courses = lms_prefilter["Code"].isin(courses)
+        lms_prefilter = lms_prefilter[mask_courses]
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
 
