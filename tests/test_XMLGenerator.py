@@ -143,5 +143,11 @@ class TestXmlGenerator:
         pass
 
     def test_dtd_validate(self):
-        assert False
+        import lxml
+
+        sample_submission_path = str(Path("tests/sampledata/submission-sample.xml"))
+        sample_submission = lxml.etree.parse(sample_submission_path)
+        assert (
+            xmlgen.XMLGenerator.validate_dtd(sample_submission) == True
+        ), "Should validate"
         pass

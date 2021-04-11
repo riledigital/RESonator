@@ -6,6 +6,7 @@ import datetime
 import logging
 from pathlib import Path
 import os
+import lxml
 
 
 class XMLGenerator:
@@ -345,3 +346,12 @@ class XMLGenerator:
         export_tree_manifest = et.Element("Manifest")
         export_tree_manifest.append(el_submission)
         return et.ElementTree(export_tree_manifest)
+
+    @classmethod
+    def validate_dtd(cls, input_xml):
+        # https://lxml.de/validation.html#id1
+        path = Path("src/resonator/data")
+        dtd = etree.DTD(str(Path(path / "submission.dtd")))
+        result = dtd.validate(input_xml)
+        logging.info(dtd.error_log.filter_from_errors())
+        return result
