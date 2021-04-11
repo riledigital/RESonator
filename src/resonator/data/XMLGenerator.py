@@ -202,22 +202,22 @@ class XMLGenerator:
         generated_eval = et.Element("evaldata")
         for i, v in qs.iteritems():  ## Loop through all questions in a row..
             # first process id's and values
-            idnumber = re.sub(r"id", "", i)
+            idnumber = re.sub(r"NQ", "", i)
             val = str(v)
             # print('string id casting to int as: ' + str(id))
             if val != "":
                 ## If the value is empty, don't make a node for it
-                if int(id) >= 24:
+                if int(idnumber) >= 24:
                     generated_eval.append(
                         XMLGenerator.make_el_qcomment(
-                            node_type="comment", id=idnumber, answer=val
+                            node_type="comment", idnum=idnumber, answer=val
                         )
                     )  # append it to the global eval_out
                 else:
                     # make_el_qcomment(node_type="question", id=id, answer=val)
                     generated_eval.append(
                         XMLGenerator.make_el_qcomment(
-                            node_type="question", id=idnumber, answer=val
+                            node_type="question", idnum=idnumber, answer=val
                         )
                     )  # append it to the global eval_out
                 # Don't create a new element if there is no need to

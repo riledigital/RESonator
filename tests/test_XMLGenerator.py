@@ -102,8 +102,13 @@ class TestXmlGenerator:
         assert element.tag == "comment", "node type should match"
         pass
 
-    def test_make_evaldata(self):
-        assert False
+    def test_make_evaldata(self, sample_eval_input):
+        # TODO: length of children should equal the length of input eval questions
+        sample_eval_qs = sample_eval_input.iloc[0, :]
+        element_test = xmlgen.XMLGenerator.make_evaldata(sample_eval_qs)
+        assert (
+            len([*element_test]) == sample_eval_input.shape[1]
+        ), "Length should be equal"
         pass
 
     def test_make_evaluations(self):
