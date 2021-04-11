@@ -111,8 +111,12 @@ class TestXmlGenerator:
         ), "Length should be equal"
         pass
 
-    def test_make_evaluations(self):
-        assert False
+    def test_make_evaluations(self, sample_eval_input):
+        element = xmlgen.XMLGenerator.make_evaluations(sample_eval_input)
+        assert element[0].tag == "evaldata", "First child should be evaldata"
+        assert (
+            len([*element]) == sample_eval_input.shape[0]
+        ), "Should have matching children count for eval input shape"
         pass
 
     def test_make_class(self, sample_lms_input):

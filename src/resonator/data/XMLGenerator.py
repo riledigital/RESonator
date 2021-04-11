@@ -35,7 +35,8 @@ class XMLGenerator:
             logging.warning("Empty field, returning empty string" + "")
             return ""
 
-    def make_evaluations(self, df):
+    @classmethod
+    def make_evaluations(self, df: pd.DataFrame):
         """
         takes in a df with rows corresponding to students.
         each column is a single question. this func returns
