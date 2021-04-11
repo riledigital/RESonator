@@ -26,19 +26,18 @@ class DataPrep:
 
     @classmethod
     def prep_data_lms(
-        cls, input_lms: pd.DataFrame, courses: list, remove_users: list
+        cls, input_lms: pd.DataFrame, codes: list, remove_users: list
     ) -> pd.DataFrame:
         """Prepare the data for XML transform. Note tbat this function subsets rows by course.
 
         Args:f
             input_lms (pd.DataFrame): [description]
-            course (str): [description]
+            codes (list): codes to select. If empty, we select all
             remove_users (list): Test users to be filtered out
 
         Returns:
             pd.DataFrame: [description]
         """
-        logging.info(f"Starting prep_data_lms for courses: {courses}")
 
         logging.debug("Stripping column names of spaces")
         lms_prefilter = input_lms.rename(columns=lambda x: x.strip())
@@ -51,17 +50,14 @@ class DataPrep:
             lambda x: x.str.strip() if x.dtype == "object" else x
         )
 
-        logging.debug(f"Selecting only courses: {courses}")
-        mask_courses = lms_prefilter["Code"].isin(courses)
-        lms_prefilter = lms_prefilter[mask_courses]
+        if codes:
+            logging.debug(f"Selecting only codes: {codes}")
+            mask_codes = lms_prefilter["Code"].isin(codes)
+            lms_prefilter = lms_prefilter[mask_codes]
+        else:
+            logging.debug(f"No codes specified. Skipping Course+Code filtering")
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
-
-        # TODO: remove implicit dependency
-        # self.num_students_completed = lms_fl.shape[0]
-
-        # Drop test users/instructors
-        # lms_fl = lms_fl[lms_fl['Last Name'] != 'DeVincenzo']
         filtered_completion = filtered_completion.loc[
             ~input_lms["Username"].isin(remove_users)
         ]
