@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import logging
 from pathlib import Path
+from tomlkit import parse as parse_toml
 
 
 class DataIO:
@@ -27,24 +28,9 @@ class DataIO:
         """
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
         if meta:
-            my_meta = (
-                pd.read_csv(
-                    path_in,
-                    skipinitialspace=True,
-                    parse_dates=[
-                        "class_startdate",
-                        "class_enddate",
-                        "class_starttime",
-                        "class_endtime",
-                    ],
-                    infer_datetime_format=True,
-                    # TODO: Note that meta has to be utf8
-                    encoding="utf8",
-                )
-                .rename(columns=lambda x: x.strip())
-                .rename(columns=lambda y: y.lower())
-            )
-            return my_meta.to_dict(orient="records")[0]
+            meta_file = open(path_in, mode="r").read()
+            my_meta = parse_toml(meta_file)
+            return my_meta
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in, header=0, skiprows=1)
             logging.debug(data.columns)

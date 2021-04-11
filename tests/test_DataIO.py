@@ -194,3 +194,10 @@ class TestDataIo:
 
         assert isinstance(file, dict), "Output should be a dict"
         assert [*file.keys()] == target_keys, "Output should match expected keys"
+
+    def test_load_toml_meta(self):
+        loader = dl.DataIO()
+        file = loader.load_file_disk(
+            Path("tests/sampledata/meta_sample_new.toml"), meta=True
+        )
+        assert file
