@@ -270,6 +270,25 @@ class XMLGenerator:
         logging.info("Created record for: " + str(student["First Name"]))
         return new_student
 
+    @classmethod
+    def make_instructorpoc(cls, input_dict: dict):
+        """Create XML Element for instructorpoc
+
+        Args:
+            input_dict (dict): dictionary containing instructor information.
+
+        Returns:
+            etree.Element: Element
+        """
+        return et.Element(
+            "instructorpoc",
+            attrib={
+                "instlastname": input_dict.get("instructorpoc_instlastname"),
+                "instfirstname": input_dict.get("instructorpoc_instfirstname"),
+                "instphone": input_dict.get("instructorpoc_instphone"),
+            },
+        )
+
     def build_registration_xml(df):
         """
         This function builds the XML node for registration info

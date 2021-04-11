@@ -69,52 +69,74 @@ class TestXmlGenerator:
 
     def test_make_registration(self, sample_lms_input):
         registration = xmlgen.XMLGenerator.make_registration(sample_lms_input)
-
         assert (
             len([*registration]) == sample_lms_input.shape[0]
         ), "# of elements inside registration should be equivalent to number of students in dataframe"
 
     def test_make_instructorpoc(self):
         """test xml generation of instructorpoc"""
-        # TODO
+        sample_instructor = {
+            "instructorpoc_instlastname": "Doe",
+            "instructorpoc_instfirstname": "Jane",
+            "instructorpoc_instphone": "555-555-5555",
+        }
+        test_element = xmlgen.XMLGenerator.make_instructorpoc(sample_instructor)
+        xml_string = ElementTree.tostring(test_element)
+        assert test_element.attrib.get("instlastname") == sample_instructor.get(
+            "instructorpoc_instlastname"
+        ), "Should exist"
+        assert test_element.attrib.get("instfirstname") == sample_instructor.get(
+            "instructorpoc_instfirstname"
+        ), "Should exist"
+        assert test_element.attrib.get("instphone") == sample_instructor.get(
+            "instructorpoc_instphone"
+        ), "Should exist"
         pass
 
     def test_make_qcomment(self):
+        assert False
         pass
 
     def test_make_evaldata(self):
+        assert False
         pass
 
     def test_make_evaluations(self):
+        assert False
         pass
 
     def test_make_class(self, sample_lms_input):
         """Tests the generation of a single class"""
         logging.info(sample_lms_input)
-        assert True == True
+        assert False
         pass
 
     def test_make_testaverage(self):
         """test xml generation of testaverage"""
         # TODO
+        assert False
         pass
 
     def test_make_trainingprovider(self):
         """test generation of trainingprovider"""
         # TODO
+        assert False
         pass
 
     def test_make_submission(self):
         """Tests the total generation of an entire submission"""
-        assert True == True
+        assert False
         pass
 
     def test_make_manifest(self):
+        assert False
         pass
 
     def test_write_doctype(self):
         """test doctype insertion"""
+        assert False
         pass
 
     def test_dtd_validate(self):
+        assert False
         pass
