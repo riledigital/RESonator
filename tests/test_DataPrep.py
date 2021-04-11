@@ -58,27 +58,3 @@ class TestEvalPrep:
         output = DataPrep.prep_data_eval(lms_data)
         assert output.shape[1] == 27, "Output should have 27 columns"
         assert isinstance(output, pd.DataFrame), "Output should be a DataFrame"
-
-
-class TestDataPrepSchedule:
-    """
-    Unit test for successfully generating schedule XML data
-    """
-
-    def test_training_provider(self):
-        # tpid
-        # tpphone
-        # tpemail
-        pass
-
-    def test_schedule(self):
-        pass
-
-
-class TestDataPrepSubmission:
-    """
-    Unit test for generating final RES submission.xml
-    """
-
-    def test_submission(self):
-        pass
