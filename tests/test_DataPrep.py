@@ -17,7 +17,7 @@ class TestLMSPrep:
         lms_data = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
         output = DataPrep.prep_data_lms(
             input_lms=lms_data,
-            courses=["MGT462BL"],
+            codes=["MGT462BL"],
             #  "MGT462BLIA", "MGT462BLOH", "MGT462BLMA"],
             remove_users=test_users,
         )

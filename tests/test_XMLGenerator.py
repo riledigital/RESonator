@@ -4,6 +4,7 @@ from pathlib import Path
 import resonator.data.DataIO as dl
 import resonator.data.XMLGenerator as xmlgen
 import resonator.data.DataPrep as dp
+from xml.etree import ElementTree
 
 
 class TestXmlGenerator:
@@ -17,25 +18,53 @@ class TestXmlGenerator:
         file = loader.load_file_disk(path_in)
         return dp.DataPrep.prep_data_lms(
             file,
-            # course="Community Planning for Economic Recovery  (#7540)",
+            codes=["MGT462BL"],
             remove_users=["jld2225"],
         )
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_eval_input(self):
         loader = dl.DataIO()
-        file = loader.load_file_disk("tests/sampledata/qualtrics_output.xlsx")
+        file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
         return dp.DataPrep.prep_data_eval(file)
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_meta_input(self):
         loader = dl.DataIO()
-        file = loader.load_file_disk("tests/sampledata/meta_sample.csv")
+        file = loader.load_file_disk(Path("tests/sampledata/meta_sample.csv"))
         return dp.DataPrep.prep_data_meta(file)
         pass
 
-    def test_make_student(self):
+    def test_make_student(self, sample_lms_input):
         # make single student
+        logging.debug(sample_lms_input)
+        student = sample_lms_input.iloc[0, :]
+        student_dict = student.to_dict()
+        output = xmlgen.XMLGenerator.make_student(student)
+        xml_string = ElementTree.tostring(output)
+        logging.debug(ElementTree.tostring(output))
+        assert output.attrib.get("discipline") == student_dict.get(
+            "Discipline"
+        ), "Discipline should match"
+        assert output.attrib.get("govnlevel") == student_dict.get(
+            "Government Level"
+        ), "govnlevel should match"
+        assert output.attrib.get("studentcity") == student_dict.get(
+            "City"
+        ), "studentcity should match"
+        # TODO: Check international status code
+        assert output.attrib.get("international") == student_dict.get(
+            "International Status"
+        ), "Intl Status should match"
+        assert output.attrib.get("studentlastname") == student_dict.get(
+            "Last Name"
+        ), "Last name should match"
+        assert output.attrib.get("studentphone") == student_dict.get(
+            "Primary Phone"
+        ), "phone should match"
+        assert output.attrib.get("studentzipcode") == student_dict.get(
+            "Postal Code"
+        ), "zip code should match"
         pass
 
     def test_make_registration(self, sample_lms_input):
