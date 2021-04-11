@@ -94,7 +94,12 @@ class TestXmlGenerator:
         pass
 
     def test_make_qcomment(self):
-        assert False
+        element = xmlgen.XMLGenerator.make_el_qcomment(
+            node_type="comment", idnum=1, answer="Answer123"
+        )
+        assert element.attrib.get("answer") == "Answer123", "Answer should match"
+        assert element.attrib.get("id") == 1, "ID should match"
+        assert element.tag == "comment", "node type should match"
         pass
 
     def test_make_evaldata(self):
