@@ -122,7 +122,12 @@ class TestXmlGenerator:
     def test_make_class(self, sample_lms_input):
         """Tests the generation of a single class"""
         logging.info(sample_lms_input)
-        assert False
+        element = xmlgen.XMLGenerator.make_el_class()
+        assert len([*element]) == 4, "Should have four child elements"
+        assert element[0].tag == "instructorpoc", "Should have instructorpoc"
+        assert element[1].tag == "registration", "Should have registration"
+        assert element[2].tag == "evaluations", "Should have evaluations"
+        assert element[3].tag == "testaverage", "Should have testaverage"
         pass
 
     def test_make_testaverage(self):

@@ -301,14 +301,22 @@ class XMLGenerator:
         logging.info("Finished building XML tree for registration data")
 
     @staticmethod
-    def make_el_class(metadata):
-        """Creates a class node from input metadata
+    def make_el_class(
+        metadata: dict,
+        registration: et.Element,
+        instructorpoc: et.Element,
+        evaluations: et.Element,
+    ):
+        """Makes a <class> element with constituent elements.
 
         Args:
-            metadata (Dict): dict representing metadata
+            metadata (dict): [description]
+            registration (et.Element): [description]
+            instructorpoc (et.Element: XML element
+            evaluations (et.Element): [description]
 
         Returns:
-            et.Element: a single XML element
+            [type]: [description]
         """
         el_class = et.Element(
             "class",
@@ -326,12 +334,24 @@ class XMLGenerator:
                 "enddate": metadata.get("class_enddate"),
                 "starttime": metadata.get("class_starttime"),
                 "endtime": metadata.get("class_endtime"),
-                "numstudent": str(self.num_students),
+                # TODO: Check if this is correct
+                "numstudent": str(len([*registration])),
                 "trainingmethod": metadata.get("class_trainingmethod"),
                 "contacthours": metadata.get("class_contacthours"),
             },
         )
         # TODO insert instructorpoc, registration, and evaluations
+        el_class.append(instructorpoc)
+        el_class.append(registration)
+        el_class.append(evaluations)
+        testaverage = et.Element(
+            "testaverage",
+            attrib={
+                "pretest": metadata.get("pretest"),
+                "posttest": metadata.get("posttest"),
+            },
+        )
+        el_class.append(testaverage)
         return el_class
 
     @classmethod
