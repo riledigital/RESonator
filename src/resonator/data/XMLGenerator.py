@@ -117,7 +117,7 @@ class XMLGenerator:
         f.close()
         logging.info("Finished writing DOCTYPE string to  file")
 
-    def generate_xml(self):
+    def generate_xml(self, input_eval, input_lms, metadata):
         """
         main entry point for this class. takes 3 df inputs
         and creates an XML file from them
@@ -126,63 +126,21 @@ class XMLGenerator:
         :param input_meta: DataFrame
         :return: String
         """
-        el_instructorpoc = et.Element(
-            "instructorpoc",
-            attrib={
-                "instlastname": self.get_meta("instructorpoc_instlastname"),
-                "instfirstname": self.get_meta("instructorpoc_instfirstname"),
-                "instphone": self.get_meta("instructorpoc_instphone"),
-            },
+        el_registration = self.make_registration(input_lms)
+        el_instructorpoc = self.make_instructorpoc(metadata)
+        el_evaluations = self.make_evaluations(input_eval)
+
+        el_class = self.make_el_class(
+            metadata, el_registration, el_instructorpoc, el_evaluations
         )
 
-        el_class = et.Element(
-            "class",
-            attrib={
-                "preparerlastname": self.get_meta("class_preparerlastname"),
-                "preparerfirstname": self.get_meta("class_preparerlastname"),
-                "batchpreparerphone": self.get_meta("class_batchpreparerphone"),
-                "batchprepareremail": self.get_meta("class_batchprepareremail"),
-                "catalognum": self.get_meta("class_catalognum"),
-                "classtype": self.get_meta("class_classtype"),
-                "classcity": self.get_meta("class_classcity"),
-                "classstate": self.get_meta("class_state"),
-                "classzipcode": self.get_meta("class_classzipcode"),
-                "startdate": self.get_meta("class_startdate"),
-                "enddate": self.get_meta("class_enddate"),
-                "starttime": self.get_meta("class_starttime"),
-                "endtime": self.get_meta("class_endtime"),
-                "numstudent": str(self.num_students),
-                "trainingmethod": self.get_meta("class_trainingmethod"),
-                "contacthours": self.get_meta("class_contacthours"),
-            },
-        )
-
-        eval_root = self.make_eval_tree(self.in_df_eval)
-        evaluations_xml = et.ElementTree(eval_root)
         el_class.append(el_instructorpoc)
-        el_class.append(self.registration)
-        el_class.append(eval_root)
+        el_class.append(el_registration)
+        el_class.append(self.make_testaverage(metadata))
 
-        el_testaverage = et.Element(
-            "testaverage",
-            attrib={
-                "pretest": self.get_meta("testaverage_pretest"),
-                "posttest": self.get_meta("testaverage_posttest"),
-            },
-        )
-        el_class.append(el_testaverage)
-
-        el_trainingprovider = et.Element(
-            "trainingprovider",
-            attrib={
-                "tpid": self.get_meta("trainingprovider_tpid"),
-                "tpphone": self.get_meta("trainingprovider_tpphone"),
-                "tpemail": self.get_meta("trainingprovider_tpemail"),
-            },
-        )
-        el_trainingprovider.append(el_class)
+        el_trainingprovider = self.make_trainingprovider(metadata)
         self.el_submission.append(el_trainingprovider)
-        build_registration_xml(self.in_df_lms)
+
         self.export_final_xml()
         self.write_doctype()
         logging.info(

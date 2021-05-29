@@ -179,12 +179,15 @@ class TestXmlGenerator:
         assert "pretest" in element.attrib, "should have pretest"
         assert "posttest" in element.attrib, "should have posttest"
 
-    def test_make_trainingprovider(self, sample_meta_input, sample_class):
+    def test_make_trainingprovider(self, sample_meta_input, sample_el_class):
         """test generation of trainingprovider"""
-        element = xmlgen.XMLGenerator.make_trainingprovider(sample_meta_input)
+        element = xmlgen.XMLGenerator.make_trainingprovider(
+            sample_meta_input, sample_el_class
+        )
         assert "tpid" in element.attrib, "should have tpid"
         assert "tpphone" in element.attrib, "should have tpphone"
         assert "tpemail" in element.attrib, "should have tpemail"
+        assert element[0].tag is "class", "class tag should be first child"
 
     def test_make_submission(self):
         """Tests the total generation of an entire submission"""
