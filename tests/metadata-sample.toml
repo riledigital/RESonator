@@ -1,0 +1,29 @@
+# Fields specific to training provider
+trainingprovider_tpid = "NCDP"
+# Phone num in format 5555555555
+trainingprovider_tpphone = "5555555555"
+trainingprovider_tpemail = "test@example.org"
+
+# Fields specific to class
+class_catalognum = ""
+class_classtype = ""
+class_classcity = ""
+class_state = ""
+class_classzipcode = ""
+class_classcountry = ""
+class_startdate = ""
+class_enddate = ""
+class_starttime = ""
+class_endtime = ""
+class_trainingmethod = ""
+class_contacthours = ""
+
+# Fields specific to instructor
+instructorpoc_instlastname = ""
+instructorpoc_instfirstname = ""
+instructorpoc_instphone = ""
+instructorpoc_instemail = ""
+
+# Fields specific to testaverage
+testaverage_pretest = ""
+testaverage_posttest = ""
