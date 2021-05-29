@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import logging
 from pathlib import Path
-from tomlkit import parse as parse_toml
+import pytomlpp
 
 
 class DataIO:
@@ -44,6 +44,15 @@ class DataIO:
                 f"Input file isn't csv or xslx. Please check input for: {path_in}"
             )
 
+    @classmethod
+    def load_toml(self, path_in: Path):
+        with open(path_in, "r") as reader:
+            logging.info(f"Loading toml: {path_in}")
+            toml = pytomlpp.loads(reader.read())
+            logging.info(f"Loaded toml: \n{toml}")
+            return toml
+
+    @classmethod
     def load_from_request(self):
         """TODO: Placeholder, load data from an HTTP request?"""
         print("Currently unimplemented")

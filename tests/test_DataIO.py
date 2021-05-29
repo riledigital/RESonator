@@ -154,14 +154,12 @@ class TestDataIo:
             file.columns.array == target_columns.array
         ), "Output should match expected columns"
 
-    def test_load_csv_meta(self):
+    def test_load_toml_meta(self):
         """
         Load the metaata sample data, and then test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_file_disk(
-            Path("tests/sampledata/meta_sample.csv"), meta=True
-        )
+        file = loader.load_toml(Path("tests/metadata-sample.toml"))
         # Target the full columns in this case
         target_keys = [
             "trainingprovider_tpid",
@@ -176,10 +174,8 @@ class TestDataIo:
             "class_enddate",
             "class_starttime",
             "class_endtime",
-            "class_numstudent",
             "class_trainingmethod",
             "class_contacthours",
-            "class_numstudent.1",
             "testaverage_pretest",
             "testaverage_posttest",
             "instructorpoc_instlastname",
@@ -191,13 +187,9 @@ class TestDataIo:
             "class_preparerphone",
             "class_batchprepareremail",
         ]
-
+        target_keys.sort()
+        actual_keys = file.keys()
         assert isinstance(file, dict), "Output should be a dict"
-        assert [*file.keys()] == target_keys, "Output should match expected keys"
-
-    def test_load_toml_meta(self):
-        loader = dl.DataIO()
-        file = loader.load_file_disk(
-            Path("tests/sampledata/meta_sample_new.toml"), meta=True
-        )
-        assert file
+        assert all(
+            field in file.keys() for field in target_keys
+        ), "Output should match expected keys"

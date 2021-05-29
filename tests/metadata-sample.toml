@@ -18,12 +18,18 @@ class_endtime = "1630"
 class_trainingmethod = "M"
 class_contacthours = "8"
 
+# Fields specific to testaverage
+testaverage_pretest = "80"
+testaverage_posttest = "100"
+
 # Fields specific to instructor
 instructorpoc_instlastname = "Doe"
 instructorpoc_instfirstname = "K"
 instructorpoc_instphone = "5555555555"
 instructorpoc_instemail = "test@example.org"
 
-# Fields specific to testaverage
-testaverage_pretest = "80"
-testaverage_posttest = "100"
+# Report preparer
+class_preparerlastname = "Doe"
+class_preparerfirstname = "K"
+class_preparerphone = "5555555555"
+class_batchprepareremail = "test@example.org"
