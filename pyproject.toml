@@ -6,16 +6,16 @@ authors = ["Ri Le <r.le@columbia.edu>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "3.7.10"
+python = "^3.9"
 pandas = "^1.2.2"
 numpy = "^1.20.1"
 black = "^20.8b1"
-pytest = "^6.2.2"
 pip = "^21.0.1"
 openpyxl = "^3.0.7"
 lxml = "^4.6.2"
 pycountry = "^20.7.3"
-tomlkit = "^0.7.0"
+pytest = "^6.2.4"
+pytomlpp = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 black = "*"
