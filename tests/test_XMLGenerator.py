@@ -53,13 +53,13 @@ class TestXmlGenerator:
     @pytest.fixture(scope="class", autouse=True)
     def sample_class(
         self,
-        sample_metadata,
+        sample_meta_input,
         sample_instructorpoc,
         sample_registration,
         sample_evaluations,
     ):
         test_element = xmlgen.XMLGenerator.make_el_class(
-            sample_metadata,
+            sample_meta_input,
             sample_registration,
             sample_instructorpoc,
             sample_evaluations,
@@ -67,8 +67,16 @@ class TestXmlGenerator:
         return test_element
 
     @pytest.fixture(scope="class", autouse=True)
-    def sample_trainingprovider(self, sample_class, sample_testaverage):
-        pass
+    def sample_testaverage(self, sample_meta_input):
+        test_el = xmlgen.XMLGenerator.make_testaverage(sample_meta_input)
+        return test_el
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_trainingprovider(self, sample_class, sample_meta_input):
+        test_el = xmlgen.XMLGenerator.make_trainingprovider(
+            sample_meta_input, sample_class
+        )
+        return test_el
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_el_class(
