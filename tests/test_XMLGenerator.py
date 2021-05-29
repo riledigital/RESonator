@@ -64,7 +64,7 @@ class TestXmlGenerator:
             sample_instructorpoc,
             sample_evaluations,
         )
-        return test_elements
+        return test_element
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_trainingprovider(self, sample_class, sample_testaverage):
