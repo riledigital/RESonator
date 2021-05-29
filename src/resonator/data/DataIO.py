@@ -49,7 +49,8 @@ class DataIO:
     def load_toml(self, path_in: Path):
         with open(path_in, "r") as reader:
             logging.info(f"Loading toml: {path_in}")
-            toml = pytomlpp.loads(reader.read())
+            file_str = reader.read()
+            toml = pytomlpp.loads(file_str)
             logging.info(f"Loaded toml: \n{toml}")
             return toml
 

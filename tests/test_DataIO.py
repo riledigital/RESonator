@@ -191,5 +191,5 @@ class TestDataIo:
         actual_keys = file.keys()
         assert isinstance(file, dict), "Output should be a dict"
         assert all(
-            field in file.keys() for field in target_keys
+            field in actual_keys for field in target_keys
         ), "Output should match expected keys"

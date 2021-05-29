@@ -92,8 +92,9 @@ class DataPrep:
                 input (str): Input country string
             """
             if len(input) > 2:
-                subdivisions = pycountry.subdivisions.get(country_code="US")
-                return subdivisions.lookup(input).alpha_2
+                test_str = input.split(" ")[0]
+                subdivisions = pycountry.subdivisions
+                return subdivisions.lookup(test_str).code[:2]
             else:
                 return input
 

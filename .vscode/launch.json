@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: CLI test",
+      "type": "python",
+      "request": "launch",
+      "program": "src/resonator/cli.py",
+      "console": "integratedTerminal",
+      "args": [
+        "tests/sampledata/lms_sample.csv",
+        "tests/sampledata/qualtrics_output.xlsx",
+        "tests/metadata-sample.toml",
+        "tests/sampledata/test_out.xml"
+      ]
+    },
+    {
       "name": "Run all tests",
       "type": "python",
       "request": "launch",
