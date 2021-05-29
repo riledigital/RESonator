@@ -138,7 +138,7 @@ class XMLGenerator:
         el_class.append(el_registration)
         el_class.append(self.make_testaverage(metadata))
 
-        el_trainingprovider = self.make_trainingprovider(metadata)
+        el_trainingprovider = self.make_trainingprovider(metadata, el_class)
         self.el_submission.append(el_trainingprovider)
 
         self.export_final_xml()
@@ -336,6 +336,12 @@ class XMLGenerator:
         el_class.append(evaluations)
         el_class.append(cls.make_testaverage(metadata))
         return el_class
+
+    @classmethod
+    def make_submission(cls, el_trainingprovider):
+        el_submission = et.Element("submission")
+        el_submission.append(el_trainingprovider)
+        return el_submission
 
     @classmethod
     def make_manifest(el_submission: et.Element) -> et.Element:

@@ -189,10 +189,12 @@ class TestXmlGenerator:
         assert "tpemail" in element.attrib, "should have tpemail"
         assert element[0].tag is "class", "class tag should be first child"
 
-    def test_make_submission(self):
+    def test_make_submission(self, sample_trainingprovider):
         """Tests the total generation of an entire submission"""
-        assert False
-        pass
+        test_element = xmlgen.XMLGenerator.make_submission(sample_trainingprovider)
+        assert (
+            test_element[0].tag is "trainingprovider"
+        ), "child should be a trainingprovider tag"
 
     def test_make_manifest(self):
         assert False
