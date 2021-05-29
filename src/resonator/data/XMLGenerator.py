@@ -291,6 +291,24 @@ class XMLGenerator:
             },
         )
 
+    # @classmethod
+    # def make_single_el(cls, tag_name, input_dict):
+    #     new_dict = {}
+    #     for key in input_dict:
+    #         new_dict = input_dict.get(key)
+    #     el_out = et.Element(tag_name, new_dict)
+
+    @classmethod
+    def make_testaverage(cls, input_meta):
+        el_testaverage = et.Element(
+            "testaverage",
+            attrib={
+                "pretest": input_meta.get("testaverage_pretest"),
+                "posttest": input_meta.get("testaverage_posttest"),
+            },
+        )
+        return el_testaverage
+
     def build_registration_xml(df):
         """
         This function builds the XML node for registration info

@@ -158,11 +158,11 @@ class TestXmlGenerator:
         assert element[3].tag == "testaverage", "Should have testaverage"
         pass
 
-    def test_make_testaverage(self):
+    def test_make_testaverage(self, sample_meta_input):
         """test xml generation of testaverage"""
-        # TODO
-        assert False
-        pass
+        element = xmlgen.XMLGenerator.make_testaverage(sample_meta_input)
+        assert "pretest" in element.attrib, "should have pretest"
+        assert "posttest" in element.attrib, "should have posttest"
 
     def test_make_trainingprovider(self):
         """test generation of trainingprovider"""
