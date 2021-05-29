@@ -31,8 +31,22 @@ class TestXmlGenerator:
     @pytest.fixture(scope="class", autouse=True)
     def sample_meta_input(self):
         loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/meta_sample.csv"))
+        file = loader.load_toml(Path("tests/sampledata/metadata-sample.toml"))
         return dp.DataPrep.prep_data_meta(file)
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_registration(
+        self, sample_lms_input
+    ):
+        el_registration = xmlgen.XMLGenerator.make_registration(sample_lms_input)
+        return el_registration
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_instructorpoc(self):
+        pass
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_evaluations(self):
         pass
 
     def test_make_student(self, sample_lms_input):
@@ -119,11 +133,23 @@ class TestXmlGenerator:
         ), "Should have matching children count for eval input shape"
         pass
 
-    def test_make_class(self, sample_lms_input):
+    def test_make_class(
+        self,
+        sample_lms_input,
+        sample_meta_input,
+        sample_registration,
+        sample_instructorpoc,
+        sample_evaluations,
+    ):
         """Tests the generation of a single class"""
         logging.info(sample_lms_input)
         # TODO: prep the data
-        element = xmlgen.XMLGenerator.make_el_class()
+        element = xmlgen.XMLGenerator.make_el_class(
+            sample_meta_input,
+            sample_registration,
+            sample_instructorpoc,
+            sample_evaluations,
+        )
         assert len([*element]) == 4, "Should have four child elements"
         assert element[0].tag == "instructorpoc", "Should have instructorpoc"
         assert element[1].tag == "registration", "Should have registration"

@@ -166,5 +166,5 @@ class DataPrep:
 
     @classmethod
     def prep_data_meta(cls, input_meta: pd.DataFrame) -> pd.DataFrame:
-        # TODO
-        pass
+        # Transform/correct data if necessary, otherwise return input_meta
+        return input_meta
