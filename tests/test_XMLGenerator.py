@@ -31,7 +31,7 @@ class TestXmlGenerator:
     @pytest.fixture(scope="class", autouse=True)
     def sample_meta_input(self):
         loader = dl.DataIO()
-        file = loader.load_toml(Path("tests/sampledata/metadata-sample.toml"))
+        file = loader.load_toml(Path("tests/metadata-sample.toml"))
         return dp.DataPrep.prep_data_meta(file)
 
     @pytest.fixture(scope="class", autouse=True)
