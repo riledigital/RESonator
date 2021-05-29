@@ -236,6 +236,9 @@ class TestXmlGenerator:
 
     def test_write_doctype(self):
         """test doctype insertion"""
+        # Create an XML submission
+        # Write the doctype
+        # Test if the doctype wrote to output
         assert False
         pass
 

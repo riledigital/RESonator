@@ -7,6 +7,9 @@ import logging
 from pathlib import Path
 import os
 import lxml
+import tempfile
+from typing import TextIO
+from shutil import copyfileobj
 
 
 class XMLGenerator:
@@ -17,23 +20,6 @@ class XMLGenerator:
     def __init__(self):
         """Initializes instance but doesn't really do anything since its stateless..."""
         logging.info("Initialized XML generator instance")
-
-    def get_meta(self, field):
-        """
-        Quickly returns the metadata field from the LMS dataframe.
-        :param field: String representing the field from the lms dataframe
-        :return: String
-        """
-        df_meta = self.in_df_meta
-        try:
-            out_meta = str(df_meta.get(str(field)).item())
-            if out_meta == "nan":
-                return ""
-            else:
-                return str(df_meta.get(str(field)).item())
-        except:
-            logging.warning("Empty field, returning empty string" + "")
-            return ""
 
     @classmethod
     def make_evaluations(self, df: pd.DataFrame):
@@ -84,40 +70,50 @@ class XMLGenerator:
         str_datetime = date_today.strftime("%m%d%Y")
         return f"NCDP_{course_num}_{str_datetime}"
 
-    def export_final_xml(self):
+    @classmethod
+    def export_xml_manifest(cls, etree, out_path):
         """
         wrapper function to export the xml files at the very end
         :return: none
         """
+        temp_file = tempfile.TemporaryFile()
+        etree.write(temp_file, encoding="utf-8", xml_declaration=True)
 
-        self.export_tree_final.write(
-            self.string_output_file_path, encoding="utf-8", xml_declaration=True
-        )
+        logging.info("Saved RES XML as: " + out_path)
 
-        logging.info("Saved RES XML as: " + self.string_output_file_path)
+    @classmethod
+    def write_doctype(cls, el_manifest: et.ElementTree) -> TextIO:
+        """Create a tempfile, append doctype to it
 
-    def write_doctype(self):
+        Args:
+            el_manifest (et.ElementTree): final submission element tree
+
+        Returns:
+            TextIO: output file object with doctype
         """
-        writes the DOCTYPE string to the first line of the output XML file
+        # Serialize the element tree to the tempfile
+        temp_file = tempfile.TemporaryFile()
+        el_manifest.write(temp_file, encoding="utf-8", xml_declaration=True)
 
-        :return:
-        """
         logging.info("Writing DOCTYPE to XML file...")
         # Read in the export file, then
         ## https://stackoverflow.com/a/10507291
-        insert = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
-        # out_filename = self.out_path + self.output_filename_scheme() + '.xml'
-        f = open(self.string_output_file_path, "r")
+        doctype_str = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
+
+        # read the current data from the tempfile
+        f = open(temp_file, "r")
         contents = f.readlines()
-        f.close()
-        contents.insert(1, insert)
-        f = open(self.string_output_file_path, "w")
+
+        # Insert doctype into the start of the tempfile
+        contents.insert(1, doctype_str)
+        f = open(temp_file, "w")
         contents = "".join(contents)
         f.write(contents)
-        f.close()
-        logging.info("Finished writing DOCTYPE string to  file")
+        logging.info("Finished writing DOCTYPE string to file")
+        return temp_file
 
-    def generate_xml(self, input_eval, input_lms, metadata):
+    @classmethod
+    def generate_full_submission(cls, input_eval, input_lms, metadata):
         """
         main entry point for this class. takes 3 df inputs
         and creates an XML file from them
@@ -126,25 +122,27 @@ class XMLGenerator:
         :param input_meta: DataFrame
         :return: String
         """
-        el_registration = self.make_registration(input_lms)
-        el_instructorpoc = self.make_instructorpoc(metadata)
-        el_evaluations = self.make_evaluations(input_eval)
 
-        el_class = self.make_el_class(
+        el_registration = cls.make_registration(input_lms)
+        el_instructorpoc = cls.make_instructorpoc(metadata)
+        el_evaluations = cls.make_evaluations(input_eval)
+        el_class = cls.make_el_class(
             metadata, el_registration, el_instructorpoc, el_evaluations
         )
+        el_trainingprovider = cls.make_trainingprovider(metadata, el_class)
+        el_submission = cls.make_submission(el_trainingprovider)
 
-        el_class.append(el_instructorpoc)
-        el_class.append(el_registration)
-        el_class.append(self.make_testaverage(metadata))
+        # Add manifest
+        el_manifest = cls.make_manifest(el_submission)
 
-        el_trainingprovider = self.make_trainingprovider(metadata, el_class)
-        self.el_submission.append(el_trainingprovider)
+        outfile = cls.write_doctype(el_manifest)
 
-        self.export_final_xml()
-        self.write_doctype()
+        final_out_file = open("output.xml", "w")
+
+        copyfileobj(outfile, final_out_file)
+
         logging.info(
-            "Finished generating XML with name: " + str(self.string_output_filename)
+            "Finished generating XML with name: " + str(cls.string_output_filename)
         )
 
     @classmethod
