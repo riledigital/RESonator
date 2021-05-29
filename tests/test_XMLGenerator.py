@@ -221,12 +221,18 @@ class TestXmlGenerator:
         """Tests the total generation of an entire submission"""
         test_element = xmlgen.XMLGenerator.make_submission(sample_trainingprovider)
         assert (
-            test_element[0].tag is "trainingprovider"
+            test_element[0].tag == "trainingprovider"
         ), "child should be a trainingprovider tag"
 
-    def test_make_manifest(self):
-        assert False
-        pass
+    def test_make_manifest(self, sample_trainingprovider):
+        """
+        Test if the manifest was inserted into the output properly.
+        """
+        test_el_submission = xmlgen.XMLGenerator.make_submission(
+            sample_trainingprovider
+        )
+        el_manifest = xmlgen.XMLGenerator.make_manifest(test_el_submission)
+        assert el_manifest.find("submission").tag == "submission"
 
     def test_write_doctype(self):
         """test doctype insertion"""

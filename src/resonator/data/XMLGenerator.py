@@ -338,13 +338,21 @@ class XMLGenerator:
         return el_class
 
     @classmethod
-    def make_submission(cls, el_trainingprovider):
+    def make_submission(cls, el_trainingprovider) -> et.Element:
+        """Create submission tag by wrapping trainingprovider
+
+        Args:
+            el_trainingprovider (et.Element): element trainingprovider
+
+        Returns:
+            (et.Element): submission xml
+        """
         el_submission = et.Element("submission")
         el_submission.append(el_trainingprovider)
         return el_submission
 
     @classmethod
-    def make_manifest(el_submission: et.Element) -> et.Element:
+    def make_manifest(cls, el_submission: et.Element) -> et.Element:
         """Creates a Manifest element and wraps the submission in it
 
         Args:
