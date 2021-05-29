@@ -46,8 +46,9 @@ class TestXmlGenerator:
         return test_element
 
     @pytest.fixture(scope="class", autouse=True)
-    def sample_evaluations(self):
-        pass
+    def sample_evaluations(self, sample_eval_input):
+        test_element = xmlgen.XMLGenerator.make_evaluations(sample_eval_input)
+        return test_element
 
     def test_make_student(self, sample_lms_input):
         # make single student
