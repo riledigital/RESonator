@@ -1,3 +1,4 @@
+from typing import TextIO
 import pandas as pd
 import re
 import logging
@@ -51,6 +52,11 @@ class DataIO:
             toml = pytomlpp.loads(reader.read())
             logging.info(f"Loaded toml: \n{toml}")
             return toml
+
+    @classmethod
+    def write_output_file(clas, input_file: TextIO, path_out: Path) -> bool:
+        with open(path_out, "w") as writer:
+            writer.write(input_file)
 
     @classmethod
     def load_from_request(self):

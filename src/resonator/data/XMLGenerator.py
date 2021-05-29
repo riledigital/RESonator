@@ -8,7 +8,7 @@ from pathlib import Path
 import os
 import lxml
 import tempfile
-from typing import TextIO
+from typing import Text, TextIO
 from shutil import copyfileobj
 
 
@@ -113,14 +113,14 @@ class XMLGenerator:
         return temp_file
 
     @classmethod
-    def generate_full_submission(cls, input_eval, input_lms, metadata):
+    def generate_full_submission(cls, input_eval, input_lms, metadata) -> TextIO:
         """
         main entry point for this class. takes 3 df inputs
         and creates an XML file from them
         :param input_lms: DataFrame
         :param input_eval: DataFrame
         :param input_meta: DataFrame
-        :return: String
+        :return: (TextIO) output file object
         """
 
         el_registration = cls.make_registration(input_lms)
@@ -137,13 +137,11 @@ class XMLGenerator:
 
         outfile = cls.write_doctype(el_manifest)
 
-        final_out_file = open("output.xml", "w")
-
-        copyfileobj(outfile, final_out_file)
-
         logging.info(
             "Finished generating XML with name: " + str(cls.string_output_filename)
         )
+
+        return outfile
 
     @classmethod
     def make_evaldata(cls, qs) -> list:
