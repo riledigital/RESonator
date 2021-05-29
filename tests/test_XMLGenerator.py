@@ -35,15 +35,15 @@ class TestXmlGenerator:
         return dp.DataPrep.prep_data_meta(file)
 
     @pytest.fixture(scope="class", autouse=True)
-    def sample_registration(
-        self, sample_lms_input
-    ):
+    def sample_registration(self, sample_lms_input):
         el_registration = xmlgen.XMLGenerator.make_registration(sample_lms_input)
         return el_registration
 
     @pytest.fixture(scope="class", autouse=True)
-    def sample_instructorpoc(self):
-        pass
+    def sample_instructorpoc(self, sample_meta_input):
+        # This fixture uses the test input data
+        test_element = xmlgen.XMLGenerator.make_instructorpoc(sample_meta_input)
+        return test_element
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_evaluations(self):
