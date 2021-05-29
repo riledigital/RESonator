@@ -310,10 +310,10 @@ class XMLGenerator:
         """Makes a <class> element with constituent elements.
 
         Args:
-            metadata (dict): [description]
-            registration (et.Element): [description]
+            metadata (dict): user-input metadata file
+            registration (et.Element): Registration data
             instructorpoc (et.Element: XML element
-            evaluations (et.Element): [description]
+            evaluations (et.Element): Qualtrics evaluation data
 
         Returns:
             [type]: [description]
