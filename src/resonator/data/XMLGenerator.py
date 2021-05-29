@@ -318,8 +318,9 @@ class XMLGenerator:
         df.apply(XMLGenerator.make_student, axis=1)
         logging.info("Finished building XML tree for registration data")
 
-    @staticmethod
+    @classmethod
     def make_el_class(
+        cls,
         metadata: dict,
         registration: et.Element,
         instructorpoc: et.Element,
@@ -353,7 +354,7 @@ class XMLGenerator:
                 "starttime": metadata.get("class_starttime"),
                 "endtime": metadata.get("class_endtime"),
                 # TODO: Check if this is correct
-                "numstudent": str(len([*registration])),
+                # "numstudent": str(len([*registration])),
                 "trainingmethod": metadata.get("class_trainingmethod"),
                 "contacthours": metadata.get("class_contacthours"),
             },
@@ -362,14 +363,7 @@ class XMLGenerator:
         el_class.append(instructorpoc)
         el_class.append(registration)
         el_class.append(evaluations)
-        testaverage = et.Element(
-            "testaverage",
-            attrib={
-                "pretest": metadata.get("pretest"),
-                "posttest": metadata.get("posttest"),
-            },
-        )
-        el_class.append(testaverage)
+        el_class.append(cls.make_testaverage(metadata))
         return el_class
 
     @classmethod
