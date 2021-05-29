@@ -309,6 +309,19 @@ class XMLGenerator:
         )
         return el_testaverage
 
+    @classmethod
+    def make_trainingprovider(cls, input_meta, el_class):
+        el_trainingprovider = et.Element(
+            "trainingprovider",
+            attrib={
+                "tpid": input_meta.get("trainingprovider_tpid"),
+                "tpphone": input_meta.get("trainingprovider_tpphone"),
+                "tpemail": input_meta.get("trainingprovider_tpemail"),
+            },
+        )
+        el_trainingprovider.append(el_class)
+        return el_trainingprovider
+
     def build_registration_xml(df):
         """
         This function builds the XML node for registration info

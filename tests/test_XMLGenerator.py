@@ -50,6 +50,22 @@ class TestXmlGenerator:
         test_element = xmlgen.XMLGenerator.make_evaluations(sample_eval_input)
         return test_element
 
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_el_class(
+        self,
+        sample_meta_input,
+        sample_registration,
+        sample_instructorpoc,
+        sample_evaluations,
+    ):
+        element = xmlgen.XMLGenerator.make_el_class(
+            sample_meta_input,
+            sample_registration,
+            sample_instructorpoc,
+            sample_evaluations,
+        )
+        return element
+
     def test_make_student(self, sample_lms_input):
         # make single student
         logging.debug(sample_lms_input)
@@ -144,7 +160,6 @@ class TestXmlGenerator:
     ):
         """Tests the generation of a single class"""
         logging.info(sample_lms_input)
-        # TODO: prep the data
         element = xmlgen.XMLGenerator.make_el_class(
             sample_meta_input,
             sample_registration,
@@ -164,11 +179,12 @@ class TestXmlGenerator:
         assert "pretest" in element.attrib, "should have pretest"
         assert "posttest" in element.attrib, "should have posttest"
 
-    def test_make_trainingprovider(self):
+    def test_make_trainingprovider(self, sample_meta_input, sample_class):
         """test generation of trainingprovider"""
-        # TODO
-        assert False
-        pass
+        element = xmlgen.XMLGenerator.make_trainingprovider(sample_meta_input)
+        assert "tpid" in element.attrib, "should have tpid"
+        assert "tpphone" in element.attrib, "should have tpphone"
+        assert "tpemail" in element.attrib, "should have tpemail"
 
     def test_make_submission(self):
         """Tests the total generation of an entire submission"""
