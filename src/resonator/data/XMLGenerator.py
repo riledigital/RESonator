@@ -239,9 +239,13 @@ class XMLGenerator:
         return et.Element(
             "instructorpoc",
             attrib={
-                "instlastname": input_dict.get("instructorpoc_instlastname"),
-                "instfirstname": input_dict.get("instructorpoc_instfirstname"),
-                "instphone": input_dict.get("instructorpoc_instphone"),
+                "instlastname": input_dict.get(
+                    "instructorpoc_instlastname", ""
+                ),
+                "instfirstname": input_dict.get(
+                    "instructorpoc_instfirstname", ""
+                ),
+                "instphone": input_dict.get("instructorpoc_instphone", ""),
             },
         )
 
@@ -257,8 +261,8 @@ class XMLGenerator:
         el_testaverage = et.Element(
             "testaverage",
             attrib={
-                "pretest": input_meta.get("testaverage_pretest"),
-                "posttest": input_meta.get("testaverage_posttest"),
+                "pretest": input_meta.get("testaverage_pretest", ""),
+                "posttest": input_meta.get("testaverage_posttest", ""),
             },
         )
         return el_testaverage
@@ -268,9 +272,9 @@ class XMLGenerator:
         el_trainingprovider = et.Element(
             "trainingprovider",
             attrib={
-                "tpid": input_meta.get("trainingprovider_tpid"),
-                "tpphone": input_meta.get("trainingprovider_tpphone"),
-                "tpemail": input_meta.get("trainingprovider_tpemail"),
+                "tpid": input_meta.get("trainingprovider_tpid", ""),
+                "tpphone": input_meta.get("trainingprovider_tpphone", ""),
+                "tpemail": input_meta.get("trainingprovider_tpemail", ""),
             },
         )
         el_trainingprovider.append(el_class)
@@ -307,23 +311,27 @@ class XMLGenerator:
         el_class = et.Element(
             "class",
             attrib={
-                "preparerlastname": metadata.get("class_preparerlastname"),
-                "preparerfirstname": metadata.get("class_preparerlastname"),
-                "batchpreparerphone": metadata.get("class_batchpreparerphone"),
-                "batchprepareremail": metadata.get("class_batchprepareremail"),
-                "catalognum": metadata.get("class_catalognum"),
-                "classtype": metadata.get("class_classtype"),
-                "classcity": metadata.get("class_classcity"),
-                "classstate": metadata.get("class_state"),
-                "classzipcode": metadata.get("class_classzipcode"),
-                "startdate": metadata.get("class_startdate"),
-                "enddate": metadata.get("class_enddate"),
-                "starttime": metadata.get("class_starttime"),
-                "endtime": metadata.get("class_endtime"),
+                "preparerlastname": metadata.get("class_preparerlastname", ""),
+                "preparerfirstname": metadata.get("class_preparerlastname", ""),
+                "batchpreparerphone": metadata.get(
+                    "class_batchpreparerphone", ""
+                ),
+                "batchprepareremail": metadata.get(
+                    "class_batchprepareremail", ""
+                ),
+                "catalognum": metadata.get("class_catalognum", ""),
+                "classtype": metadata.get("class_classtype", ""),
+                "classcity": metadata.get("class_classcity", ""),
+                "classstate": metadata.get("class_state", ""),
+                "classzipcode": metadata.get("class_classzipcode", ""),
+                "startdate": metadata.get("class_startdate", ""),
+                "enddate": metadata.get("class_enddate", ""),
+                "starttime": metadata.get("class_starttime", ""),
+                "endtime": metadata.get("class_endtime", ""),
                 # TODO: Check if this is correct
                 # "numstudent": str(len([*registration])),
-                "trainingmethod": metadata.get("class_trainingmethod"),
-                "contacthours": metadata.get("class_contacthours"),
+                "trainingmethod": metadata.get("class_trainingmethod", ""),
+                "contacthours": metadata.get("class_contacthours", ""),
             },
         )
         # TODO insert instructorpoc, registration, and evaluations
