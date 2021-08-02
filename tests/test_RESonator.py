@@ -19,6 +19,7 @@ class TestRESonator:
             path_eval_in=Path("tests/sampledata/qualtrics_output.xlsx"),
             path_final_out=test_outfile,
         )
+        # Read the temp file as to not litter
         with open(test_outfile, mode="r") as output:
             text = output.readlines()
             assert text is not None, "Output should not be empty"
