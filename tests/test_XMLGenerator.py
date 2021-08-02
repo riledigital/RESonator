@@ -244,7 +244,9 @@ class TestXmlGenerator:
         )
         el_manifest = xmlgen.XMLGenerator.make_manifest(test_el_submission)
         test_output = xmlgen.XMLGenerator.write_doctype(el_manifest)
-        assert test_output != None, "should include manifest"
+        assert test_output.startswith(
+            '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
+        ), "string output should start with manifest"
 
     def test_dtd_validate(self):
         import lxml

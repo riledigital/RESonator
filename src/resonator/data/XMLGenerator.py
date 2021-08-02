@@ -77,7 +77,7 @@ class XMLGenerator:
         :return: none
         """
         temp_file = tempfile.TemporaryFile()
-        etree.write(temp_file, encoding="utf-8", xml_declaration=True)
+        etree.write(temp_file, encoding="utf8", xml_declaration=True)
 
         logging.info("Saved RES XML as: " + out_path)
 
@@ -92,25 +92,10 @@ class XMLGenerator:
             TextIO: output file object with doctype
         """
         # Serialize the element tree to the tempfile
-        temp_file = tempfile.TemporaryFile()
-        el_manifest.write(temp_file, encoding="utf-8", xml_declaration=True)
-
-        logging.info("Writing DOCTYPE to XML file...")
-        # Read in the export file, then
-        ## https://stackoverflow.com/a/10507291
         doctype_str = '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
-
-        # read the current data from the tempfile
-        f = open(temp_file, "r")
-        contents = f.readlines()
-
-        # Insert doctype into the start of the tempfile
-        contents.insert(1, doctype_str)
-        f = open(temp_file, "w")
-        contents = "".join(contents)
-        f.write(contents)
-        logging.info("Finished writing DOCTYPE string to file")
-        return temp_file
+        tree_str = et.tostring(el_manifest.getroot(), encoding="unicode", method="xml")
+        full_doc = doctype_str + "\n" + tree_str
+        return full_doc
 
     @classmethod
     def generate_full_submission(cls, input_eval, input_lms, metadata) -> TextIO:
@@ -239,12 +224,8 @@ class XMLGenerator:
         return et.Element(
             "instructorpoc",
             attrib={
-                "instlastname": input_dict.get(
-                    "instructorpoc_instlastname", ""
-                ),
-                "instfirstname": input_dict.get(
-                    "instructorpoc_instfirstname", ""
-                ),
+                "instlastname": input_dict.get("instructorpoc_instlastname", ""),
+                "instfirstname": input_dict.get("instructorpoc_instfirstname", ""),
                 "instphone": input_dict.get("instructorpoc_instphone", ""),
             },
         )
@@ -313,12 +294,8 @@ class XMLGenerator:
             attrib={
                 "preparerlastname": metadata.get("class_preparerlastname", ""),
                 "preparerfirstname": metadata.get("class_preparerlastname", ""),
-                "batchpreparerphone": metadata.get(
-                    "class_batchpreparerphone", ""
-                ),
-                "batchprepareremail": metadata.get(
-                    "class_batchprepareremail", ""
-                ),
+                "batchpreparerphone": metadata.get("class_batchpreparerphone", ""),
+                "batchprepareremail": metadata.get("class_batchprepareremail", ""),
                 "catalognum": metadata.get("class_catalognum", ""),
                 "classtype": metadata.get("class_classtype", ""),
                 "classcity": metadata.get("class_classcity", ""),
