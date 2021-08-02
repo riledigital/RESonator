@@ -45,11 +45,6 @@ class XMLGenerator:
         el_manifest = cls.make_manifest(el_submission)
 
         outfile = cls.write_doctype(el_manifest)
-
-        logging.info(
-            "Finished generating XML with name: " + str(cls.string_output_filename)
-        )
-
         return outfile
 
     @classmethod

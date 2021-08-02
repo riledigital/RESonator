@@ -92,9 +92,14 @@ class DataPrep:
                 input (str): Input country string
             """
             if len(input) > 2:
-                test_str = input.split(" ")[0]
+                # test_str = input.split(" ")[0]
                 subdivisions = pycountry.subdivisions
-                return subdivisions.lookup(test_str).code[:2]
+                try:
+                    nomenclature = subdivisions.lookup(input)
+                    return nomenclature.code[:2]
+                except LookupError as err:
+                    logging.error(f"'State/Commonwealth/ Territory' not found: {err}")
+                    return input
             else:
                 return input
 
@@ -127,9 +132,9 @@ class DataPrep:
             return captured
 
         # Recode State values
-        lms_fl_subset["State/Commonwealth/ Territory"] = lms_fl_subset[
-            "State/Commonwealth/ Territory"
-        ].apply(recode_subdivisions)
+        # lms_fl_subset["State/Commonwealth/ Territory"] = lms_fl_subset[
+        #     "State/Commonwealth/ Territory"
+        # ].apply(recode_subdivisions)
 
         # Recode values for fields required
         lms_fl_subset["Government Level"] = lms_fl_subset["Government Level"].apply(

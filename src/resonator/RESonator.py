@@ -3,15 +3,11 @@ import logging
 
 
 class RESonator:
-    """Main class for Resonator"""
+    """Main class for app."""
 
-    def __init__(
-        self, path_lms_in, path_metadata_in, path_eval_in, path_final_out
-    ) -> None:
+    def __init__(self, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
         logging.info("Processing job...")
-        return self.process_job(
-            path_lms_in, path_metadata_in, path_eval_in, path_final_out
-        )
+        self.process_job(path_lms_in, path_metadata_in, path_eval_in, path_final_out)
 
     def process_job(self, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
         inputs = DataIO.DataIO()
