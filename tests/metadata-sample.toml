@@ -33,3 +33,8 @@ class_preparerlastname = "Doe"
 class_preparerfirstname = "K"
 class_preparerphone = "5555555555"
 class_batchprepareremail = "test@example.org"
+
+# Course codes to use
+codes = []
+# Users to drop from the input
+remove_users = []

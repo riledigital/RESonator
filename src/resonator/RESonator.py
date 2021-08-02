@@ -20,7 +20,7 @@ class RESonator:
         input_eval = inputs.load_file_disk(path_eval_in)
 
         dataprep = DataPrep.DataPrep()
-        data_lms = dataprep.prep_data_lms(input_lms, [], [])
+        data_lms = dataprep.prep_data_lms(input_lms, input_metadata.get('codes'), input_metadata.get('remove_users'))
         data_eval = dataprep.prep_data_eval(input_eval)
 
         outfile = XMLGenerator.XMLGenerator.generate_full_submission(

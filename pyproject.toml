@@ -30,3 +30,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 cli = "resonator.cli:process_input"
+test = "pytest:main"
