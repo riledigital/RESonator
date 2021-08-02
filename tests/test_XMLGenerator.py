@@ -234,13 +234,19 @@ class TestXmlGenerator:
         el_manifest = xmlgen.XMLGenerator.make_manifest(test_el_submission)
         assert el_manifest.find("submission").tag == "submission"
 
-    def test_write_doctype(self):
+    def test_write_doctype(self, sample_trainingprovider):
         """test doctype insertion"""
         # Create an XML submission
         # Write the doctype
         # Test if the doctype wrote to output
-        assert False
-        pass
+        test_el_submission = xmlgen.XMLGenerator.make_submission(
+            sample_trainingprovider
+        )
+        el_manifest = xmlgen.XMLGenerator.make_manifest(test_el_submission)
+        test_output = xmlgen.XMLGenerator.write_doctype(el_manifest)
+        assert test_output.startswith(
+            '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
+        ), "string output should start with manifest"
 
     def test_dtd_validate(self):
         import lxml

@@ -10,6 +10,7 @@
       "request": "launch",
       "program": "src/resonator/cli.py",
       "console": "integratedTerminal",
+      "justMyCode": false,
       "args": [
         "tests/sampledata/lms_sample.csv",
         "tests/sampledata/qualtrics_output.xlsx",
@@ -20,6 +21,8 @@
     {
       "name": "Run all tests",
       "type": "python",
+      "justMyCode": false,
+
       "request": "launch",
       "module": "pytest"
     }
