@@ -1,4 +1,4 @@
-from typing import TextIO
+from typing import Dict, TextIO
 import pandas as pd
 import re
 import logging
@@ -30,7 +30,7 @@ class DataIO:
         logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
         if meta:
             meta_file = open(path_in, mode="r").read()
-            my_meta = parse_toml(meta_file)
+            my_meta = pytomlpp(meta_file)
             return my_meta
         if path_in.suffix == ".xlsx":
             data = pd.read_excel(path_in, header=0, skiprows=1)
@@ -46,7 +46,7 @@ class DataIO:
             )
 
     @classmethod
-    def load_toml(self, path_in: Path):
+    def load_toml(self, path_in: Path) -> Dict:
         with open(path_in, "r") as reader:
             logging.info(f"Loading toml: {path_in}")
             file_str = reader.read()
@@ -58,6 +58,13 @@ class DataIO:
     def write_output_file(clas, input_file: TextIO, path_out: Path) -> bool:
         with open(path_out, "w") as writer:
             writer.write(input_file)
+
+    @classmethod
+    def write_string_to_file(clas, input: str, path_out: Path) -> Path:
+        with open(path_out, "w") as writer:
+            writer.write(input)
+            logging.debug(f"Wrote XML output to {path_out}")
+            return path_out
 
     @classmethod
     def load_from_request(self):
