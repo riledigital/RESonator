@@ -22,6 +22,37 @@ class XMLGenerator:
         logging.info("Initialized XML generator instance")
 
     @classmethod
+    def generate_full_submission(cls, input_eval, input_lms, metadata) -> str:
+        """
+        main entry point for this class. takes 3 df inputs
+        and creates an XML file from them
+        :param input_lms: DataFrame
+        :param input_eval: DataFrame
+        :param input_meta: DataFrame
+        :return: (TextIO) output file object
+        """
+
+        el_registration = cls.make_registration(input_lms)
+        el_instructorpoc = cls.make_instructorpoc(metadata)
+        el_evaluations = cls.make_evaluations(input_eval)
+        el_class = cls.make_el_class(
+            metadata, el_registration, el_instructorpoc, el_evaluations
+        )
+        el_trainingprovider = cls.make_trainingprovider(metadata, el_class)
+        el_submission = cls.make_submission(el_trainingprovider)
+
+        # Add manifest
+        el_manifest = cls.make_manifest(el_submission)
+
+        outfile = cls.write_doctype(el_manifest)
+
+        logging.info(
+            "Finished generating XML with name: " + str(cls.string_output_filename)
+        )
+
+        return outfile
+
+    @classmethod
     def make_evaluations(self, df: pd.DataFrame):
         """
         takes in a df with rows corresponding to students.
@@ -82,7 +113,7 @@ class XMLGenerator:
         logging.info("Saved RES XML as: " + out_path)
 
     @classmethod
-    def write_doctype(cls, el_manifest: et.ElementTree) -> TextIO:
+    def write_doctype(cls, el_manifest: et.ElementTree) -> str:
         """Create a tempfile, append doctype to it
 
         Args:
@@ -96,37 +127,6 @@ class XMLGenerator:
         tree_str = et.tostring(el_manifest.getroot(), encoding="unicode", method="xml")
         full_doc = doctype_str + "\n" + tree_str
         return full_doc
-
-    @classmethod
-    def generate_full_submission(cls, input_eval, input_lms, metadata) -> TextIO:
-        """
-        main entry point for this class. takes 3 df inputs
-        and creates an XML file from them
-        :param input_lms: DataFrame
-        :param input_eval: DataFrame
-        :param input_meta: DataFrame
-        :return: (TextIO) output file object
-        """
-
-        el_registration = cls.make_registration(input_lms)
-        el_instructorpoc = cls.make_instructorpoc(metadata)
-        el_evaluations = cls.make_evaluations(input_eval)
-        el_class = cls.make_el_class(
-            metadata, el_registration, el_instructorpoc, el_evaluations
-        )
-        el_trainingprovider = cls.make_trainingprovider(metadata, el_class)
-        el_submission = cls.make_submission(el_trainingprovider)
-
-        # Add manifest
-        el_manifest = cls.make_manifest(el_submission)
-
-        outfile = cls.write_doctype(el_manifest)
-
-        logging.info(
-            "Finished generating XML with name: " + str(cls.string_output_filename)
-        )
-
-        return outfile
 
     @classmethod
     def make_evaldata(cls, qs) -> list:

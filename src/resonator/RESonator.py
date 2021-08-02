@@ -20,14 +20,29 @@ class RESonator:
         input_eval = inputs.load_file_disk(path_eval_in)
 
         dataprep = DataPrep.DataPrep()
-        data_lms = dataprep.prep_data_lms(input_lms, input_metadata.get('codes'), input_metadata.get('remove_users'))
+
+        course_codes: list = input_metadata.get("codes")
+        remove_users: list = input_metadata.get("remove_users")
+        if course_codes == None:
+            logging.warning(
+                f"No course codes specified. Running job without filtering for courses."
+            )
+
+        if remove_users == None:
+            logging.warning(
+                f"No remove_users specified. Running job without removing any users from LMS set"
+            )
+
+        data_lms = dataprep.prep_data_lms(
+            input_lms,
+            course_codes,
+            remove_users,
+        )
         data_eval = dataprep.prep_data_eval(input_eval)
 
-        outfile = XMLGenerator.XMLGenerator.generate_full_submission(
+        xml_string = XMLGenerator.XMLGenerator.generate_full_submission(
             data_eval, data_lms, input_metadata
         )
 
-        DataIO.DataIO.write_output_file(outfile, path_final_out)
-        return outfile
-
-        return outfile
+        DataIO.DataIO.write_string_to_file(xml_string, path_final_out)
+        return xml_string

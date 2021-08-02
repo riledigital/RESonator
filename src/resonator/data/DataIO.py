@@ -60,6 +60,13 @@ class DataIO:
             writer.write(input_file)
 
     @classmethod
+    def write_string_to_file(clas, input: str, path_out: Path) -> Path:
+        with open(path_out, "w") as writer:
+            writer.write(input)
+            logging.debug(f"Wrote XML output to {path_out}")
+            return path_out
+
+    @classmethod
     def load_from_request(self):
         """TODO: Placeholder, load data from an HTTP request?"""
         print("Currently unimplemented")
