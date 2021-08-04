@@ -37,8 +37,8 @@ def cli():
     ),
 )
 def process_job(lms, meta, eval, out):
-    RESonator.RESonator(lms, meta, eval, out)
-    return out
+    RESonator.process_job(lms, meta, eval, out)
+    click.echo(f"Output written to {out}")
 
 
 @click.command()

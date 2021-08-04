@@ -21,7 +21,19 @@ class RESonator:
         test_submission = etree.parse(path_test_file)
         return XMLGenerator.XMLGenerator.validate_dtd(test_submission) == True
 
-    def process_job(self, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
+    @classmethod
+    def process_job(cls, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
+        """Run a RES job.
+
+        Args:
+            path_lms_in ([type]): [description]
+            path_metadata_in ([type]): [description]
+            path_eval_in ([type]): [description]
+            path_final_out ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
         inputs = DataIO.DataIO()
         input_lms = inputs.load_file_disk(path_lms_in, meta=False)
         input_metadata = inputs.load_toml(path_metadata_in)
