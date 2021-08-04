@@ -13,7 +13,7 @@ On Mac OS, run RESonator.app
 
 - Run `make setup` to auto-install dev environment for Mac OS.
 
-- Run `make build` which will auto clean the outputs.
+- Run `make freeze-cli` to build and freeze a cli executable binary to `./dist`.
 
 - Run `make test` to run unit tests with `pytest`
 
@@ -21,4 +21,6 @@ If you run into issues with Pandas/Numpy/PyQt5, update pip to 21.x with `python 
 
 The executable is placed in the ./dist folder. Run the binary to get a GUI and a console.
 
-Run the CLI with `poetry run cli` (configured through [pyproject.toml](https://dev.to/bowmanjd/build-a-command-line-interface-with-python-poetry-and-click-1f5k))
+## Testing the CLI
+
+Run the CLI with `poetry run cli` (configured through [pyproject.toml](https://dev.to/bowmanjd/build-a-command-line-interface-with-python-poetry-and-click-1f5k)).

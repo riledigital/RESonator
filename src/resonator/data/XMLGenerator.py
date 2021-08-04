@@ -7,7 +7,6 @@ import logging
 from pathlib import Path
 import tempfile
 from typing import Text, TextIO
-from shutil import copyfileobj
 
 
 class XMLGenerator:
