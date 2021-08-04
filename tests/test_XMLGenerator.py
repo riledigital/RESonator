@@ -257,3 +257,15 @@ class TestXmlGenerator:
             xmlgen.XMLGenerator.validate_dtd(sample_submission) == True
         ), "Should validate"
         pass
+
+    def test_dtd_validate_failure(self):
+        import lxml
+
+        sample_submission_path = str(
+            Path("tests/sampledata/submission-sample-fail.xml")
+        )
+        sample_submission = lxml.etree.parse(sample_submission_path)
+        assert (
+            xmlgen.XMLGenerator.validate_dtd(sample_submission) == False
+        ), "Should fail on validate"
+        pass

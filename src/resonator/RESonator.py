@@ -1,5 +1,7 @@
 from resonator.data import XMLGenerator, DataIO, DataPrep
+from pathlib import Path
 import logging
+from lxml import etree
 
 
 class RESonator:
@@ -9,7 +11,29 @@ class RESonator:
         logging.info("Processing job...")
         self.process_job(path_lms_in, path_metadata_in, path_eval_in, path_final_out)
 
-    def process_job(self, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
+    @classmethod
+    def validate_file(cls, path_test_file: Path) -> bool:
+        """validate input XML against the submission DTD
+
+        Args:
+            path_test_file (pathlib.Path): Path to submission DTD
+        """
+        test_submission = etree.parse(path_test_file)
+        return XMLGenerator.XMLGenerator.validate_dtd(test_submission) == True
+
+    @classmethod
+    def process_job(cls, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
+        """Run a RES job.
+
+        Args:
+            path_lms_in ([type]): [description]
+            path_metadata_in ([type]): [description]
+            path_eval_in ([type]): [description]
+            path_final_out ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
         inputs = DataIO.DataIO()
         input_lms = inputs.load_file_disk(path_lms_in, meta=False)
         input_metadata = inputs.load_toml(path_metadata_in)
