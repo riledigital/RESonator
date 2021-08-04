@@ -5,8 +5,6 @@ import re
 import datetime
 import logging
 from pathlib import Path
-import os
-import lxml
 import tempfile
 from typing import Text, TextIO
 from shutil import copyfileobj
@@ -343,6 +341,7 @@ class XMLGenerator:
 
     @classmethod
     def validate_dtd(cls, input_xml):
+
         # https://lxml.de/validation.html#id1
         path = Path("src/resonator/data")
         dtd = etree.DTD(str(Path(path / "submission.dtd")))
