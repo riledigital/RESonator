@@ -33,6 +33,11 @@ import pathlib
 )
 def process_input(lms, meta, eval, out):
     RESonator.RESonator(lms, meta, eval, out)
+    return out
+
+
+def validate_submission(submission):
+    return RESonator.validate_file(submission)
 
 
 if __name__ == "__main__":
