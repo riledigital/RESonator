@@ -6,11 +6,11 @@ setup:
 
 .PHONY : clean
 clean :
-	rm -rf $(OUTPUTS)
+	rm -rf $(OUTPUTS) && poetry run pyclean -v .
 
 .PHONY: test
 test: clean
-	pytest
+	poetry run pytest
 
 .PHONY: docker-build
 docker-build:
@@ -20,5 +20,5 @@ docker-build:
 docker-test: docker-build
 	./bin/test.sh
 
-freeze-cli:
-	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages ./src/resonator/cli.py
+freeze-cli: clean
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=INFO ./src/resonator/cli.py

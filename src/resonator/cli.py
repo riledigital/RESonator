@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO)
 
 @click.group()
 @click.version_option(prog_name="RESonator CLI")
-@click.pass_context
 def cli():
     pass
 

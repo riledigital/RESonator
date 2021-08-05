@@ -219,6 +219,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "pyclean"
+version = "2.0.0"
+description = "Pure Python cross-platform pyclean. Clean up your Python bytecode."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pycountry"
 version = "20.7.3"
 description = "ISO country, subdivision, language, currency and script definitions and their translations"
@@ -371,7 +379,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "37d966246ffccfca6d9e659d0f94c6324c57b61d03815765d4dd6309300228fc"
+content-hash = "19dcfcb2163c10ecbd83398efa5787feb18bdae944044e2dd9266452a176f9ca"
 
 [metadata.files]
 altgraph = [
@@ -534,6 +542,10 @@ pluggy = [
 py = [
     {file = "py-1.10.0-py2.py3-none-any.whl", hash = "sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a"},
     {file = "py-1.10.0.tar.gz", hash = "sha256:21b81bda15b66ef5e1a777a21c4dcd9c20ad3efd0b3f817e7a809035269e1bd3"},
+]
+pyclean = [
+    {file = "pyclean-2.0.0-py3-none-any.whl", hash = "sha256:ac9bb87f0fffe12acbc2292150f92ec30ca1935acf2b45e9fa24dc64efe9b379"},
+    {file = "pyclean-2.0.0.tar.gz", hash = "sha256:06e62e5a26f9b0eaebe249a1a74db17daf35c0216688b6fceb8f55f0d6eb7a40"},
 ]
 pycountry = [
     {file = "pycountry-20.7.3.tar.gz", hash = "sha256:81084a53d3454344c0292deebc20fcd0a1488c136d4900312cbd465cf552cb42"},
