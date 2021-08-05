@@ -33,7 +33,39 @@ class DataIO:
             my_meta = pytomlpp(meta_file)
             return my_meta
         if path_in.suffix == ".xlsx":
-            data = pd.read_excel(path_in, header=0, skiprows=1)
+            dtypes_names = [
+                "Q1",
+                "Q2",
+                "Q3_1",
+                "Q3_2",
+                "Q4_1",
+                "Q4_2",
+                "Q4_3",
+                "Q4_4",
+                "Q5_1",
+                "Q5_2",
+                "Q5_3",
+                "Q5_4",
+                "Q5_5",
+                "Q5_6",
+                "Q5_7",
+                "Q5_8",
+                "Q6_1",
+                "Q6_2",
+                "Q6_3",
+                "Q6_4",
+                "Q6_5",
+                "Q7_1",
+                "Q7_2",
+                "Q7_3",
+                "Q7_4",
+                "Q8",
+                "Q9",
+                "Q10",
+                "Q11",
+            ]
+            dtype = {k: "object" for k in dtypes_names}
+            data = pd.read_excel(path_in, header=0, skiprows=[1], dtype=dtype)
             logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":

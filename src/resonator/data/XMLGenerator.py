@@ -170,7 +170,10 @@ class XMLGenerator:
         Returns:
             [type]: [description]
         """
-        return et.Element(node_type, attrib={"id": idnum, "answer": answer})
+        attrib = dict(
+            [("id", idnum), ("answer", answer) if (answer is not None) else None]
+        )
+        return et.Element(node_type, attrib=attrib)
 
     @classmethod
     def make_registration(cls, lms_df: pd.DataFrame):
