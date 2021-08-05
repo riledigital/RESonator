@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "resonator"
-version = "0.1.0"
+version = "2.0.1"
 description = "RESonator ETL tool"
 authors = ["Ri Le <r.le@columbia.edu>"]
 license = "MIT"
@@ -18,13 +18,13 @@ pytest = "^6.2.4"
 pytomlpp = "^1.0.2"
 click = "^8.0.1"
 pyinstaller = "^4.5"
-pyclean = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+pyclean = "^2.0.0"
 pyinstaller = "*"
-rope = "^0.18.0"
 pytest = "^6.2.3"
+rope = "^0.18.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

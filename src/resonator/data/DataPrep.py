@@ -168,6 +168,8 @@ class DataPrep:
         subset.iloc[:, 0:23] = subset.iloc[:, 0:23].apply(
             lambda x: x.str.findall(r"\d")[0]
         )
+        # Fill empty/null with empty string
+        subset.fillna("", inplace=True)
         return subset
 
     @classmethod

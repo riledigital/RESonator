@@ -1,6 +1,6 @@
 from typing import Dict, TextIO
 import pandas as pd
-import re
+from datetime import datetime
 import logging
 from pathlib import Path
 import pytomlpp
@@ -15,7 +15,7 @@ class DataIO:
         logging.info("DataIO ready to read!")
 
     @classmethod
-    def load_file_disk(self, path_in: Path, meta: bool = False) -> pd.DataFrame:
+    def load_file_disk(cls, path_in: Path, meta: bool = False) -> pd.DataFrame:
         """loads a file from disk and outputs a pandas dataframe
 
         Args:
@@ -33,7 +33,39 @@ class DataIO:
             my_meta = pytomlpp(meta_file)
             return my_meta
         if path_in.suffix == ".xlsx":
-            data = pd.read_excel(path_in, header=0, skiprows=1)
+            dtypes_names = [
+                "Q1",
+                "Q2",
+                "Q3_1",
+                "Q3_2",
+                "Q4_1",
+                "Q4_2",
+                "Q4_3",
+                "Q4_4",
+                "Q5_1",
+                "Q5_2",
+                "Q5_3",
+                "Q5_4",
+                "Q5_5",
+                "Q5_6",
+                "Q5_7",
+                "Q5_8",
+                "Q6_1",
+                "Q6_2",
+                "Q6_3",
+                "Q6_4",
+                "Q6_5",
+                "Q7_1",
+                "Q7_2",
+                "Q7_3",
+                "Q7_4",
+                "Q8",
+                "Q9",
+                "Q10",
+                "Q11",
+            ]
+            dtype = {k: "object" for k in dtypes_names}
+            data = pd.read_excel(path_in, header=0, skiprows=[1], dtype=dtype)
             logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":
@@ -46,7 +78,7 @@ class DataIO:
             )
 
     @classmethod
-    def load_toml(self, path_in: Path) -> Dict:
+    def load_toml(cls, path_in: Path) -> Dict:
         with open(path_in, "r") as reader:
             logging.info(f"Loading toml: {path_in}")
             file_str = reader.read()
@@ -55,19 +87,29 @@ class DataIO:
             return toml
 
     @classmethod
-    def write_output_file(clas, input_file: TextIO, path_out: Path) -> bool:
+    def write_output_file(cls, input_file: TextIO, path_out: Path) -> bool:
         with open(path_out, "w") as writer:
             writer.write(input_file)
 
     @classmethod
-    def write_string_to_file(clas, input: str, path_out: Path) -> Path:
+    def write_string_to_file(cls, input: str, path_out: Path) -> Path:
         with open(path_out, "w") as writer:
             writer.write(input)
             logging.debug(f"Wrote XML output to {path_out}")
             return path_out
 
     @classmethod
-    def load_from_request(self):
+    def load_from_request(cls):
         """TODO: Placeholder, load data from an HTTP request?"""
         print("Currently unimplemented")
         pass
+
+    @classmethod
+    def generate_filename(cls, path_in_meta: Path) -> str:
+        meta = cls.load_toml(path_in_meta)
+        course_number = meta.get("output_course_code")
+        date_formatted = datetime.today().strftime("%d%m%Y")
+        trainingprovider_abbreviation = meta.get(
+            "trainingprovider_abbreviation", "NCDP"
+        )
+        return f"{trainingprovider_abbreviation}_{course_number}_{date_formatted}.XML"
