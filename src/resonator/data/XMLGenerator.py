@@ -137,22 +137,20 @@ class XMLGenerator:
             idnumber = re.sub(r"NQ", "", i)
             val = str(v)
             # print('string id casting to int as: ' + str(id))
-            if val != "":
-                ## If the value is empty, don't make a node for it
-                if int(idnumber) >= 24:
-                    generated_eval.append(
-                        XMLGenerator.make_el_qcomment(
-                            node_type="comment", idnum=idnumber, answer=val
-                        )
-                    )  # append it to the global eval_out
-                else:
-                    # make_el_qcomment(node_type="question", id=id, answer=val)
-                    generated_eval.append(
-                        XMLGenerator.make_el_qcomment(
-                            node_type="question", idnum=idnumber, answer=val
-                        )
-                    )  # append it to the global eval_out
-                # Don't create a new element if there is no need to
+            if int(idnumber) >= 24:
+                generated_eval.append(
+                    XMLGenerator.make_el_qcomment(
+                        node_type="comment", idnum=idnumber, answer=val
+                    )
+                )  # append it to the global eval_out
+            else:
+                # make_el_qcomment(node_type="question", id=id, answer=val)
+                generated_eval.append(
+                    XMLGenerator.make_el_qcomment(
+                        node_type="question", idnum=idnumber, answer=val
+                    )
+                )  # append it to the global eval_out
+            # Don't create a new element if there is no need to
         # TODO move this thing outta here
         # don't forget to append the new evaldata to every thing
         return generated_eval
@@ -171,7 +169,10 @@ class XMLGenerator:
             [type]: [description]
         """
         attrib = dict(
-            [("id", idnum), ("answer", answer) if (answer is not None) else None]
+            [
+                ("id", idnum),
+                ("answer", "N/A" if (answer is None) else answer),
+            ]
         )
         return et.Element(node_type, attrib=attrib)
 
@@ -301,7 +302,7 @@ class XMLGenerator:
                 "starttime": metadata.get("class_starttime", ""),
                 "endtime": metadata.get("class_endtime", ""),
                 # TODO: Check if this is correct
-                # "numstudent": str(len([*registration])),
+                "numstudent": str(len([*registration])),
                 "trainingmethod": metadata.get("class_trainingmethod", ""),
                 "contacthours": metadata.get("class_contacthours", ""),
             },
