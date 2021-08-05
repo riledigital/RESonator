@@ -204,7 +204,7 @@ class XMLGenerator:
                 "govnlevel": student["Government Level"],
             },
         )
-        logging.info(f"Created record for: {str(student['First Name'])}")
+        logging.debug(f"Created record for: {str(student['First Name'])}")
         return new_student
 
     @classmethod
@@ -285,6 +285,8 @@ class XMLGenerator:
         Returns:
             [type]: [description]
         """
+        numstudent = str(len([*registration]))
+        logging.info(f"Number of students in submission (numstudent): {numstudent}")
         el_class = et.Element(
             "class",
             attrib={
@@ -301,8 +303,7 @@ class XMLGenerator:
                 "enddate": metadata.get("class_enddate", ""),
                 "starttime": metadata.get("class_starttime", ""),
                 "endtime": metadata.get("class_endtime", ""),
-                # TODO: Check if this is correct
-                "numstudent": str(len([*registration])),
+                "numstudent": numstudent,
                 "trainingmethod": metadata.get("class_trainingmethod", ""),
                 "contacthours": metadata.get("class_contacthours", ""),
             },

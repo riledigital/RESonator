@@ -4,6 +4,7 @@ from datetime import datetime
 import logging
 from pathlib import Path
 import pytomlpp
+from pprint import pformat
 
 
 class DataIO:
@@ -27,7 +28,7 @@ class DataIO:
         Returns:
             [type]: [description]
         """
-        logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
+        logging.info(f"Input file as {path_in} with extension {path_in.suffix}")
         if meta:
             meta_file = open(path_in, mode="r").read()
             my_meta = pytomlpp(meta_file)
@@ -83,7 +84,7 @@ class DataIO:
             logging.info(f"Loading toml: {path_in}")
             file_str = reader.read()
             toml = pytomlpp.loads(file_str)
-            logging.info(f"Loaded toml: \n{toml}")
+            logging.info(f"Loaded toml: \n{pformat(toml)}")
             return toml
 
     @classmethod
@@ -95,7 +96,7 @@ class DataIO:
     def write_string_to_file(cls, input: str, path_out: Path) -> Path:
         with open(path_out, "w") as writer:
             writer.write(input)
-            logging.debug(f"Wrote XML output to {path_out}")
+            logging.info(f"Wrote XML output to {path_out}")
             return path_out
 
     @classmethod

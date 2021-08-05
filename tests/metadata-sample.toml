@@ -35,7 +35,7 @@ class_preparerphone = "5555555555"
 class_batchprepareremail = "test@example.org"
 
 # Course codes to use
-codes = []
+codes = ["MGT462BL"]
 
 # Users to drop from the input
 remove_users = []
