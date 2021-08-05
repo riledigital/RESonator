@@ -1,19 +1,16 @@
-OUTPUTS = build dist RESonatorGUI.spec
+OUTPUTS = build dist RESonatorGUI.spec cli.spec
 
 .PHONY: setup
 setup:
 	./init.sh
 
-build: clean
-	pyinstaller --clean --windowed --onefile --hidden-import cmath ./src/resonator/gui/RESonatorGUI.py RESonatorGUI.spec
-
 .PHONY : clean
 clean :
-	rm -rf $(OUTPUTS)
+	rm -rf $(OUTPUTS) && poetry run pyclean -v .
 
 .PHONY: test
 test: clean
-	pytest
+	poetry run pytest
 
 .PHONY: docker-build
 docker-build:
@@ -22,3 +19,6 @@ docker-build:
 .PHONY: docker-test
 docker-test: docker-build
 	./bin/test.sh
+
+freeze-cli: clean
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=INFO ./src/resonator/cli.py

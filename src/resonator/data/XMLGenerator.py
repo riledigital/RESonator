@@ -7,7 +7,6 @@ import logging
 from pathlib import Path
 import tempfile
 from typing import Text, TextIO
-from shutil import copyfileobj
 
 
 class XMLGenerator:
@@ -201,7 +200,7 @@ class XMLGenerator:
                 "govnlevel": student["Government Level"],
             },
         )
-        logging.info("Created record for: " + str(student["First Name"]))
+        logging.info(f"Created record for: {str(student['First Name'])}")
         return new_student
 
     @classmethod

@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 @click.group()
+@click.version_option(prog_name="RESonator CLI")
 def cli():
     pass
 
@@ -59,5 +60,5 @@ def validate_submission(test_file):
 cli.add_command(process_job)
 cli.add_command(validate_submission)
 
-# if __name__ == "__main__":
-#     process_input()
+if __name__ == "__main__":
+    cli()
