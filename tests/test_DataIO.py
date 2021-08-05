@@ -149,9 +149,10 @@ class TestDataIo:
             ],
             dtype="object",
         )
+        test_cols = file.columns
         assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
-        assert (
-            file.columns.array == target_columns.array
+        assert list(test_cols.array) == list(
+            target_columns.array
         ), "Output should match expected columns"
 
     def test_load_toml_meta(self):
