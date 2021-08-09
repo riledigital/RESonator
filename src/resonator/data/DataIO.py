@@ -67,7 +67,9 @@ class DataIO:
             ]
             # Read Q/A columns as object
             dtype = {k: "object" for k in dtypes_names}
-            data = pd.read_excel(path_in, header=0, skiprows=[1], dtype=dtype)
+            data = pd.read_excel(
+                path_in, header=0, skiprows=[1], dtype=dtype, sheet_name=0
+            )
             logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":
