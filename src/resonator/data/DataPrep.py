@@ -193,16 +193,18 @@ class DataPrep:
             "Q10",
             "Q11",
         ]
-        subset = input_eval.loc[:, labels]
+        subset = input_eval.copy().loc[:, labels]
         new_q_numbers = map(lambda x: f"NQ{x}", list(range(1, 28)))
-        subset.columns = new_q_numbers
+        subset.columns = list(new_q_numbers)
+
         # extract the number from col index 0 - 23 for likerts
-        subset.iloc[:, 0:23] = subset.iloc[:, 0:23].apply(
-            lambda x: x.str.findall(r"\d")[0]
+        recoded = subset.iloc[:, 0:23]
+        recoded = recoded.applymap(
+            lambda x: re.findall(r"\d", x)[0],
         )
         # Fill empty/null with empty string
-        subset.fillna("NA", inplace=True)
-        return subset
+        recoded.fillna("NA", inplace=True)
+        return recoded
 
     @classmethod
     def prep_data_meta(cls, input_meta: pd.DataFrame) -> pd.DataFrame:
