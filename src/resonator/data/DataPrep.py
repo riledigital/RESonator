@@ -201,7 +201,7 @@ class DataPrep:
             lambda x: x.str.findall(r"\d")[0]
         )
         # Fill empty/null with empty string
-        subset.fillna("", inplace=True)
+        subset.fillna("NA", inplace=True)
         return subset
 
     @classmethod

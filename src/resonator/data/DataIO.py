@@ -65,6 +65,7 @@ class DataIO:
                 "Q10",
                 "Q11",
             ]
+            # Read Q/A columns as object
             dtype = {k: "object" for k in dtypes_names}
             data = pd.read_excel(path_in, header=0, skiprows=[1], dtype=dtype)
             logging.debug(data.columns)
