@@ -53,13 +53,15 @@ class RESonator:
                 f"No remove_users specified. Running job without removing any users from LMS set"
             )
 
+        eval_processed = dataprep.prep_data_eval(input_eval)
+        data_eval = eval_processed[0]
+        eval_emails = eval_processed[1]
+
         data_lms = dataprep.prep_data_lms(
             input_lms,
-            course_codes,
+            eval_emails,
             remove_users,
         )
-
-        data_eval = dataprep.prep_data_eval(input_eval)[0]
 
         xml_string = XMLGenerator.XMLGenerator.generate_full_submission(
             data_eval, data_lms, input_metadata

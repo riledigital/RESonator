@@ -15,9 +15,15 @@ class TestLMSPrep:
         test_users = ["jld2225"]
         loader = ld.DataIO()
         lms_data = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
+
+        eval_path = loader.load_file_disk(
+            Path("tests/sampledata/qualtrics_output.xlsx")
+        )
+        eval_emails = DataPrep.prep_data_eval(eval_path)[1]
+
         output = DataPrep.prep_data_lms(
             input_lms=lms_data,
-            codes=["MGT462BL"],
+            emails=eval_emails,
             #  "MGT462BLIA", "MGT462BLOH", "MGT462BLMA"],
             remove_users=test_users,
         )

@@ -26,13 +26,13 @@ class DataPrep:
 
     @classmethod
     def prep_data_lms(
-        cls, input_lms: pd.DataFrame, codes: list, remove_users: list
+        cls, input_lms: pd.DataFrame, emails: pd.Series, remove_users: list
     ) -> pd.DataFrame:
         """Prepare the data for XML transform. Note tbat this function subsets rows by course.
 
         Args:f
             input_lms (pd.DataFrame): [description]
-            codes (list): codes to select. If empty, we select all
+            emails (pd.Series): emails to select. If empty, we select all
             remove_users (list): Test users to be filtered out
 
         Returns:
@@ -50,15 +50,21 @@ class DataPrep:
             lambda x: x.str.strip() if x.dtype == "object" else x
         )
 
-        if codes:
-            logging.info(f"Selecting only codes: {codes}")
-            mask_codes = lms_prefilter["Code"].isin(codes)
-            lms_prefilter = lms_prefilter[mask_codes]
-        else:
+        try:
+            emails_length = emails.shape[0]
+            if emails_length > 0:
+                emails_list = emails.to_list()
+                logging.info(f"Selecting only emails: {emails_list}")
+                mask_codes = lms_prefilter["Email"].isin(emails_list)
+                lms_prefilter = lms_prefilter[mask_codes]
+            else:
+                logging.info(
+                    f"No codes specified. Skipping Course+Code filtering and filtering by student_emails"
+                )
+        except Error as e:
             logging.info(
                 f"No codes specified. Skipping Course+Code filtering and filtering by student_emails"
             )
-            # df_student_filtered = pd.merge()
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
         filtered_completion = filtered_completion.loc[
