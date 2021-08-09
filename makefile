@@ -21,4 +21,4 @@ docker-test: docker-build
 	./bin/test.sh
 
 freeze-cli: clean
-	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN ./src/resonator/cli.py
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./src/resonator/cli.py
