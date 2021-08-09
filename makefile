@@ -1,4 +1,6 @@
 OUTPUTS = build dist RESonatorGUI.spec cli.spec
+export FLASK_APP=./src/resonator.web.app
+export FLASK_ENV=development
 
 .PHONY: setup
 setup:
@@ -22,3 +24,6 @@ docker-test: docker-build
 
 freeze-cli: clean
 	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./src/resonator/cli.py
+
+serve: 
+	poetry run flask run
