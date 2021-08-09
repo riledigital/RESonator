@@ -4,5 +4,10 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
-    return render_template("index.html")
+def home():
+    return render_template("index.jinja")
+
+
+@app.route("/process-job")
+def process_job():
+    return render_template("process-job.jinja")

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <head>
+    {% block head %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -25,11 +26,13 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/my.webmanifest" />
     <meta name="theme-color" content="#FF00FF" />
+    {% endblock %}
   </head>
 
   <body>
+    {% block content %}{% endblock %}
     <!-- Content -->
-    RESonator 2.0 {#
+    {#
     <script src="/assets/js/xy-polyfill.js" nomodule></script>
     #} {#
     <script src="/assets/js/script.js" type="module"></script>
