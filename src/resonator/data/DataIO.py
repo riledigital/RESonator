@@ -28,7 +28,7 @@ class DataIO:
         Returns:
             [type]: [description]
         """
-        logging.info(f"Input file as {path_in} with extension {path_in.suffix}")
+        logging.info(f"Input file {path_in}. Parsed extension as {path_in.suffix}")
         if meta:
             meta_file = open(path_in, mode="r").read()
             my_meta = pytomlpp(meta_file)
@@ -84,7 +84,7 @@ class DataIO:
     @classmethod
     def load_toml(cls, path_in: Path) -> Dict:
         with open(path_in, "r") as reader:
-            logging.info(f"Loading toml: {path_in}")
+            logging.info(f"Loading metadata TOML: {path_in}")
             file_str = reader.read()
             toml = pytomlpp.loads(file_str)
             logging.info(f"Loaded toml: \n{pformat(toml)}")
@@ -92,14 +92,15 @@ class DataIO:
 
     @classmethod
     def write_output_file(cls, input_file: TextIO, path_out: Path) -> bool:
+        logging.info(f"Writing to: {path_out}")
         with open(path_out, "w") as writer:
             writer.write(input_file)
 
     @classmethod
     def write_string_to_file(cls, input: str, path_out: Path) -> Path:
+        logging.info(f"Wrote XML output to {path_out}")
         with open(path_out, "w") as writer:
             writer.write(input)
-            logging.info(f"Wrote XML output to {path_out}")
             return path_out
 
     @classmethod
