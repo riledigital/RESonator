@@ -26,4 +26,4 @@ freeze-cli: clean
 	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./src/resonator/cli.py
 
 serve: 
-	poetry run flask run
+	poetry run flask run --host='0.0.0.0'

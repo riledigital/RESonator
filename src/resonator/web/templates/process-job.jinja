@@ -7,4 +7,17 @@
 {% block content %}
     <h1>Process Job</h1>
     
+      <form action="" method="post" enctype="multipart/form-data">
+        
+        <label for="filelms">LMS Data (CSV):</label>
+        <input accept=".csv" type="file" name="filelms"/>
+        
+        <label for="fileeval">Qualtrics Evaluations (Excel):</label>
+        <input accept=".xlsx" type="file" name="fileeval"/>
+        
+        <label for="filemeta">Job metadata (TOML):</label>
+        <input accept=".toml" type="file" name="filemeta"/>
+        
+        <input type="submit" value="Upload"/>
+      </form>
 {% endblock %}
