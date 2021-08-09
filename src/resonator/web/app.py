@@ -9,12 +9,14 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 import os
+from pathlib import Path
 
-UPLOAD_FOLDER = "./tests/uploads"
-ALLOWED_EXTENSIONS = {"csv", "xlsx", "xml"}
+UPLOAD_FOLDER = "tests/uploads"
+ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["SECRET_KEY"] = "the random string"
 
 
 @app.route("/")
@@ -55,4 +57,5 @@ def allowed_file(filename):
 
 @app.route("/uploads/<name>")
 def download_file(name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+    uploads = Path(app.config["UPLOAD_FOLDER"])
+    return send_from_directory(uploads.absolute, name)
