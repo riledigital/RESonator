@@ -5,6 +5,21 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "process job ncdp",
+      "type": "python",
+      "request": "launch",
+      "program": "src/resonator/cli.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "process-job",
+        "./tests/sampledata/lms_sample.csv",
+        "/Volumes/EXT_rile/NCDP-2021/RES Data 08-09-2021/original/AB_MGT471BL+-+EVALUATION_June+17,+2021_10.59.xlsx",
+        "/Volumes/EXT_rile/NCDP-2021/RESonator/tests/sampledata/meta_ncdp.toml",
+        "./tests/sampledata/ncdp-out.xml"
+      ]
+    },
+    {
       "name": "Python: CLI test",
       "type": "python",
       "request": "launch",
