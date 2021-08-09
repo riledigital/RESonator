@@ -58,7 +58,8 @@ class RESonator:
             course_codes,
             remove_users,
         )
-        data_eval = dataprep.prep_data_eval(input_eval)
+
+        data_eval = dataprep.prep_data_eval(input_eval)[0]
 
         xml_string = XMLGenerator.XMLGenerator.generate_full_submission(
             data_eval, data_lms, input_metadata

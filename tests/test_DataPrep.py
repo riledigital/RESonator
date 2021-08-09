@@ -55,6 +55,6 @@ class TestEvalPrep:
         """Should properly subset the fields"""
         loader = ld.DataIO()
         lms_data = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
-        output = DataPrep.prep_data_eval(lms_data)
+        output = DataPrep.prep_data_eval(lms_data)[0]
         assert output.shape[1] == 27, "Output should have 27 columns"
         assert isinstance(output, pd.DataFrame), "Output should be a DataFrame"

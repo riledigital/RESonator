@@ -26,7 +26,7 @@ class TestXmlGenerator:
     def sample_eval_input(self):
         loader = dl.DataIO()
         file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
-        return dp.DataPrep.prep_data_eval(file)
+        return dp.DataPrep.prep_data_eval(file)[0]
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_meta_input(self):

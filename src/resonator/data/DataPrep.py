@@ -55,7 +55,10 @@ class DataPrep:
             mask_codes = lms_prefilter["Code"].isin(codes)
             lms_prefilter = lms_prefilter[mask_codes]
         else:
-            logging.info(f"No codes specified. Skipping Course+Code filtering")
+            logging.info(
+                f"No codes specified. Skipping Course+Code filtering and filtering by student_emails"
+            )
+            # df_student_filtered = pd.merge()
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
         filtered_completion = filtered_completion.loc[
@@ -148,14 +151,14 @@ class DataPrep:
         return lms_fl_subset
 
     @classmethod
-    def prep_data_eval(cls, input_eval: pd.DataFrame) -> pd.DataFrame:
+    def prep_data_eval(cls, input_eval: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         """Prep eval DataFrame for XML transformation. Only keep the questions, and rename the fields!
 
         Args:
             input_eval (pd.DataFrame): input dataframe
 
         Returns:
-            [type]: DataFrame ready to be converted to XML
+            [tuple]: DataFrame ready to be converted to XML, and a pd.Series
         """
         ## START EVAL PROCESS
         logging.info("Running prep_data_eval")
@@ -163,8 +166,6 @@ class DataPrep:
             # "Q1",
             # "Q2",
             # Only start likerts with Q3_1
-            # TODO: Possibly use QID26 to join on students and subset properly
-            # "QID26",
             "Q3_1",
             "Q3_2",
             "Q4_1",
@@ -192,8 +193,14 @@ class DataPrep:
             "Q9",
             "Q10",
             "Q11",
+            # TODO: Possibly use QID26 to join on students and subset properly
+            "QID26",
         ]
+        # Save emails to another col
+        s_emails = input_eval.copy().loc[:, "QID26"]
+        # Drop emails
         subset = input_eval.copy().loc[:, labels]
+        subset.drop("QID26", axis=1, inplace=True)
         new_q_numbers = list(map(lambda x: f"NQ{x}", list(range(1, 28))))
         subset.columns = new_q_numbers
 
@@ -205,7 +212,7 @@ class DataPrep:
         subset.update(recoded)
         # Fill empty/null with empty string
         subset.fillna("NA", inplace=True)
-        return subset
+        return (subset, s_emails)
 
     @classmethod
     def prep_data_meta(cls, input_meta: pd.DataFrame) -> pd.DataFrame:
