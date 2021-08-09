@@ -45,7 +45,7 @@ class XMLGenerator:
         return outfile
 
     @classmethod
-    def make_evaluations(self, df: pd.DataFrame):
+    def make_evaluations(self, df: pd.DataFrame) -> et.Element:
         """
         takes in a df with rows corresponding to students.
         each column is a single question. this func returns
@@ -53,17 +53,24 @@ class XMLGenerator:
         each <evaldata> corresponds to a student
         and nests <question> nodes
         :param df: DataFrame representing evaluations
-        :return: none
+        :return: et.Element representing
         """
         all_evals = et.Element("evaluations")
 
-        # make_tree_from_question -> Element
-        # q: a Series representing a single question
-        def process_row(row):
+        # process_row -> Element
+        # row: a Series representing a single question
+        def process_row(row: pd.Series) -> None:
+            """subroutine that appends to the all_evals tree
+
+            Args:
+                row (pd.Series): a Series representing a single row
+            """
             generated_eval = XMLGenerator.make_evaldata(row)
             all_evals.append(generated_eval)
 
-        df.apply(process_row, axis=1)  # Apply to all rows
+        # Loop thru all rows in the df
+        for (index, row) in df.iterrows():
+            process_row(row)
 
         logging.info("Finished building XML for evaluations")
         return all_evals
@@ -121,7 +128,7 @@ class XMLGenerator:
         return full_doc
 
     @classmethod
-    def make_evaldata(cls, qs) -> list:
+    def make_evaldata(cls, qs: pd.Series) -> list:
         """Generate XML element from a singular DataFrame row
          of question responses
 
@@ -135,19 +142,18 @@ class XMLGenerator:
         for i, v in qs.iteritems():  ## Loop through all questions in a row..
             # first process id's and values
             idnumber = re.sub(r"NQ", "", i)
-            val = str(v)
             # print('string id casting to int as: ' + str(id))
             if int(idnumber) >= 24:
                 generated_eval.append(
                     XMLGenerator.make_el_qcomment(
-                        node_type="comment", idnum=idnumber, answer=val
+                        node_type="comment", idnum=idnumber, answer=v
                     )
                 )  # append it to the global eval_out
             else:
                 # make_el_qcomment(node_type="question", id=id, answer=val)
                 generated_eval.append(
                     XMLGenerator.make_el_qcomment(
-                        node_type="question", idnum=idnumber, answer=val
+                        node_type="question", idnum=idnumber, answer=v
                     )
                 )  # append it to the global eval_out
             # Don't create a new element if there is no need to
