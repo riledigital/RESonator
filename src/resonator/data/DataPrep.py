@@ -36,6 +36,8 @@ class DataPrep:
             emails (pd.Series): emails to select. If empty, we select all
             remove_users (list): Test users to be filtered out
 
+        Can fuzzy match on emails if desired
+        @see https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/
         Returns:
             pd.DataFrame: [description]
         """
