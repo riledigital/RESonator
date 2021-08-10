@@ -18,6 +18,7 @@ pytest = "^6.2.4"
 pytomlpp = "^1.0.2"
 click = "^8.0.1"
 pyinstaller = "^4.5"
+fuzzywuzzy = "^0.18.0"
 
 [tool.poetry.dev-dependencies]
 black = "*"

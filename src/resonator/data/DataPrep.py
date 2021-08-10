@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import logging
 import pycountry
+from fuzzywuzzy import fuzz
 
 
 class DataPrep:
@@ -55,7 +56,21 @@ class DataPrep:
             if emails_length > 0:
                 emails_list = emails.to_list()
                 logging.info(f"Selecting only emails: {emails_list}")
-                mask_codes = lms_prefilter["Email"].isin(emails_list)
+
+                def fuzz_match(x):
+                    for test_str in emails_list:
+                        if test_str == x:
+                            # Early return if perfect match
+                            return True
+                        # else fuzzy match
+                        ratio = fuzz.ratio(x, test_str)
+                        if ratio > 97:
+                            logging.info(f"Matched {x} <-> {test_str}")
+                            return True
+                        else:
+                            return False
+
+                mask_codes = lms_prefilter["Email"].apply(fuzz_match)
                 lms_prefilter = lms_prefilter[mask_codes]
             else:
                 logging.info(f"No codes specified. Skipping email filtering")
