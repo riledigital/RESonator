@@ -7,6 +7,7 @@ from flask import (
     url_for,
     session,
     send_from_directory,
+    send_file,
 )
 from werkzeug.utils import secure_filename
 import os
@@ -16,7 +17,14 @@ from tempfile import NamedTemporaryFile, TemporaryDirectory
 
 FOLDER_OUTPUT = "tests/jobs"
 UPLOAD_FOLDER = "tests/uploads"
-Path(FOLDER_OUTPUT).mkdir(parents=True, exist_ok=True)
+
+# Setup files
+def setup_folders(files: list):
+    for file in files:
+        Path(file).mkdir(parents=True, exist_ok=True)
+
+
+setup_folders([FOLDER_OUTPUT, UPLOAD_FOLDER])
 
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 app = Flask(__name__)
@@ -53,14 +61,21 @@ def process_job():
         for filename in ["filelms", "fileeval", "filemeta"]:
             validate_file(request, filename)
         output_filename = "test_job.xml"
-        outfile = NamedTemporaryFile()
-        RESonator.process_job(
+        path_final_out = Path(app.config["FOLDER_OUTPUT"]) / output_filename
+        xml_string = RESonator.process_job(
             path_lms_in=session["filelms"],
             path_eval_in=session["fileeval"],
             path_metadata_in=session["filemeta"],
-            path_final_out=Path(app.config["FOLDER_OUTPUT"]) / output_filename,
+            path_final_out=path_final_out,
         )
-        return redirect(url_for("download_file", name=output_filename))
+        return send_file(
+            path_final_out.absolute,
+            mimetype="application/xml",
+            download_name="report.xml",
+            as_attachment=True,
+            max_age=0,
+        )
+        # return redirect(url_for("download_file", name=output_filename))
     return render_template("process-job.jinja")
 
 
@@ -68,10 +83,10 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/uploads/<name>")
+@app.route("/output/<name>")
 def download_file(name):
-    uploads = Path(app.config["UPLOAD_FOLDER"])
-    return send_from_directory(uploads.absolute, name)
+    outputs = Path(app.config["FOLDER_OUTPUT"])
+    return send_from_directory(outputs.absolute, name)
 
 
 if __name__ == "__main__":
