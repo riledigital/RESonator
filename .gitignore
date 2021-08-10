@@ -1,6 +1,7 @@
 tests/sampledata/**
 tests/uploads/**
 tests/outputs/**
+tests/jobs/**
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
 *.py[cod]
