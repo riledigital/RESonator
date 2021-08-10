@@ -25,5 +25,8 @@ docker-test: docker-build
 freeze-cli: clean
 	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./src/resonator/cli.py
 
+freeze-webgui: clean
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-web-gui ./src/resonator/web/app.py
+
 serve: 
 	poetry run flask run --host='0.0.0.0' --cert=adhoc

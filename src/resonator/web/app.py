@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from resonator.RESonator import RESonator
 from tempfile import NamedTemporaryFile, TemporaryDirectory, tempdir
+from webbrowser import open as open_browser
 
 FOLDER_OUTPUT = "tests/jobs"
 UPLOAD_FOLDER = "tests/uploads"
@@ -94,10 +95,6 @@ def download_file(name):
     return send_from_directory(outputs.absolute, name)
 
 
-if __name__ == "__main__":
-    app.run(ssl_context="adhoc")
-
-
 def save_temp_file(file, filename):
     """Temporarily save the file to session
 
@@ -118,3 +115,14 @@ def save_temp_file(file, filename):
     # file.save(tempfile)
     # session[filename] = tempfile
     # return tempfile
+
+
+HOSTNAME = "0.0.0.0"
+PORT = 5000
+import logging
+
+if __name__ == "__main__":
+    connection_str = f"https://localhost:{PORT}"
+    open_browser(connection_str)
+    app.run(ssl_context="adhoc", host=HOSTNAME, port=PORT)
+    print(f"Opening your browser to: {connection_str}")
