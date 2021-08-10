@@ -11,14 +11,20 @@ class TestXmlGenerator:
     """XML generation tests"""
 
     @pytest.fixture(scope="class", autouse=True)
-    def sample_lms_input(self):
+    def sample_eval_input_emails(self):
+        loader = dl.DataIO()
+        file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
+        return dp.DataPrep.prep_data_eval(file)[1]
+
+    @pytest.fixture(scope="class", autouse=True)
+    def sample_lms_input(self, sample_eval_input_emails):
         loader = dl.DataIO()
         path_in = Path("tests/sampledata/lms_sample.csv")
         logging.info(f"Using file input: {path_in}")
         file = loader.load_file_disk(path_in)
         return dp.DataPrep.prep_data_lms(
             file,
-            codes=["MGT462BL"],
+            emails=sample_eval_input_emails,
             remove_users=["jld2225"],
         )
 

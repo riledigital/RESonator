@@ -28,9 +28,9 @@ class DataPrep:
     def prep_data_lms(
         cls, input_lms: pd.DataFrame, emails: pd.Series, remove_users: list
     ) -> pd.DataFrame:
-        """Prepare the data for XML transform. Note tbat this function subsets rows by course.
+        """Prepare the data for XML transform. Note tbat this function subsets rows by email and thus must be run after eval has been processed.
 
-        Args:f
+        Args:
             input_lms (pd.DataFrame): [description]
             emails (pd.Series): emails to select. If empty, we select all
             remove_users (list): Test users to be filtered out
@@ -58,13 +58,9 @@ class DataPrep:
                 mask_codes = lms_prefilter["Email"].isin(emails_list)
                 lms_prefilter = lms_prefilter[mask_codes]
             else:
-                logging.info(
-                    f"No codes specified. Skipping Course+Code filtering and filtering by student_emails"
-                )
-        except Error as e:
-            logging.info(
-                f"No codes specified. Skipping Course+Code filtering and filtering by student_emails"
-            )
+                logging.info(f"No codes specified. Skipping email filtering")
+        except Exception as e:
+            logging.warn(e)
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
         filtered_completion = filtered_completion.loc[
