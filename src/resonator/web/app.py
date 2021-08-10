@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 import os
 from pathlib import Path
 from resonator.RESonator import RESonator
-from tempfile import NamedTemporaryFile, TemporaryDirectory
+from tempfile import NamedTemporaryFile, TemporaryDirectory, tempdir
 
 FOLDER_OUTPUT = "tests/jobs"
 UPLOAD_FOLDER = "tests/uploads"
@@ -39,44 +39,49 @@ def home():
     return render_template("index.jinja")
 
 
-def validate_file(request, filename):
+def validate_file(request, file_expected):
     # check if the post request has the file part
-    if filename not in request.files:
+    if file_expected not in request.files:
         flash("No file part")
         return redirect(request.url)
-    file = request.files[filename]
+    file = request.files[file_expected]
     # If the user does not select a file, the browser submits an
     # empty file without a filename.
     if file.filename == "":
         flash("No selected file")
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        save_temp_file(file, filename)
+        save_temp_file(file, file_expected)
         return True
 
 
 @app.route("/process-job", methods=["GET", "POST"])
 def process_job():
     if request.method == "POST":
-        for filename in ["filelms", "fileeval", "filemeta"]:
-            validate_file(request, filename)
+        for file_expected in ["filelms", "fileeval", "filemeta"]:
+            validate_file(request, file_expected)
         output_filename = "test_job.xml"
+        tempfile = NamedTemporaryFile()
         path_final_out = Path(app.config["FOLDER_OUTPUT"]) / output_filename
         xml_string = RESonator.process_job(
-            path_lms_in=session["filelms"],
-            path_eval_in=session["fileeval"],
-            path_metadata_in=session["filemeta"],
-            path_final_out=path_final_out,
+            path_lms_in=Path(session["filelms"]),
+            path_eval_in=Path(session["fileeval"]),
+            path_metadata_in=Path(session["filemeta"]),
+            path_final_out=Path(tempfile.name),
         )
-        return send_file(
-            path_final_out.absolute,
-            mimetype="application/xml",
-            download_name="report.xml",
+        # Ideally return the xml, an output name, the path to the output, all in one tuple.
+        return send_from_directory(
+            Path(app.config["FOLDER_OUTPUT"]).absolute(),
+            output_filename,
+            attachment_filename=output_filename,
             as_attachment=True,
+            download_name=output_filename,
             max_age=0,
+            mimetype="application/xml",
         )
         # return redirect(url_for("download_file", name=output_filename))
-    return render_template("process-job.jinja")
+    else:
+        return render_template("process-job.jinja")
 
 
 def allowed_file(filename):
@@ -103,11 +108,12 @@ def save_temp_file(file, filename):
     Returns:
         [type]: [description]
     """
+    # Sanitize filename for safety
+    filename = secure_filename(filename)
+    # Create an upload path
     uploads = f'{Path(app.config["UPLOAD_FOLDER"]) / Path(filename)}{Path(file.filename).suffix}'
     file.save(uploads)
-    session[filename] = Path(uploads)
-
-    # filename = secure_filename(filename)
+    session[filename] = uploads
     # tempfile = NamedTemporaryFile()
     # file.save(tempfile)
     # session[filename] = tempfile
