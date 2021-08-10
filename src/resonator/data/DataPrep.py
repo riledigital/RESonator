@@ -55,22 +55,29 @@ class DataPrep:
             emails_length = emails.shape[0]
             if emails_length > 0:
                 emails_list = emails.to_list()
+                email_matches = {k: 0 for k in emails_list}
                 logging.info(f"Selecting only emails: {emails_list}")
 
                 def fuzz_match(x):
                     for test_str in emails_list:
                         if test_str == x:
                             # Early return if perfect match
+                            email_matches[test_str] += 1
                             return True
                         # else fuzzy match
                         ratio = fuzz.ratio(x, test_str)
-                        if ratio > 97:
+                        if ratio > 85:
                             logging.info(f"Matched {x} <-> {test_str}")
+                            email_matches[test_str] += 1
                             return True
                         else:
-                            return False
+                            pass
+                    return False
 
                 mask_codes = lms_prefilter["Email"].apply(fuzz_match)
+                unmatched_emails = [k for k, v in email_matches.items() if v < 1]
+                if len(unmatched_emails) > 1:
+                    logging.info(f"Found unmatched emails: {unmatched_emails}")
                 lms_prefilter = lms_prefilter[mask_codes]
             else:
                 logging.info(f"No codes specified. Skipping email filtering")
