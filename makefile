@@ -30,3 +30,6 @@ freeze-webgui: clean
 
 serve: 
 	poetry run flask run --host='0.0.0.0' --cert=adhoc
+
+run-prod-server: clean
+	poetry run gunicorn resonator.web.app:app
