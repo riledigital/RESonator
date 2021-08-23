@@ -71,16 +71,14 @@ def process_job():
             path_final_out=Path(tempfile.name),
         )
         # Ideally return the xml, an output name, the path to the output, all in one tuple.
-        return send_from_directory(
-            Path(app.config["FOLDER_OUTPUT"]).absolute(),
-            output_filename,
+        return send_file(
+            tempfile.name,
             attachment_filename=output_filename,
             as_attachment=True,
             download_name=output_filename,
             max_age=0,
             mimetype="application/xml",
         )
-        # return redirect(url_for("download_file", name=output_filename))
     else:
         return render_template("process-job.jinja")
 
