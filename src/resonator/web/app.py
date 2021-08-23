@@ -11,7 +11,7 @@ from flask import (
     send_file,
 )
 from werkzeug.utils import secure_filename
-import os
+from os import urandom
 from pathlib import Path
 from resonator.RESonator import RESonator
 from tempfile import NamedTemporaryFile, TemporaryDirectory, tempdir
@@ -128,6 +128,6 @@ def create_app():
     app = Flask(__name__)
     app.config["FOLDER_OUTPUT"] = FOLDER_OUTPUT
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-    app.config["SECRET_KEY"] = "the random string"
+    app.config["SECRET_KEY"] = urandom(24)
     app.register_blueprint(resonator)
     return app
