@@ -68,6 +68,7 @@ class RESonator:
             "data_eval": data_eval.shape,
             "eval_emails": eval_emails.shape,
         }
+
         logging.debug(f"data_lms count should match data_emails: {debug_shapes}")
 
         xml_string = XMLGenerator.XMLGenerator.generate_full_submission(

@@ -14,7 +14,28 @@ class DataIO:
 
     def __init__(self):
         logging.info("DataIO ready to read!")
+        
+    @classmethod
+    def output_filename_scheme(meta: dict, sequence: int) -> str:
+        """
+            TP_CourseNumber_Date_SequenceNumber.xml
+        Args:
+            meta (dict): metadata dict
+            sequence (int): seq number
 
+        Returns:
+            str: a string representing the filename
+        """
+        if (sequence):
+            use_sequence = f"_{sequence}"
+        else:
+            use_sequence = ""
+        date_today = datetime.datetime.today()
+        str_datetime = date_today.strftime('%m%d%Y')
+        coursenum = meta.get('class_catalognum')
+        trainingprovider_code = meta.get('trainingprovider_tpid')
+        return f"{trainingprovider_code}_{coursenum}_{str_datetime}{use_sequence}.xml"
+    
     @classmethod
     def load_file_disk(cls, path_in: Path, meta: bool = False) -> pd.DataFrame:
         """loads a file from disk and outputs a pandas dataframe
