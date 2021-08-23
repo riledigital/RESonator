@@ -5,10 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "debug flask",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "./resonator.web.app",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "0"
+      },
+      "args": ["run", "--no-debugger", "--no-reload"],
+      "justMyCode": true,
+      "jinja": true
+    },
+    {
       "name": "process job ncdp",
       "type": "python",
       "request": "launch",
-      "program": "src/resonator/cli.py",
+      "program": "resonator/cli.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "args": [
@@ -23,7 +37,7 @@
       "name": "Python: CLI test",
       "type": "python",
       "request": "launch",
-      "program": "src/resonator/cli.py",
+      "program": "resonator/cli.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [

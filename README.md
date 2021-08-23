@@ -24,3 +24,7 @@ The executable is placed in the ./dist folder. Run the binary to get a GUI and a
 ## Testing the CLI
 
 Run the CLI with `poetry run cli` (configured through [pyproject.toml](https://dev.to/bowmanjd/build-a-command-line-interface-with-python-poetry-and-click-1f5k)).
+
+## Web server
+
+Test the web server by running `make serve`

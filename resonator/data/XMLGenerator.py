@@ -353,7 +353,7 @@ class XMLGenerator:
     def validate_dtd(cls, input_xml):
 
         # https://lxml.de/validation.html#id1
-        path = Path("src/resonator/data")
+        path = Path("resonator/data")
         dtd = etree.DTD(str(Path(path / "submission.dtd")))
         result = dtd.validate(input_xml)
         logging.info(dtd.error_log.filter_from_errors())

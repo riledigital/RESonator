@@ -18,7 +18,10 @@ pytest = "^6.2.4"
 pytomlpp = "^1.0.2"
 click = "^8.0.1"
 pyinstaller = "^4.5"
-fuzzywuzzy = "^0.18.0"
+pytest-flask = "^1.2.0"
+Flask = "^2.0.1"
+pyOpenSSL = "^20.0.1"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "*"
