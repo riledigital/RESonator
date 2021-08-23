@@ -10,7 +10,7 @@
       "request": "launch",
       "module": "flask",
       "env": {
-        "FLASK_APP": "./src/resonator.web.app",
+        "FLASK_APP": "./resonator.web.app",
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "0"
       },
@@ -22,7 +22,7 @@
       "name": "process job ncdp",
       "type": "python",
       "request": "launch",
-      "program": "src/resonator/cli.py",
+      "program": "resonator/cli.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "args": [
@@ -37,7 +37,7 @@
       "name": "Python: CLI test",
       "type": "python",
       "request": "launch",
-      "program": "src/resonator/cli.py",
+      "program": "resonator/cli.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [

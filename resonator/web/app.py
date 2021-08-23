@@ -17,8 +17,8 @@ from resonator.RESonator import RESonator
 from tempfile import NamedTemporaryFile, TemporaryDirectory, tempdir
 from webbrowser import open as open_browser
 
-FOLDER_OUTPUT = "tests/jobs"
-UPLOAD_FOLDER = "tests/uploads"
+FOLDER_OUTPUT = "../../tests/jobs"
+UPLOAD_FOLDER = "../../tests/uploads"
 
 resonator = Blueprint("resonator", __name__, template_folder="templates")
 

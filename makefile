@@ -1,5 +1,5 @@
 OUTPUTS = build dist RESonatorGUI.spec cli.spec
-export FLASK_APP=./src/resonator.web.app
+export FLASK_APP=./resonator.web.app
 export FLASK_ENV=development
 
 .PHONY: setup
@@ -23,10 +23,10 @@ docker-test: docker-build
 	./bin/test.sh
 
 freeze-cli: clean
-	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./src/resonator/cli.py
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./resonator/cli.py
 
 freeze-webgui: clean
-	poetry run pyinstaller --clean --add-data="src/resonator/web/templates:./templates" --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./src/resonator/web/app.py
+	poetry run pyinstaller --clean --add-data="resonator/web/templates:./templates" --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./resonator/web/app.py
 
 serve: 
 	poetry run flask run --host='0.0.0.0' --cert=adhoc
