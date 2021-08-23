@@ -117,12 +117,6 @@ HOSTNAME = "0.0.0.0"
 PORT = 5000
 import logging
 
-if __name__ == "__main__":
-    connection_str = f"https://localhost:{PORT}"
-    open_browser(connection_str)
-    print(f"Dev server opening your browser to: {connection_str}")
-    app.run(ssl_context="adhoc", host=HOSTNAME, port=PORT)
-
 
 def create_app():
     app = Flask(__name__)
@@ -131,3 +125,11 @@ def create_app():
     app.config["SECRET_KEY"] = urandom(24)
     app.register_blueprint(resonator)
     return app
+
+
+if __name__ == "__main__":
+    connection_str = f"https://localhost:{PORT}"
+    open_browser(connection_str)
+    print(f"Dev server opening your browser to: {connection_str}")
+    app = create_app()
+    app.run(ssl_context="adhoc", host=HOSTNAME, port=PORT)
