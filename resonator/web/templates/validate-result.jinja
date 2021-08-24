@@ -1,5 +1,5 @@
 {% extends "layout/default.jinja" %} {% block title %}
-{{super()}} • Validate{% endblock %} {%
+{{super()}} • Validation Result for {{ context["filename"] }}{% endblock %} {%
 block head %}
 {{ super() }}
 
@@ -17,7 +17,7 @@ block head %}
   </symbol>
 </svg>
 
-<h1>Validation result</h1>
+<h1>Validation result for <span class="font-monospace">{{ context["filename"] }}</span></h1>
 <p class="lead">Check a generated RES XML file against the official RES XML DTD.</p>
 
 
