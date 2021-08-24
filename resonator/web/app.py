@@ -130,7 +130,7 @@ def save_temp_file(file, filename):
 #         print(str(error))
 
 
-HOSTNAME = "0.0.0.0"
+HOSTNAME = "localhost"
 PORT = 5000
 
 
@@ -149,4 +149,4 @@ if __name__ == "__main__":
     open_browser(connection_str)
     print(f"Dev server opening your browser to: {connection_str}")
     app = create_app()
-    app.run(ssl_context="adhoc", host=HOSTNAME, port=PORT)
+    app.run(host=HOSTNAME, port=PORT)
