@@ -58,9 +58,10 @@ class DataPrep:
             logging.info(f"No codes specified. Skipping Course+Code filtering")
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
-        filtered_completion = filtered_completion.loc[
-            ~input_lms["Username"].isin(remove_users)
-        ]
+        if remove_users is not None:
+            filtered_completion = filtered_completion.loc[
+                ~input_lms["Username"].isin(remove_users)
+            ]
         logging.info(f"Dropped instructors: {remove_users}")
         # Get only the columns we need
         lms_fl_subset = filtered_completion.filter(
