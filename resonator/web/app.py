@@ -54,6 +54,22 @@ def validate_file(request, file_expected):
         return True
 
 
+@resonator.route("/validate-dtd", methods=["GET", "POST"])
+def validate_dtd():
+    """DTD validation route
+
+    Returns:
+        [type]: [description]
+    """
+    if request.method == "POST":
+        # Get the POSTed form and validate it!
+        validate_file(request, "fileresxml")
+        context = {"result": RESonator.validate_file(session["filelms"])}
+        return render_template("validate-result.jinja", context=context)
+    elif request.method == "GET":
+        return render_template("validate.jinja")
+
+
 @resonator.route("/process-job", methods=["GET", "POST"])
 def process_job():
     if request.method == "POST":

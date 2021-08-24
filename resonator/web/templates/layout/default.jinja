@@ -30,6 +30,15 @@
 
   <body>
     <div class="container">
+    <header>
+      <nav class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">RESonator</span>
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/validate-dtd" class="nav-link" aria-current="page">Validate</a></li>
+        <li class="nav-item"><a href="/process-job" class="nav-link" aria-current="page">Generate</a></li>
+      </ul>
+      </nav>
+    </header>
       {% block content %}{% endblock %}
       <!-- Content -->
       {#
