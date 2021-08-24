@@ -23,6 +23,20 @@ class TestRESonator:
     def path_eval_in(scope):
         return Path("tests/sampledata/qualtrics_output.xlsx")
 
+    def test_process_job(self, tmp_path, path_lms_in, path_metadata_in, path_eval_in):
+        """Tests that process_job runs in RESonator.py"""
+        test_outfile = tmp_path / Path("final_out.xml")
+        txt = RESonator.process_job(
+            path_lms_in=path_lms_in,
+            path_metadata_in=path_metadata_in,
+            path_eval_in=path_eval_in,
+            path_final_out=test_outfile,
+        )
+        # Read the temp file as to not litter
+        with open(test_outfile, mode="r") as output:
+            text = output.readlines()
+            assert text is not None, "Output should not be empty"
+
     def test_equal_count_emails(
         self, tmp_path, path_lms_in, path_metadata_in, path_eval_in
     ):
@@ -51,17 +65,3 @@ class TestRESonator:
         assert (
             count_evals == count_student
         ), "Should have same count of <student> to <evaldata>"
-
-    def test_process_job(self, tmp_path, path_lms_in, path_metadata_in, path_eval_in):
-        """Tests that process_job runs in RESonator.py"""
-        test_outfile = tmp_path / Path("final_out.xml")
-        txt = RESonator.process_job(
-            path_lms_in=path_lms_in,
-            path_metadata_in=path_metadata_in,
-            path_eval_in=path_eval_in,
-            path_final_out=test_outfile,
-        )
-        # Read the temp file as to not litter
-        with open(test_outfile, mode="r") as output:
-            text = output.readlines()
-            assert text is not None, "Output should not be empty"
