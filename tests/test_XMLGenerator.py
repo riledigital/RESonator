@@ -254,7 +254,7 @@ class TestXmlGenerator:
         sample_submission_path = str(Path("tests/sampledata/submission-sample.xml"))
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
-            xmlgen.XMLGenerator.validate_dtd(sample_submission) == True
+            xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == True
         ), "Should validate"
         pass
 
@@ -266,6 +266,6 @@ class TestXmlGenerator:
         )
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
-            xmlgen.XMLGenerator.validate_dtd(sample_submission) == False
+            xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == False
         ), "Should fail on validate"
         pass

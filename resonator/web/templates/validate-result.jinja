@@ -1,0 +1,32 @@
+{% extends "layout/default.jinja" %} {% block title %}Validate{% endblock %} {%
+block head %}
+{{ super() }}
+
+{% endblock %} {% block content %}
+
+<h1>Validation result</h1>
+<p class="lead">Check a generated RES XML file against the official RES XML DTD.</p>
+
+
+{% if context.result == True %}
+<div class="alert alert-success" role="alert">
+  <h2>Validation passed</h2>
+  Validation passed without raising errors. 
+  Please note that this does not guarantee successful submission to RES, only that the file passes the standard XML Document Type Definition check. 
+</div>
+
+{% else %}
+<div class="alert alert-failure" role="alert">
+  <h2>Validation failed</h2>
+  Validation failed. See below for the error log.
+</div>
+
+  <pre>
+    {{ context["errors"] }}
+  </pre>
+{% endif %}
+
+
+
+
+{% endblock %}

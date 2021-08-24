@@ -64,7 +64,8 @@ def validate_dtd():
     if request.method == "POST":
         # Get the POSTed form and validate it!
         validate_file(request, "fileresxml")
-        context = {"result": RESonator.validate_file(session["filelms"])}
+        validation = RESonator.validate_file(session["fileresxml"])
+        context = validation
         return render_template("validate-result.jinja", context=context)
     elif request.method == "GET":
         return render_template("validate.jinja")
