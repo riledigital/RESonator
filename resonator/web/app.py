@@ -145,7 +145,7 @@ def create_app():
 
 
 if __name__ == "__main__":
-    connection_str = f"https://localhost:{PORT}"
+    connection_str = f"http://localhost:{PORT}"
     open_browser(connection_str)
     print(f"Dev server opening your browser to: {connection_str}")
     app = create_app()
