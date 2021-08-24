@@ -23,14 +23,6 @@ UPLOAD_FOLDER = "../../tests/uploads"
 resonator = Blueprint("resonator", __name__, template_folder="templates")
 flask_tempfiles = []
 
-# Setup files
-def setup_folders(files: list):
-    for file in files:
-        Path(file).mkdir(parents=True, exist_ok=True)
-
-
-setup_folders([FOLDER_OUTPUT, UPLOAD_FOLDER])
-
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 
 
@@ -117,22 +109,25 @@ def save_temp_file(file, filename):
     return tempfile
 
 
-@resonator.teardown_request
-def teardown_request_func(error=None):
+# @resonator.teardown_request
+# def teardown_request_func(error=None):
 
-    """
-    This function will run after a request, regardless if an exception occurs or not.
-    It's a good place to do some cleanup, such as closing any database connections.
-    If an exception is raised, it will be passed to the function.
-    You should so everything in your power to ensure this function does not fail, so
-    liberal use of try/except blocks is recommended.
-    """
+#     """
+#     This function will run after a request, regardless if an exception occurs or not.
+#     It's a good place to do some cleanup, such as closing any database connections.
+#     If an exception is raised, it will be passed to the function.
+#     You should so everything in your power to ensure this function does not fail, so
+#     liberal use of try/except blocks is recommended.
+#     """
 
-    current_app.logger.info("teardown_request is running!")
-    cleanup_temp()
-    if error:
-        # Log the error
-        print(str(error))
+#     current_app.logger.info("teardown_request is running!")
+#     try:
+#         cleanup_temp()
+#     except error:
+#         current_app.logger.info(error)
+#     if error:
+#         # Log the error
+#         print(str(error))
 
 
 HOSTNAME = "0.0.0.0"
