@@ -131,6 +131,11 @@ def save_temp_file(file, filename):
 
 @resonator.context_processor
 def inject_version():
+    """Injects a context containing version number of RESonator
+
+    Returns:
+        [type]: [description]
+    """
     return dict(version=VERSION)
 
 
