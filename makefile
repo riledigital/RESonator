@@ -1,6 +1,4 @@
 OUTPUTS = build dist RESonatorGUI.spec cli.spec
-export FLASK_APP=./resonator.web.app
-export FLASK_ENV=development
 
 .PHONY: setup
 setup:
@@ -26,11 +24,14 @@ freeze-cli: clean
 	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./resonator/cli.py
 
 freeze-webgui: clean
-	poetry run pyinstaller --clean --add-data="resonator/web/templates:./templates" --add-data="README.md:." --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./resonator/web/app.py \
+	poetry install \
+	&& poetry run pyinstaller --clean --add-data="resonator/web/templates:./templates" --add-data="README.md:." --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./resonator/web/app.py \
 	&& tar -C ./dist -cvzf RESonator-build.tar.gz resonator-web-gui
 
-serve: 
-	poetry run flask run --host='0.0.0.0' 
+serve:
+	export FLASK_APP=./resonator.web.app \
+	&& export FLASK_ENV=development \
+	&& poetry run flask run --host='0.0.0.0' 
 
 run-prod-server: clean
 	poetry run gunicorn resonator.web.app:app
