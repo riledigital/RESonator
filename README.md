@@ -2,7 +2,9 @@
 
 ## Installation
 
-On Mac OS, run RESonator.app
+On Mac OS, unzip the tar.gz file to somewhere like `/Applications`, then run the `resonator-web-gui/resonator-web-gui` binary file. A console window will open and your web browser will launch the RESonator front-end. Quit the Terminal window to close the application.
+
+RESonator currently requires an internet connection to display the Web frontend properly, since it depends on a CDN-hosted version of <a href="https://getbootstrap.com">Bootstrap</a>.
 
 # Development
 
@@ -24,3 +26,7 @@ The executable is placed in the ./dist folder. Run the binary to get a GUI and a
 ## Testing the CLI
 
 Run the CLI with `poetry run cli` (configured through [pyproject.toml](https://dev.to/bowmanjd/build-a-command-line-interface-with-python-poetry-and-click-1f5k)).
+
+## Web server
+
+Test the web server by running `make serve`

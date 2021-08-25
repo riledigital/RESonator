@@ -21,4 +21,17 @@ docker-test: docker-build
 	./bin/test.sh
 
 freeze-cli: clean
-	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=INFO ./src/resonator/cli.py
+	poetry run pyinstaller --clean --paths=.venv/lib/python3.9/site-packages --log-level=WARN -n resonator-cli ./resonator/cli.py
+
+freeze-webgui: clean
+	poetry install \
+	&& poetry run pyinstaller --clean --add-data="resonator/web/templates:./templates" --add-data="README.md:." --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./resonator/web/app.py \
+	&& tar -C ./dist -cvzf RESonator-build.tar.gz resonator-web-gui
+
+serve:
+	export FLASK_APP=./resonator.web.app \
+	&& export FLASK_ENV=development \
+	&& poetry run flask run --host='0.0.0.0' 
+
+run-prod-server: clean
+	poetry run gunicorn resonator.web.app:app

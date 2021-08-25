@@ -51,17 +51,18 @@ class DataPrep:
         )
 
         if codes:
-            logging.debug(f"Selecting only codes: {codes}")
+            logging.info(f"Selecting only codes: {codes}")
             mask_codes = lms_prefilter["Code"].isin(codes)
             lms_prefilter = lms_prefilter[mask_codes]
         else:
-            logging.debug(f"No codes specified. Skipping Course+Code filtering")
+            logging.info(f"No codes specified. Skipping Course+Code filtering")
 
         filtered_completion = lms_prefilter.query("(`Course Status` == 'Completed')")
-        filtered_completion = filtered_completion.loc[
-            ~input_lms["Username"].isin(remove_users)
-        ]
-        logging.debug(f"Dropped instructors: {remove_users}")
+        if remove_users is not None:
+            filtered_completion = filtered_completion.loc[
+                ~input_lms["Username"].isin(remove_users)
+            ]
+        logging.info(f"Dropped instructors: {remove_users}")
         # Get only the columns we need
         lms_fl_subset = filtered_completion.filter(
             items=[
@@ -159,17 +160,52 @@ class DataPrep:
         """
         ## START EVAL PROCESS
         logging.info("Running prep_data_eval")
-        subset = input_eval.iloc[:, 19:]
-        # Strip annoying column spaces
-        subset = subset.rename(columns=lambda x: x.strip())
-        new_q_numbers = map(lambda x: f"NQ{x}", list(range(1, 28)))
+        labels = [
+            # "Q1",
+            # "Q2",
+            # Only start likerts with Q3_1
+            # TODO: Possibly use QID26 to join on students and subset properly
+            # "QID26",
+            "Q3_1",
+            "Q3_2",
+            "Q4_1",
+            "Q4_2",
+            "Q4_3",
+            "Q4_4",
+            "Q5_1",
+            "Q5_2",
+            "Q5_3",
+            "Q5_4",
+            "Q5_5",
+            "Q5_6",
+            "Q5_7",
+            "Q5_8",
+            "Q6_1",
+            "Q6_2",
+            "Q6_3",
+            "Q6_4",
+            "Q6_5",
+            "Q7_1",
+            "Q7_2",
+            "Q7_3",
+            "Q7_4",
+            "Q8",
+            "Q9",
+            "Q10",
+            "Q11",
+        ]
+        subset = input_eval.copy().loc[:, labels]
+        new_q_numbers = list(map(lambda x: f"NQ{x}", list(range(1, 28))))
         subset.columns = new_q_numbers
+
         # extract the number from col index 0 - 23 for likerts
-        subset.iloc[:, 0:23] = subset.iloc[:, 0:23].apply(
-            lambda x: x.str.findall(r"\d")[0]
+        recoded = subset.iloc[:, 0:23]
+        recoded = recoded.applymap(
+            lambda x: re.findall(r"\d", x)[0],
         )
+        subset.update(recoded)
         # Fill empty/null with empty string
-        subset.fillna("", inplace=True)
+        subset.fillna("NA", inplace=True)
         return subset
 
     @classmethod

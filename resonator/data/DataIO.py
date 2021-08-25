@@ -4,6 +4,7 @@ from datetime import datetime
 import logging
 from pathlib import Path
 import pytomlpp
+from pprint import pformat
 
 
 class DataIO:
@@ -27,7 +28,7 @@ class DataIO:
         Returns:
             [type]: [description]
         """
-        logging.debug(f"Input file as {path_in} with extension {path_in.suffix}")
+        logging.info(f"Input file {path_in}. Parsed extension as {path_in.suffix}")
         if meta:
             meta_file = open(path_in, mode="r").read()
             my_meta = pytomlpp(meta_file)
@@ -64,8 +65,11 @@ class DataIO:
                 "Q10",
                 "Q11",
             ]
+            # Read Q/A columns as object
             dtype = {k: "object" for k in dtypes_names}
-            data = pd.read_excel(path_in, header=0, skiprows=[1], dtype=dtype)
+            data = pd.read_excel(
+                path_in, header=0, skiprows=[1], dtype=dtype, sheet_name=0
+            )
             logging.debug(data.columns)
             return data
         elif path_in.suffix == ".csv":
@@ -80,22 +84,23 @@ class DataIO:
     @classmethod
     def load_toml(cls, path_in: Path) -> Dict:
         with open(path_in, "r") as reader:
-            logging.info(f"Loading toml: {path_in}")
+            logging.info(f"Loading metadata TOML: {path_in}")
             file_str = reader.read()
             toml = pytomlpp.loads(file_str)
-            logging.info(f"Loaded toml: \n{toml}")
+            logging.info(f"Loaded toml: \n{pformat(toml)}")
             return toml
 
     @classmethod
     def write_output_file(cls, input_file: TextIO, path_out: Path) -> bool:
+        logging.info(f"Writing to: {path_out}")
         with open(path_out, "w") as writer:
             writer.write(input_file)
 
     @classmethod
     def write_string_to_file(cls, input: str, path_out: Path) -> Path:
+        logging.info(f"Wrote XML output to {path_out}")
         with open(path_out, "w") as writer:
             writer.write(input)
-            logging.debug(f"Wrote XML output to {path_out}")
             return path_out
 
     @classmethod
@@ -107,9 +112,22 @@ class DataIO:
     @classmethod
     def generate_filename(cls, path_in_meta: Path) -> str:
         meta = cls.load_toml(path_in_meta)
-        course_number = meta.get("output_course_code")
+        course_number = meta.get("class_catalognum")
         date_formatted = datetime.today().strftime("%d%m%Y")
-        trainingprovider_abbreviation = meta.get(
-            "trainingprovider_abbreviation", "NCDP"
+        trainingprovider_abbreviation = meta.get("trainingprovider_tpid", "NCDP")
+        filename = (
+            f"{trainingprovider_abbreviation}_{course_number}_{date_formatted}.XML"
         )
-        return f"{trainingprovider_abbreviation}_{course_number}_{date_formatted}.XML"
+
+        def check_increment(test_path, acc):
+            # Ignore increment if accumulator is 0
+            increment = f"_{acc:02d}" if (acc >= 1) else ""
+            filename = f"{trainingprovider_abbreviation}_{course_number}_{date_formatted}{increment}.XML"
+            if Path.exists(filename):
+                acc += 1
+                check_increment(test_path, acc=acc)
+            else:
+                return filename
+
+        final_out = check_increment(filename, 0)
+        return final_out

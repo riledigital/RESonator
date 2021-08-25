@@ -19,7 +19,7 @@ class RESonator:
             path_test_file (pathlib.Path): Path to submission DTD
         """
         test_submission = etree.parse(path_test_file)
-        return XMLGenerator.XMLGenerator.validate_dtd(test_submission) == True
+        return XMLGenerator.XMLGenerator.validate_dtd(test_submission)
 
     @classmethod
     def process_job(cls, path_lms_in, path_metadata_in, path_eval_in, path_final_out):
