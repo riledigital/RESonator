@@ -2,7 +2,7 @@
 
 ## Installation
 
-On Mac OS, run RESonator.app
+On Mac OS, unzip the tar.gz file to somewhere like `/Applications`, then run the `resonator-web-gui/resonator-web-gui` binary file. A console window will open and your web browser will launch the RESonator front-end. Quit the Terminal window to close the application.
 
 # Development
 
