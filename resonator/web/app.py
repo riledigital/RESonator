@@ -16,13 +16,13 @@ from pathlib import Path
 from resonator.RESonator import RESonator
 from tempfile import NamedTemporaryFile, mkstemp
 from webbrowser import open as open_browser
+from importlib.metadata import version
 
 FOLDER_OUTPUT = "../../tests/jobs"
 UPLOAD_FOLDER = "../../tests/uploads"
 
 resonator = Blueprint("resonator", __name__, template_folder="templates")
 flask_tempfiles = []
-from importlib.metadata import version
 
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 
