@@ -4,6 +4,8 @@
 
 On Mac OS, unzip the tar.gz file to somewhere like `/Applications`, then run the `resonator-web-gui/resonator-web-gui` binary file. A console window will open and your web browser will launch the RESonator front-end. Quit the Terminal window to close the application.
 
+RESonator currently requires an internet connection to display the Web frontend properly, since it depends on a CDN-hosted version of <a href="https://getbootstrap.com">Bootstrap</a>.
+
 # Development
 
 - [Install pyenv](https://github.com/pyenv/pyenv) and use Python 3.7.10.

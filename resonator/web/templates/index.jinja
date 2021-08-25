@@ -2,4 +2,14 @@
 block head %}
 {{ super() }}
 
-{% endblock %} {% block content %} {% endblock %}
+{% endblock %} 
+{% block content %}
+{{ super() }}
+<h1>RESonator</h1>
+<p class="lead">
+Welcome to RESonator v{{ version }}.
+</p>
+<p class="lead">
+RESonator is a small program built for the <a href="https://ncdp.columbia.edu">National Center for Disaster Preparedness at Columbia University</a> to prepare data sources for RES XML format. <a href="https://github.com/riledigital/resonator">See the README on GitHub for more info.</a>
+</p>
+{% endblock %}
