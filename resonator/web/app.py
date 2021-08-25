@@ -22,13 +22,14 @@ UPLOAD_FOLDER = "../../tests/uploads"
 
 resonator = Blueprint("resonator", __name__, template_folder="templates")
 flask_tempfiles = []
+from importlib.metadata import version
 
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 
 
 @resonator.route("/")
 def home():
-    return render_template("index.jinja")
+    return render_template("index.jinja", context={"version": version("resonator")})
 
 
 def validate_file(request, file_expected):
@@ -139,7 +140,7 @@ def create_app():
     app.config["FOLDER_OUTPUT"] = FOLDER_OUTPUT
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = urandom(24)
-
+    app.logger.info(f"RESonator version {version('resonator')}")
     app.register_blueprint(resonator)
     return app
 
