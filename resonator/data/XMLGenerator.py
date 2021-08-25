@@ -356,5 +356,6 @@ class XMLGenerator:
         path = Path("resonator/data")
         dtd = etree.DTD(str(Path(path / "submission.dtd")))
         result = dtd.validate(input_xml)
-        logging.info(dtd.error_log.filter_from_errors())
-        return result
+        errors = dtd.error_log.filter_from_errors()
+        logging.info(errors)
+        return {"result": result, "errors": errors}

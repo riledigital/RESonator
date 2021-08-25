@@ -43,7 +43,26 @@ def validate_file(request, file_expected):
         return redirect(request.url)
     if file and allowed_file(file.filename):
         save_temp_file(file, file_expected)
-        return True
+        return file
+
+
+@resonator.route("/validate-dtd", methods=["GET", "POST"])
+def validate_dtd():
+    """DTD validation route
+
+    Returns:
+        [type]: [description]
+    """
+    if request.method == "POST":
+        # Get the POSTed form and validate it!
+        file = validate_file(request, "fileresxml")
+        filename = file.filename
+        validation = RESonator.validate_file(session["fileresxml"])
+        context = validation.copy()
+        context["filename"] = filename
+        return render_template("validate-result.jinja", context=context)
+    elif request.method == "GET":
+        return render_template("validate.jinja")
 
 
 @resonator.route("/process-job", methods=["GET", "POST"])
