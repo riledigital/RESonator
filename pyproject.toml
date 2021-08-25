@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "resonator"
-version = "2.0.1"
+version = "3.0.0"
 description = "RESonator ETL tool"
 authors = ["Ri Le <r.le@columbia.edu>"]
 license = "MIT"
