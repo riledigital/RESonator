@@ -18,18 +18,16 @@ from tempfile import NamedTemporaryFile, mkstemp
 from webbrowser import open as open_browser
 from importlib.metadata import version
 
-FOLDER_OUTPUT = "../../tests/jobs"
-UPLOAD_FOLDER = "../../tests/uploads"
-
 resonator = Blueprint("resonator", __name__, template_folder="templates")
 flask_tempfiles = []
 
+VERSION = version("resonator")
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "toml", "xml"}
 
 
 @resonator.route("/")
 def home():
-    return render_template("index.jinja", context={"version": version("resonator")})
+    return render_template("index.jinja", context={"version": VERSION})
 
 
 def validate_file(request, file_expected):
@@ -131,14 +129,17 @@ def save_temp_file(file, filename):
 #         print(str(error))
 
 
+@resonator.context_processor
+def inject_version():
+    return dict(version=VERSION)
+
+
 HOSTNAME = "localhost"
 PORT = 5000
 
 
 def create_app():
     app = Flask(__name__)
-    app.config["FOLDER_OUTPUT"] = FOLDER_OUTPUT
-    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = urandom(24)
     app.logger.info(f"RESonator version {version('resonator')}")
     app.register_blueprint(resonator)
