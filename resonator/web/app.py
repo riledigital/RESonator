@@ -1,4 +1,5 @@
 from flask import (
+    after_this_request,
     Blueprint,
     current_app,
     Flask,
@@ -7,7 +8,6 @@ from flask import (
     redirect,
     render_template,
     session,
-    send_from_directory,
     send_file,
 )
 from werkzeug.utils import secure_filename
@@ -53,13 +53,19 @@ def process_job():
             validate_file(request, file_expected)
         output_filename = "test_job.xml"
         tempfile = NamedTemporaryFile(suffix=".xml")
-        path_final_out = Path(current_app.config["FOLDER_OUTPUT"]) / output_filename
         xml_string = RESonator.process_job(
             path_lms_in=Path(session["filelms"]),
             path_eval_in=Path(session["fileeval"]),
             path_metadata_in=Path(session["filemeta"]),
             path_final_out=Path(tempfile.name),
         )
+
+        @after_this_request
+        def cleanup(response):
+            current_app.logger.info("Attempting cleanup...")
+            cleanup_temp()
+            return response
+
         # Ideally return the xml, an output name, the path to the output, all in one tuple.
         return send_file(
             tempfile.name,
@@ -69,6 +75,7 @@ def process_job():
             max_age=0,
             mimetype="application/xml",
         )
+
     else:
         return render_template("process-job.jinja")
 
@@ -79,10 +86,12 @@ def allowed_file(filename):
 
 def cleanup_temp():
     """Cleanup all temp files"""
-    for file_expected in ["filelms", "fileeval", "filemeta"]:
+    for file_expected in session.keys():
         file = session[file_expected]
         current_app.logger.info(f"Deleting {file}")
         remove(file)
+    current_app.logger.info(f"Clearing session.")
+    session.clear()
 
 
 def save_temp_file(file, filename):
@@ -131,11 +140,6 @@ def save_temp_file(file, filename):
 
 @resonator.context_processor
 def inject_version():
-    """Injects a context containing version number of RESonator
-
-    Returns:
-        [type]: [description]
-    """
     return dict(version=VERSION)
 
 
