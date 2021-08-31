@@ -2,6 +2,8 @@
 
 ## Installation
 
+Download the `tar.gz` archive file for the latest version from this repo's [Releases section](https://github.com/riledigital/RESonator/releases) under Assets.
+
 On Mac OS, unzip the tar.gz file to somewhere like `/Applications`, then run the `resonator-web-gui/resonator-web-gui` binary file. A console window will open and your web browser will launch the RESonator front-end. Quit the Terminal window to close the application.
 
 RESonator currently requires an internet connection to display the Web frontend properly, since it depends on a CDN-hosted version of <a href="https://getbootstrap.com">Bootstrap</a>.
