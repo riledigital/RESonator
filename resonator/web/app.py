@@ -163,7 +163,8 @@ def inject_version():
 
 
 HOSTNAME = "localhost"
-PORT = 5000
+# Use 0 for a dyanmic port
+PORT = 0
 
 
 def create_app():
@@ -174,7 +175,25 @@ def create_app():
     return app
 
 
+import socket
+
+
+def find_empty_port():
+    """find and return an empty port # to run the app on.
+
+    Returns:
+        string: port number
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(("localhost", 0))
+    port = sock.getsockname()[1]
+    sock.close()
+    return port
+
+
 if __name__ == "__main__":
+    if (PORT is None) or (PORT == 0):
+        PORT = find_empty_port()
     connection_str = f"http://localhost:{PORT}"
     open_browser(connection_str)
     print(f"Dev server opening your browser to: {connection_str}")

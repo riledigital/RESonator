@@ -25,7 +25,15 @@ freeze-cli: clean
 
 freeze-webgui: clean
 	poetry install \
-	&& poetry run pyinstaller --clean --add-data="resonator/web/templates:./templates" --add-data="README.md:." --paths=.venv/lib/python3.9/site-packages --log-level=WARN -c -n resonator-web-gui ./resonator/web/app.py \
+	&& poetry run pyinstaller \
+	--clean \
+	--add-data="resonator/web/templates:./templates" \
+	--add-data="README.md:." \
+	--paths=.venv/lib/python3.9/site-packages \
+	--log-level=WARN \
+	-c -n resonator-web-gui \
+	--onefile \
+	./resonator/web/app.py \
 	&& tar -C ./dist -cvzf RESonator-build.tar.gz resonator-web-gui
 
 serve:
