@@ -158,6 +158,9 @@ class DataPrep:
         Returns:
             [type]: DataFrame ready to be converted to XML
         """
+        # Filter out unfinished records
+        input_eval = input_eval.query("Finished == True")
+
         ## START EVAL PROCESS
         logging.info("Running prep_data_eval")
         labels = [
@@ -200,12 +203,21 @@ class DataPrep:
 
         # extract the number from col index 0 - 23 for likerts
         recoded = subset.iloc[:, 0:23]
-        recoded = recoded.applymap(
-            lambda x: re.findall(r"\d", x)[0],
-        )
+
+        # regex helper
+        def find_digits(x):
+            if pd.isna(x):
+                return "N/A"
+            matches = re.findall(r"\d", x)
+            if len(matches) > 0:
+                return matches[0]
+            else:
+                return "N/A"
+
+        recoded = recoded.applymap(find_digits)
         subset.update(recoded)
         # Fill empty/null with empty string
-        subset.fillna("NA", inplace=True)
+        subset.fillna("N/A", inplace=True)
         return subset
 
     @classmethod

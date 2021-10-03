@@ -4,35 +4,65 @@ from pathlib import Path
 import resonator.data.DataIO as dl
 import resonator.data.XMLGenerator as xmlgen
 import resonator.data.DataPrep as dp
+from resonator.RESonator import RESonator
+
 from xml.etree import ElementTree
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Set these in .env
+PATH_LMS = os.environ["PATH_LMS"]
+PATH_EVAL = os.environ["PATH_EVAL"]
+PATH_META = os.environ["PATH_META"]
+PATH_OUTPUT = os.environ["PATH_OUTPUT"]
+PATH_FAILED_OUTPUT = os.environ["PATH_FAILED_OUTPUT"]
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_lms_input():
+    loader = dl.DataIO()
+    path_in = Path(PATH_LMS)
+    logging.info(f"Using file input: {path_in}")
+    file = loader.load_file_disk(path_in)
+    return dp.DataPrep.prep_data_lms(
+        file,
+        codes=["MGT462BL"],
+        remove_users=["jld2225"],
+    )
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_eval_input():
+    loader = dl.DataIO()
+    file = loader.load_file_disk(Path(PATH_EVAL))
+    return dp.DataPrep.prep_data_eval(file)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_meta_input():
+    loader = dl.DataIO()
+    file = loader.load_toml(Path(PATH_META))
+    return dp.DataPrep.prep_data_meta(file)
+
+
+@pytest.fixture(autouse=True)
+def sample_output_file(tmp_path):
+    """Tests that process_job runs in RESonator.py"""
+    test_outfile = tmp_path / Path(PATH_OUTPUT)
+    txt = RESonator(
+        path_lms_in=Path(PATH_LMS),
+        path_metadata_in=Path(PATH_META),
+        path_eval_in=Path(PATH_EVAL),
+        path_final_out=test_outfile,
+    )
+    return test_outfile
 
 
 class TestXmlGenerator:
     """XML generation tests"""
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_lms_input(self):
-        loader = dl.DataIO()
-        path_in = Path("tests/sampledata/lms_sample.csv")
-        logging.info(f"Using file input: {path_in}")
-        file = loader.load_file_disk(path_in)
-        return dp.DataPrep.prep_data_lms(
-            file,
-            codes=["MGT462BL"],
-            remove_users=["jld2225"],
-        )
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_eval_input(self):
-        loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
-        return dp.DataPrep.prep_data_eval(file)
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_meta_input(self):
-        loader = dl.DataIO()
-        file = loader.load_toml(Path("tests/metadata-sample.toml"))
-        return dp.DataPrep.prep_data_meta(file)
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_registration(self, sample_lms_input):
@@ -248,10 +278,10 @@ class TestXmlGenerator:
             '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
         ), "string output should start with manifest"
 
-    def test_dtd_validate(self):
+    def test_dtd_validate(self, sample_output_file):
         import lxml
 
-        sample_submission_path = str(Path("tests/sampledata/submission-sample.xml"))
+        sample_submission_path = str(Path(sample_output_file))
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
             xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == True
@@ -261,9 +291,7 @@ class TestXmlGenerator:
     def test_dtd_validate_failure(self):
         import lxml
 
-        sample_submission_path = str(
-            Path("tests/sampledata/submission-sample-fail.xml")
-        )
+        sample_submission_path = str(Path(PATH_FAILED_OUTPUT))
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
             xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == False

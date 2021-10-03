@@ -3,6 +3,16 @@ import logging
 from pathlib import Path
 import pandas as pd
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Set these in .env
+PATH_LMS = os.environ["PATH_LMS"]
+PATH_EVAL = os.environ["PATH_EVAL"]
+PATH_META = os.environ["PATH_META"]
+
 
 class TestDataIo:
     """
@@ -14,7 +24,7 @@ class TestDataIo:
         Test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
+        file = loader.load_file_disk(Path(PATH_LMS))
         # Target the full columns in this case
         target_columns = pd.Index(
             data=[
@@ -96,7 +106,7 @@ class TestDataIo:
         Load the evaluation sample data, and then test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
+        file = loader.load_file_disk(Path(PATH_EVAL))
         # Target the full columns in this case
         target_columns = pd.Index(
             data=[
@@ -161,7 +171,7 @@ class TestDataIo:
         Load the metaata sample data, and then test for columns present
         """
         loader = dl.DataIO()
-        file = loader.load_toml(Path("tests/metadata-sample.toml"))
+        file = loader.load_toml(Path(PATH_META))
         # Target the full columns in this case
         target_keys = [
             "trainingprovider_tpid",

@@ -65,6 +65,7 @@ class DataIO:
                 "Q10",
                 "Q11",
             ]
+            # TODO: Check if this causes any datatype errors
             # Read Q/A columns as object
             dtype = {k: "object" for k in dtypes_names}
             data = pd.read_excel(
