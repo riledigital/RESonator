@@ -91,7 +91,7 @@ class TestDataIo:
             file.columns.array == target_columns.array
         ), "Output should match expected columns"
 
-    def test_load_eval(self):
+        def test_load_eval(self):
         """
         Load the evaluation sample data, and then test for columns present
         """
