@@ -15,6 +15,7 @@ load_dotenv()
 PATH_LMS = os.environ["PATH_LMS"]
 PATH_EVAL = os.environ["PATH_EVAL"]
 PATH_META = os.environ["PATH_META"]
+PATH_OUTPUT = os.environ["PATH_OUTPUT"]
 
 
 class TestRESonator:
@@ -22,7 +23,7 @@ class TestRESonator:
 
     def test_process_job(self, tmp_path):
         """Tests that process_job runs in RESonator.py"""
-        test_outfile = tmp_path / Path("final_out.xml")
+        test_outfile = tmp_path / Path(PATH_OUTPUT)
         txt = RESonator(
             path_lms_in=Path(PATH_LMS),
             path_metadata_in=Path(PATH_META),

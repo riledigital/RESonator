@@ -4,6 +4,8 @@ from pathlib import Path
 import resonator.data.DataIO as dl
 import resonator.data.XMLGenerator as xmlgen
 import resonator.data.DataPrep as dp
+from resonator.RESonator import RESonator
+
 from xml.etree import ElementTree
 
 import os
@@ -15,6 +17,8 @@ load_dotenv()
 PATH_LMS = os.environ["PATH_LMS"]
 PATH_EVAL = os.environ["PATH_EVAL"]
 PATH_META = os.environ["PATH_META"]
+PATH_OUTPUT = os.environ["PATH_OUTPUT"]
+PATH_FAILED_OUTPUT = os.environ["PATH_FAILED_OUTPUT"]
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -42,6 +46,19 @@ def sample_meta_input():
     loader = dl.DataIO()
     file = loader.load_toml(Path(PATH_META))
     return dp.DataPrep.prep_data_meta(file)
+
+
+@pytest.fixture(autouse=True)
+def sample_output_file(tmp_path):
+    """Tests that process_job runs in RESonator.py"""
+    test_outfile = tmp_path / Path(PATH_OUTPUT)
+    txt = RESonator(
+        path_lms_in=Path(PATH_LMS),
+        path_metadata_in=Path(PATH_META),
+        path_eval_in=Path(PATH_EVAL),
+        path_final_out=test_outfile,
+    )
+    return test_outfile
 
 
 class TestXmlGenerator:
@@ -261,10 +278,10 @@ class TestXmlGenerator:
             '<!DOCTYPE Manifest SYSTEM "submission.dtd">'
         ), "string output should start with manifest"
 
-    def test_dtd_validate(self):
+    def test_dtd_validate(self, sample_output_file):
         import lxml
 
-        sample_submission_path = str(Path("tests/sampledata/submission-sample.xml"))
+        sample_submission_path = str(Path(sample_output_file))
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
             xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == True
@@ -274,9 +291,7 @@ class TestXmlGenerator:
     def test_dtd_validate_failure(self):
         import lxml
 
-        sample_submission_path = str(
-            Path("tests/sampledata/submission-sample-fail.xml")
-        )
+        sample_submission_path = str(Path(PATH_FAILED_OUTPUT))
         sample_submission = lxml.etree.parse(sample_submission_path)
         assert (
             xmlgen.XMLGenerator.validate_dtd(sample_submission)["result"] == False
