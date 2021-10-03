@@ -158,6 +158,9 @@ class DataPrep:
         Returns:
             [type]: DataFrame ready to be converted to XML
         """
+        # Filter out unfinished records
+        input_eval = input_eval.query("Finished == True")
+
         ## START EVAL PROCESS
         logging.info("Running prep_data_eval")
         labels = [

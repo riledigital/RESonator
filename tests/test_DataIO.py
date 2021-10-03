@@ -101,70 +101,70 @@ class TestDataIo:
             file.columns.array == target_columns.array
         ), "Output should match expected columns"
 
-        def test_load_eval(self):
-            """
-            Load the evaluation sample data, and then test for columns present
-            """
-            loader = dl.DataIO()
-            file = loader.load_file_disk(Path(PATH_EVAL))
-            # Target the full columns in this case
-            target_columns = pd.Index(
-                data=[
-                    "StartDate",
-                    "EndDate",
-                    "Status",
-                    "IPAddress",
-                    "Progress",
-                    "Duration (in seconds)",
-                    "Finished",
-                    "RecordedDate",
-                    "ResponseId",
-                    "RecipientLastName",
-                    "RecipientFirstName",
-                    "RecipientEmail",
-                    "ExternalReference",
-                    "LocationLatitude",
-                    "LocationLongitude",
-                    "DistributionChannel",
-                    "UserLanguage",
-                    "Q1",
-                    "QID26",
-                    "Q2",
-                    "Q3_1",
-                    "Q3_2",
-                    "Q4_1",
-                    "Q4_2",
-                    "Q4_3",
-                    "Q4_4",
-                    "Q5_1",
-                    "Q5_2",
-                    "Q5_3",
-                    "Q5_4",
-                    "Q5_5",
-                    "Q5_6",
-                    "Q5_7",
-                    "Q5_8",
-                    "Q6_1",
-                    "Q6_2",
-                    "Q6_3",
-                    "Q6_4",
-                    "Q6_5",
-                    "Q7_1",
-                    "Q7_2",
-                    "Q7_3",
-                    "Q7_4",
-                    "Q8",
-                    "Q9",
-                    "Q10",
-                    "Q11",
-                ],
-                dtype="object",
-            )
-            test_cols = file.columns
-            assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
-            assert list(test_cols.array) == list(
-                target_columns.array
-            ), "Output should match expected columns"
+    def test_load_eval(self):
+        """
+        Load the evaluation sample data, and then test for columns present
+        """
+        loader = dl.DataIO()
+        file = loader.load_file_disk(Path(PATH_EVAL))
+        # Target the full columns in this case
+        target_columns = pd.Index(
+            data=[
+                "StartDate",
+                "EndDate",
+                "Status",
+                "IPAddress",
+                "Progress",
+                "Duration (in seconds)",
+                "Finished",
+                "RecordedDate",
+                "ResponseId",
+                "RecipientLastName",
+                "RecipientFirstName",
+                "RecipientEmail",
+                "ExternalReference",
+                "LocationLatitude",
+                "LocationLongitude",
+                "DistributionChannel",
+                "UserLanguage",
+                "Q1",
+                "QID26",
+                "Q2",
+                "Q3_1",
+                "Q3_2",
+                "Q4_1",
+                "Q4_2",
+                "Q4_3",
+                "Q4_4",
+                "Q5_1",
+                "Q5_2",
+                "Q5_3",
+                "Q5_4",
+                "Q5_5",
+                "Q5_6",
+                "Q5_7",
+                "Q5_8",
+                "Q6_1",
+                "Q6_2",
+                "Q6_3",
+                "Q6_4",
+                "Q6_5",
+                "Q7_1",
+                "Q7_2",
+                "Q7_3",
+                "Q7_4",
+                "Q8",
+                "Q9",
+                "Q10",
+                "Q11",
+            ],
+            dtype="object",
+        )
+        test_cols = file.columns
+        assert isinstance(file, pd.DataFrame), "Output should be a DataFrame"
+        assert list(test_cols.array) == list(
+            target_columns.array
+        ), "Output should match expected columns"
 
     def test_load_toml_meta(self):
         """
