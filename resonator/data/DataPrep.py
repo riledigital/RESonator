@@ -204,17 +204,17 @@ class DataPrep:
         # regex helper
         def find_digits(x):
             if pd.isna(x):
-                return "NA"
+                return "N/A"
             matches = re.findall(r"\d", x)
             if len(matches) > 0:
                 return matches[0]
             else:
-                return "NA"
+                return "N/A"
 
         recoded = recoded.applymap(find_digits)
         subset.update(recoded)
         # Fill empty/null with empty string
-        subset.fillna("NA", inplace=True)
+        subset.fillna("N/A", inplace=True)
         return subset
 
     @classmethod

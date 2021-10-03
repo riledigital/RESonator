@@ -6,33 +6,46 @@ import resonator.data.XMLGenerator as xmlgen
 import resonator.data.DataPrep as dp
 from xml.etree import ElementTree
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Set these in .env
+PATH_LMS = os.environ["PATH_LMS"]
+PATH_EVAL = os.environ["PATH_EVAL"]
+PATH_META = os.environ["PATH_META"]
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_lms_input():
+    loader = dl.DataIO()
+    path_in = Path(PATH_LMS)
+    logging.info(f"Using file input: {path_in}")
+    file = loader.load_file_disk(path_in)
+    return dp.DataPrep.prep_data_lms(
+        file,
+        codes=["MGT462BL"],
+        remove_users=["jld2225"],
+    )
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_eval_input():
+    loader = dl.DataIO()
+    file = loader.load_file_disk(Path(PATH_EVAL))
+    return dp.DataPrep.prep_data_eval(file)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def sample_meta_input():
+    loader = dl.DataIO()
+    file = loader.load_toml(Path(PATH_META))
+    return dp.DataPrep.prep_data_meta(file)
+
 
 class TestXmlGenerator:
     """XML generation tests"""
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_lms_input(self):
-        loader = dl.DataIO()
-        path_in = Path("tests/sampledata/lms_sample.csv")
-        logging.info(f"Using file input: {path_in}")
-        file = loader.load_file_disk(path_in)
-        return dp.DataPrep.prep_data_lms(
-            file,
-            codes=["MGT462BL"],
-            remove_users=["jld2225"],
-        )
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_eval_input(self):
-        loader = dl.DataIO()
-        file = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
-        return dp.DataPrep.prep_data_eval(file)
-
-    @pytest.fixture(scope="class", autouse=True)
-    def sample_meta_input(self):
-        loader = dl.DataIO()
-        file = loader.load_toml(Path("tests/metadata-sample.toml"))
-        return dp.DataPrep.prep_data_meta(file)
 
     @pytest.fixture(scope="class", autouse=True)
     def sample_registration(self, sample_lms_input):
