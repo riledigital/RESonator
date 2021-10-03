@@ -4,6 +4,16 @@ import pandas as pd
 from pathlib import Path
 import logging
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Set these in .env
+PATH_LMS = os.environ["PATH_LMS"]
+PATH_EVAL = os.environ["PATH_EVAL"]
+PATH_META = os.environ["PATH_META"]
+
 
 class TestLMSPrep:
     """
@@ -14,7 +24,7 @@ class TestLMSPrep:
         """Should properly subset the fields"""
         test_users = ["jld2225"]
         loader = ld.DataIO()
-        lms_data = loader.load_file_disk(Path("tests/sampledata/lms_sample.csv"))
+        lms_data = loader.load_file_disk(Path(PATH_LMS))
         output = DataPrep.prep_data_lms(
             input_lms=lms_data,
             codes=["MGT462BL"],
@@ -54,7 +64,7 @@ class TestEvalPrep:
     def test_data_eval(self):
         """Should properly subset the fields"""
         loader = ld.DataIO()
-        lms_data = loader.load_file_disk(Path("tests/sampledata/qualtrics_output.xlsx"))
+        lms_data = loader.load_file_disk(Path(PATH_EVAL))
         output = DataPrep.prep_data_eval(lms_data)
         assert output.shape[1] == 27, "Output should have 27 columns"
         assert isinstance(output, pd.DataFrame), "Output should be a DataFrame"
