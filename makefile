@@ -34,7 +34,7 @@ freeze-webgui: clean
 	-c -n resonator-web-gui \
 	--onefile \
 	./resonator/web/app.py \
-	&& tar -C ./dist -cvzf RESonator-build.tar.gz resonator-web-gui
+	&& tar -C ./dist -cvzf ./dist/RESonator-build.tar.gz resonator-web-gui
 
 serve:
 	export FLASK_APP=./resonator.web.app \
